@@ -15,11 +15,17 @@ class UnitSetComponent extends Component
     public $confirmingDelete = false;
     public $deleteId;
     public $successMessage;
+    public $selectedUnitSetId = null;
 
     protected $rules = [
         'code' => 'required|max:8',
         'name' => 'required|max:512',
     ];
+
+    public function selectUnitSet($id)
+    {
+        $this->selectedUnitSetId = $this->selectedUnitSetId === $id ? null : $id;
+    }
 
     public function render()
     {

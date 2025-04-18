@@ -25,7 +25,7 @@ class BankComponent extends Component
     public function render()
     {
         $banks = Bank::orderBy('id', 'desc')->paginate(10);
-        return view('livewire.bank-component', compact('banks'));
+        return view('livewire.bank-component', compact('banks'))->extends('components.layouts.app')->section('content');
     }
 
     public function resetForm()

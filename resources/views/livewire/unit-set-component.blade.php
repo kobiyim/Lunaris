@@ -19,15 +19,25 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($unitSets as $unitSet)
+                @foreach ($unitSets as $set)
                     <tr>
-                        <td>{{ $unitSet->code }}</td>
-                        <td>{{ $unitSet->name }}</td>
+                        <td>{{ $set->code }}</td>
+                        <td>{{ $set->name }}</td>
+                        <td>{{ $set->active ? 'Evet' : 'Hayır' }}</td>
                         <td>
-                            <button class="btn btn-sm btn-info" wire:click="edit({{ $unitSet->id }})">Düzenle</button>
-                            <button class="btn btn-sm btn-danger" wire:click="confirmDelete({{ $unitSet->id }})">Sil</button>
+                            <button class="btn btn-sm btn-info" wire:click="selectUnitSet({{ $set->id }})">
+                                {{ $selectedUnitSetId === $set->id ? 'Gizle' : 'Göster' }}
+                            </button>
                         </td>
                     </tr>
+
+                    @if ($selectedUnitSetId === $set->id)
+                        <tr>
+                            <td colspan="4">
+                                @livewire('units', ['unitSetId' => $set->id], key($set->id))
+                            </td>
+                        </tr>
+                    @endif
                 @endforeach
             </tbody>
         </table>

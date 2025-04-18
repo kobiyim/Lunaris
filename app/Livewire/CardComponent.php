@@ -25,7 +25,7 @@ class CardComponent extends Component
     {
         return view('livewire.card-component', [
             'cards' => Card::orderByDesc('id')->paginate(10),
-        ]);
+        ])->extends('components.layouts.app')->section('content');
     }
 
     public function resetForm()
@@ -44,7 +44,7 @@ class CardComponent extends Component
         ]);
 
         $this->resetForm();
-        $this->dispatchBrowserEvent('modal-close');
+        $this->dispatch('modal-close');
         $this->successMessage = "Cari hesap başarıyla eklendi.";
     }
 
@@ -56,7 +56,7 @@ class CardComponent extends Component
         $this->name = $card->name;
         $this->isEditMode = true;
 
-        $this->dispatchBrowserEvent('modal-open');
+        $this->dispatch('modal-open');
     }
 
     public function update()
@@ -70,7 +70,7 @@ class CardComponent extends Component
         ]);
 
         $this->resetForm();
-        $this->dispatchBrowserEvent('modal-close');
+        $this->dispatch('modal-close');
         $this->successMessage = "Cari hesap başarıyla güncellendi.";
     }
 
