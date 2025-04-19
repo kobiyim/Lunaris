@@ -24,7 +24,7 @@ class CardManager extends Component
     public function render()
     {
         return view('livewire.card-component', [
-            'cards' => Card::orderByDesc('id')->paginate(10),
+            'cards' => Card::where('name', 'LIKE', '%' . $this->name . '%')->orderByDesc('id')->paginate(10),
         ])->extends('components.layouts.app')->section('content');
     }
 
