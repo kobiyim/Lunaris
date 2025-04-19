@@ -2,19 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+use App\Http\Livewire\Dashboard;
+
+Route::group([ 'middleware' => 'auth' ], function() {
+	Route::get('/', Dashboard::class);
+
+	Route::get('cards', App\Http\Livewire\CardManager::class);
 });
 
-
-use App\Livewire\BankComponent;
-use App\Livewire\CardComponent;
-use App\Livewire\ItemComponent;
-use App\Livewire\UnitSetComponent;
-
-Route::get('unit-sets', UnitSetComponent::class);
- 
- 
-Route::get('/banks', BankComponent::class);
-Route::get('/cards', CardComponent::class);
-Route::get('/items', ItemComponent::class);

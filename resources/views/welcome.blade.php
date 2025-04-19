@@ -3,5 +3,5 @@
 @section('title', 'Banka Yönetimi')
 
 @section('content')
-    @livewire('card-component')
+    @livewire('card-manager')
 @endsection

@@ -8,33 +8,15 @@
             </div>
         @endif
 
-        <button class="btn btn-primary mb-2" wire:click="resetForm" data-bs-toggle="modal" data-bs-target="#cardModal">Yeni Cari Hesap</button>
-
-        <!-- start page title -->
-        <div class="row">
-            <div class="col-12">
-                <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
-                    <h4 class="mb-sm-0">Form Advanced</h4>
-                    <div class="page-title-right">
-                        <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="javascript: void(0);">Forms</a></li>
-                            <li class="breadcrumb-item active">Form Advanced</li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
         <!-- end page title -->
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
-                        <h4 class="card-title mb-0 flex-grow-1">Single Button Dropdown</h4>
+                        <h4 class="card-title mb-0 flex-grow-1">Cari Hesaplar</h4>
                         <div class="flex-shrink-0">
-                            <div class="form-check form-switch form-switch-right form-switch-md">
-                                <label for="dropdown-base-example" class="form-label text-muted">Show Code</label>
-                                <input class="form-check-input code-switcher" type="checkbox" id="dropdown-base-example">
-                            </div>
+                            <button class="btn btn-primary mb-2" wire:click="resetForm" data-bs-toggle="modal" data-bs-target="#cardModal">Yeni Cari Hesap</button>
                         </div>
                     </div><!-- end card header -->
                     <div class="card-body">
@@ -54,8 +36,15 @@
                                                 <td>{{ $card->code }}</td>
                                                 <td>{{ $card->name }}</td>
                                                 <td>
-                                                    <button class="btn btn-sm btn-info" wire:click="edit({{ $card->id }})">Düzenle</button>
-                                                    <button class="btn btn-sm btn-danger" wire:click="confirmDelete({{ $card->id }})">Sil</button>
+                                                    <div class="dropdown d-inline-block">
+                                                        <button class="btn btn-soft-secondary btn-sm dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <i class="ri-more-fill align-middle"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu dropdown-menu-end">
+                                                            <li><a wire:click="edit({{ $card->id }})" class="dropdown-item">Düzenle</a></li>
+                                                            <li><a wire:click="confirmDelete({{ $card->id }})" class="dropdown-item">Sil</a></li>
+                                                        </ul>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -98,7 +87,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
                         <button type="submit" class="btn btn-primary">{{ $isEditMode ? 'Güncelle' : 'Kaydet' }}</button>
                     </div>
                 </div>
