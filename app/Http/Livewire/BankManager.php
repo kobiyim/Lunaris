@@ -3,66 +3,88 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use App\Models\Bank;
 use Livewire\WithPagination;
-use Illuminate\Validation\Rule;
-
+use App\Models\Lunaris\Bank;
 
 class BankManager extends Component
 {
     use WithPagination;
 
-    public $bankId, $code, $name, $active = true;
-    public $modalMode = 'create';
+    public $code, $name, $bank_id, $is_active;
+    public $isEditMode = false;
+    public $confirmingDelete = false;
+    public $deleteId;
+    public $successMessage;
+
+    protected $rules = [
+        'code' => 'required|max:8',
+        'name' => 'required|max:2056',
+    ];
 
     public function render()
     {
         return view('livewire.bank-manager', [
-            'banks' => Bank::paginate(10),
-        ]);
+            'banks' => Bank::where('name', 'LIKE', '%' . $this->name . '%')->orderByDesc('id')->paginate(10),
+        ])->extends('components.layouts.app')->section('content');
     }
 
-    public function openModal($mode = 'create', $id = null)
+    public function resetForm()
     {
+        $this->reset(['code', 'name', 'bank_id', 'isEditMode']);
         $this->resetValidation();
-        $this->reset(['code', 'name', 'active', 'bankId']);
-        $this->modalMode = $mode;
-
-        if ($mode === 'edit' && $id) {
-            $bank = Bank::findOrFail($id);
-            $this->bankId = $bank->id;
-            $this->code = $bank->code;
-            $this->name = $bank->name;
-            $this->active = $bank->active;
-        }
-
-        $this->dispatch('show-bank-modal');
     }
 
-    public function save()
+    public function store()
     {
-        $rules = [
-            'code' => ['required', 'max:8', Rule::unique('lunaris_banks', 'code')->ignore($this->bankId)],
-            'name' => 'required|max:128',
-            'active' => 'boolean',
-        ];
+        $this->validate();
 
-        $this->validate($rules, [
-            'code.unique' => 'Bu kod zaten kullanılıyor.',
-            'code.required' => 'Kod alanı zorunludur.',
-            'name.required' => 'Banka adı zorunludur.',
+        Bank::create([
+            'code' => $this->code,
+            'name' => $this->name,
+            'is_active' => 1
         ]);
 
-        if ($this->modalMode === 'create') {
-            Bank::create($this->only(['code', 'name', 'active']));
-            $this->dispatch('toast', ['type' => 'success', 'message' => 'Banka eklendi.']);
-        } else {
-            $bank = Bank::findOrFail($this->bankId);
-            $bank->update($this->only(['code', 'name', 'active']));
-            $this->dispatch('toast', ['type' => 'success', 'message' => 'Banka güncellendi.']);
-        }
+        $this->resetForm();
+        $this->dispatch('modal-close');
+        $this->successMessage = "Banka başarıyla eklendi.";
+    }
 
-        $this->dispatch('hide-bank-modal');
-        $this->reset(['code', 'name', 'active', 'bankId']);
+    public function edit($id)
+    {
+        $card = Bank::findOrFail($id);
+        $this->bank_id = $id;
+        $this->code = $card->code;
+        $this->name = $card->name;
+        $this->isEditMode = true;
+
+        $this->dispatch('modal-open');
+    }
+
+    public function update()
+    {
+        $this->validate();
+
+        $card = Bank::findOrFail($this->card_id);
+        $card->update([
+            'code' => $this->code,
+            'name' => $this->name,
+        ]);
+
+        $this->resetForm();
+        $this->dispatch('modal-close');
+        $this->successMessage = "Banka başarıyla güncellendi.";
+    }
+
+    public function confirmDelete($id)
+    {
+        $this->deleteId = $id;
+        $this->confirmingDelete = true;
+    }
+
+    public function delete()
+    {
+        Bank::findOrFail($this->deleteId)->delete();
+        $this->confirmingDelete = false;
+        $this->successMessage = "Banka başarıyla silindi.";
     }
 }

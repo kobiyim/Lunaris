@@ -9,6 +9,8 @@ class Item extends Model
 {
     use HasFactory;
 
+    protected $table = 'lunaris_items';
+
     protected $fillable = ['code', 'name', 'unit_set_id'];
 
     public function unitSet()

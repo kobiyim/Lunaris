@@ -3,32 +3,26 @@
 namespace App\Models\Lunaris;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BankFicheLine extends Model
 {
-    public $timestamps = false;
-    
+    protected $table = 'lunaris_bank_fiche_lines';
+
     protected $fillable = [
         'bank_account_id',
         'card_id',
         'bank_fiche_id',
-        'line_number',
         'description',
         'amount',
     ];
 
-    public function fiche()
+    protected $casts = [
+        'amount' => 'float',
+    ];
+
+    public function fiche(): BelongsTo
     {
         return $this->belongsTo(BankFiche::class, 'bank_fiche_id');
-    }
-
-    public function bankAccount()
-    {
-        return $this->belongsTo(BankAccount::class);
-    }
-
-    public function card()
-    {
-        return $this->belongsTo(Card::class);
     }
 }

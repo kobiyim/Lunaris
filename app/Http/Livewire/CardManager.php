@@ -10,7 +10,7 @@ class CardManager extends Component
 {
     use WithPagination;
 
-    public $code, $name, $card_id;
+    public $search, $code, $name, $card_id;
     public $isEditMode = false;
     public $confirmingDelete = false;
     public $deleteId;
@@ -24,7 +24,7 @@ class CardManager extends Component
     public function render()
     {
         return view('livewire.card-component', [
-            'cards' => Card::where('name', 'LIKE', '%' . $this->name . '%')->orderByDesc('id')->paginate(10),
+            'cards' => Card::where('name', 'LIKE', '%' . $this->search . '%')->orderByDesc('id')->paginate(10),
         ])->extends('components.layouts.app')->section('content');
     }
 

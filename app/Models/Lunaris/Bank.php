@@ -9,7 +9,7 @@ class Bank extends Model
 {
     use HasFactory;
 
-    protected $table = 'banks';
+    protected $table = 'lunaris_banks';
 
     protected $fillable = [
         'code',

@@ -4,9 +4,9 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Item;
+use App\Models\Lunaris\Item;
 
-class ItemComponent extends Component
+class ItemManager extends Component
 {
     use WithPagination;
 

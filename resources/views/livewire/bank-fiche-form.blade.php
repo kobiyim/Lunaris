@@ -1,75 +1,106 @@
 <div>
-    <div class="space-y-4">
-        <div class="bg-white p-4 rounded shadow">
-            <h2 class="text-xl font-bold">
-    {{ $bankFiche ? 'Banka Fişi Düzenle' : 'Yeni Banka Fişi Oluştur' }}
-</h2>
+    <div class="container-fluid">
 
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label>Tarih</label>
-                    <input type="date" wire:model="date_" class="form-input w-full">
-                </div>
-                <div>
-                    <label>Fiş No</label>
-                    <input type="text" wire:model="ficheno" class="form-input w-full">
-                </div>
-                <div>
-                    <label>İşlem Türü</label>
-                    <select wire:model="trcode" class="form-select w-full">
-                        <option value="1">Gelen</option>
-                        <option value="2">Gönderilen</option>
-                    </select>
-                </div>
-                <div>
-                    <label>Bakiye Yönü</label>
-                    <select wire:model="sign" class="form-select w-full">
-                        <option value="1">Giriş</option>
-                        <option value="-1">Çıkış</option>
-                    </select>
-                </div>
-                <div class="col-span-2">
-                    <label>Açıklama</label>
-                    <textarea wire:model="description" class="form-textarea w-full"></textarea>
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                    <h4 class="mb-sm-0">Create Project</h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Projects</a></li>
+                            <li class="breadcrumb-item active">Create Project</li>
+                        </ol>
+                    </div>
+
                 </div>
             </div>
         </div>
+        <!-- end page title -->
 
-        <div class="bg-white p-4 rounded shadow">
-            <h2 class="text-xl font-semibold mb-3">Fiş Satırları</h2>
-
-            @foreach ($lines as $index => $line)
-                <div class="grid grid-cols-7 gap-2 items-center mb-2">
-                    <select wire:model="lines.{{ $index }}.bank_id" class="form-select">
-                        <option value="">Banka Seç</option>
-                        @foreach ($banks as $bank)
-                            <option value="{{ $bank->id }}">{{ $bank->name }}</option>
-                        @endforeach
-                    </select>
-
-                    <select wire:model="lines.{{ $index }}.card_id" class="form-select">
-                        <option value="">Cari Seç</option>
-                        @foreach ($cards as $card)
-                            <option value="{{ $card->id }}">{{ $card->name }}</option>
-                        @endforeach
-                    </select>
-
-                    <input type="text" wire:model="lines.{{ $index }}.description" class="form-input" placeholder="Açıklama">
-                    <input type="number" step="0.01" wire:model="lines.{{ $index }}.amount" class="form-input" placeholder="Tutar">
-
-                    <div class="flex flex-col space-y-1">
-                        <button type="button" wire:click="addLineAbove({{ $index }})" class="text-green-500 text-xs">↑ Üstüne</button>
-                        <button type="button" wire:click="addLineBelow({{ $index }})" class="text-blue-500 text-xs">↓ Altına</button>
-                        <button type="button" wire:click="removeLine({{ $index }})" class="text-red-500 text-xs">× Sil</button>
+        <div class="row">
+            <!-- end col -->
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="choices-categories-input" class="form-label">Fiş No</label>
+                            {{ html()->text()->class('form-control') }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="choices-categories-input" class="form-label">Tarih</label>
+                            {{ html()->date(null, now())->class('form-control') }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="choices-categories-input" class="form-label">İşlem</label>
+                            {{ html()->date(null, now())->class('form-control') }}
+                        </div>
                     </div>
+                    <!-- end card body -->
                 </div>
-            @endforeach
+                <!-- end card -->
+            </div>
 
-            <button type="button" wire:click="addLine" class="text-blue-600 hover:underline mt-2">+ Satır Ekle</button>
-        </div>
+            <div class="col-lg-9">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-bordered align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Banka Hesabı ID</th>
+                                    <th>Kart ID</th>
+                                    <th>Açıklama</th>
+                                    <th>Tutar</th>
+                                    <th class="text-center">İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($lines as $index => $line)
+                                    <tr>
+                                        <td>
+                                            <input type="number" wire:model="lines.{{ $index }}.bank_account_id" class="form-control">
+                                            @error("lines.$index.bank_account_id") <small class="text-danger">{{ $message }}</small> @enderror
+                                        </td>
+                                        <td>
+                                            <input type="number" wire:model="lines.{{ $index }}.card_id" class="form-control">
+                                            @error("lines.$index.card_id") <small class="text-danger">{{ $message }}</small> @enderror
+                                        </td>
+                                        <td>
+                                            <input type="text" wire:model="lines.{{ $index }}.description" class="form-control">
+                                            @error("lines.$index.description") <small class="text-danger">{{ $message }}</small> @enderror
+                                        </td>
+                                        <td>
+                                            <input type="number" wire:model="lines.{{ $index }}.amount" class="form-control">
+                                            @error("lines.$index.amount") <small class="text-danger">{{ $message }}</small> @enderror
+                                        </td>
+                                        <td class="text-center">
+                                            <button type="button" wire:click="removeLine({{ $index }})" class="btn btn-sm btn-danger">
+                                                Sil
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        <div class="mb-3">
+                            <button type="button" wire:click="addLine" class="btn btn-secondary">+ Satır Ekle</button>
+                        </div>
+                    </div>
+                    <!-- end card body -->
+                </div>
+                <!-- end card -->
 
-        <div>
-            <button wire:click="save" class="bg-blue-600 text-white px-4 py-2 rounded">Kaydet</button>
+                <!-- end card -->
+                <div class="text-end mb-4">
+                    <button type="submit" class="btn btn-danger w-sm">Delete</button>
+                    <button type="submit" class="btn btn-secondary w-sm">Draft</button>
+                    <button type="submit" class="btn btn-success w-sm">Create</button>
+                </div>
+            </div>
+            <!-- end col -->
         </div>
+        <!-- end row -->
+
     </div>
 </div>

@@ -84,10 +84,10 @@
                         <div class="collapse menu-dropdown" id="sidebarDashboards">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
-                                    <a href="dashboard-analytics.html" class="nav-link" data-key="t-analytics"> Satış Faturaları </a>
+                                    <a href="{{ url('invoice/sales') }}" class="nav-link" wire:navigate> Satış Faturaları </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="dashboard-crm.html" class="nav-link" data-key="t-crm"> Satınalma Faturaları </a>
+                                    <a href="{{ url('invoice/purchase') }}" class="nav-link" wire:navigate> Satınalma Faturaları </a>
                                 </li>
                             </ul>
                         </div>
@@ -99,10 +99,10 @@
                         <div class="collapse menu-dropdown" id="sidebarDashboards">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
-                                    <a href="dashboard-analytics.html" class="nav-link" data-key="t-analytics"> Banka Fişleri </a>
+                                    <a href="{{ url('bank/fiches') }}" class="nav-link" wire:navigate> Banka Fişleri </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="dashboard-crm.html" class="nav-link" data-key="t-crm"> Banka Hareketleri </a>
+                                    <a href="{{ url('bank/movements') }}" class="nav-link" wire:navigate> Banka Hareketleri </a>
                                 </li>
                             </ul>
                         </div>
@@ -114,7 +114,7 @@
                         <div class="collapse menu-dropdown" id="sidebarDashboards">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
-                                    <a href="dashboard-analytics.html" class="nav-link" data-key="t-analytics"> Cari Hesap Fişleri </a>
+                                    <a href="{{ url('card/account-fiches') }}" class="nav-link" wire:navigate> Cari Hesap Fişleri </a>
                                 </li>
                             </ul>
                         </div>
@@ -126,7 +126,10 @@
                         <div class="collapse menu-dropdown" id="sidebarDashboards">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
-                                    <a href="dashboard-analytics.html" class="nav-link" data-key="t-analytics"> Kasa Hareketleri </a>
+                                    <a href="{{ url('vault/fiches') }}" class="nav-link" wire:navigate> Kasa Fişleri </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('vault/movements') }}" class="nav-link" wire:navigate> Kasa Hareketleri </a>
                                 </li>
                             </ul>
                         </div>
@@ -138,10 +141,10 @@
                         <div class="collapse menu-dropdown" id="sidebarDashboards">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
-                                    <a href="dashboard-analytics.html" class="nav-link" data-key="t-analytics"> Çek ve Senetler </a>
+                                    <a href="{{ url('cash-items') }}" class="nav-link" wire:navigate> Çek ve Senetler </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="dashboard-analytics.html" class="nav-link" data-key="t-analytics"> Bordrolar </a>
+                                    <a href="{{ url('payrolls') }}" class="nav-link" wire:navigate> Bordrolar </a>
                                 </li>
                             </ul>
                         </div>

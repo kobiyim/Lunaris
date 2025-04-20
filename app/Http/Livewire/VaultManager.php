@@ -4,39 +4,34 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Lunaris\UnitSet;
+use App\Models\Lunaris\Vault;
 
-class UnitSetManager extends Component
+class VaultManager extends Component
 {
     use WithPagination;
 
-    public $code, $name, $unit_set_id;
+    public $code, $name, $unit_set_id, $item_id;
     public $isEditMode = false;
     public $confirmingDelete = false;
     public $deleteId;
     public $successMessage;
-    public $selectedUnitSetId = null;
 
     protected $rules = [
         'code' => 'required|max:8',
         'name' => 'required|max:512',
+        'unit_set_id' => 'required|integer',
     ];
-
-    public function selectUnitSet($id)
-    {
-        $this->selectedUnitSetId = $this->selectedUnitSetId === $id ? null : $id;
-    }
 
     public function render()
     {
-        return view('livewire.unit-set-component', [
-            'unitSets' => UnitSet::orderByDesc('id')->paginate(10),
+        return view('livewire.item-component', [
+            'items' => Vault::orderByDesc('id')->paginate(10),
         ]);
     }
 
     public function resetForm()
     {
-        $this->reset(['code', 'name', 'unit_set_id', 'isEditMode']);
+        $this->reset(['code', 'name', 'unit_set_id', 'item_id', 'isEditMode']);
         $this->resetValidation();
     }
 
@@ -44,22 +39,24 @@ class UnitSetManager extends Component
     {
         $this->validate();
 
-        UnitSet::create([
+        Vault::create([
             'code' => $this->code,
             'name' => $this->name,
+            'unit_set_id' => $this->unit_set_id,
         ]);
 
         $this->resetForm();
         $this->dispatch('modal-close');
-        $this->successMessage = "Birim seti başarıyla eklendi.";
+        $this->successMessage = "Stok başarıyla eklendi.";
     }
 
     public function edit($id)
     {
-        $unitSet = UnitSet::findOrFail($id);
-        $this->unit_set_id = $id;
-        $this->code = $unitSet->code;
-        $this->name = $unitSet->name;
+        $item = Vault::findOrFail($id);
+        $this->item_id = $id;
+        $this->code = $item->code;
+        $this->name = $item->name;
+        $this->unit_set_id = $item->unit_set_id;
         $this->isEditMode = true;
 
         $this->dispatch('modal-open');
@@ -69,15 +66,16 @@ class UnitSetManager extends Component
     {
         $this->validate();
 
-        $unitSet = UnitSet::findOrFail($this->unit_set_id);
-        $unitSet->update([
+        $item = Vault::findOrFail($this->item_id);
+        $item->update([
             'code' => $this->code,
             'name' => $this->name,
+            'unit_set_id' => $this->unit_set_id,
         ]);
 
         $this->resetForm();
         $this->dispatch('modal-close');
-        $this->successMessage = "Birim seti başarıyla güncellendi.";
+        $this->successMessage = "Stok başarıyla güncellendi.";
     }
 
     public function confirmDelete($id)
@@ -88,8 +86,8 @@ class UnitSetManager extends Component
 
     public function delete()
     {
-        UnitSet::findOrFail($this->deleteId)->delete();
+        Vault::findOrFail($this->deleteId)->delete();
         $this->confirmingDelete = false;
-        $this->successMessage = "Birim seti başarıyla silindi.";
+        $this->successMessage = "Stok başarıyla silindi.";
     }
 }

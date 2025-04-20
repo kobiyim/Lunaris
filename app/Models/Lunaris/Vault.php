@@ -5,21 +5,21 @@ namespace App\Models\Lunaris;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UnitSet extends Model
+class Vault extends Model
 {
     use HasFactory;
 
-    protected $table = 'lunaris_unit_sets';
-
-    public $timestamps = false;
+    protected $table = 'lunaris_vaults';
 
     protected $fillable = [
         'code',
         'name',
+        'active',
     ];
 
-    public function units()
-    {
-        return $this->hasMany(Unit::class);
-    }
+    protected $casts = [
+        'active' => 'boolean',
+    ];
+
+    public $timestamps = false;
 }

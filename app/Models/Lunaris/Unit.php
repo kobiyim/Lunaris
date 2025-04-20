@@ -9,6 +9,8 @@ class Unit extends Model
 {
     use HasFactory;
 
+    protected $table = 'lunaris_units';
+
     public $timestamps = false;
 
     protected $fillable = [

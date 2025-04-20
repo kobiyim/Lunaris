@@ -9,6 +9,8 @@ class Card extends Model
 {
     use HasFactory;
 
+    protected $table = 'lunaris_cards';
+
     protected $fillable = ['code', 'name'];
 
     public $timestamps = false;

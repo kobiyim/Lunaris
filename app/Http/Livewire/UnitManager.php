@@ -4,10 +4,10 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Unit;
-use App\Models\UnitSet;
+use App\Models\Lunaris\Unit;
+use App\Models\Lunaris\UnitSet;
 
-class UnitComponent extends Component
+class UnitManager extends Component
 {
     use WithPagination;
 

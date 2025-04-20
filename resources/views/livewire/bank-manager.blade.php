@@ -1,130 +1,153 @@
 <div>
-    <div class="d-flex justify-content-between mb-3">
-        <h4>Banka Listesi</h4>
-        <button class="btn btn-primary" wire:click="openModal('create')">Yeni Banka</button>
+    <div class="container-fluid">
+
+        @if ($successMessage)
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ $successMessage }}
+                <button type="button" class="btn-close" wire:click="$set('successMessage', null)"></button>
+            </div>
+        @endif
+
+        <!-- end page title -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header align-items-center d-flex">
+                        <h4 class="card-title mb-0 flex-grow-1">Bankalar</h4>
+                        <div class="row row-cols-lg-auto g-3 align-items-center">
+                            <div class="col-12">
+                                <label class="visually-hidden" for="inlineFormInputGroupUsername">Bankalar?</label>
+                                <input type="text" class="form-control" wire:model.live.debounce.250ms="name" placeholder="Bankalar?">
+                            </div>
+                            <!--end col-->
+                            <div class="col-12">
+                                <label class="visually-hidden" for="inlineFormSelectPref">Preference</label>
+                                <select class="form-select" aria-label=".form-select-sm example">
+                                    <option selected="">Hepsi</option>
+                                    <option value="1">Aktif</option>
+                                    <option value="2">Pasif</option>
+                                </select>
+                            </div>
+                            <!--end col-->
+                            <div class="col-12">
+                                <div class="dropdown d-inline-block">
+                                    <button class="btn btn-soft-secondary btn-md dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        İşlemler
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a wire:click="resetForm" data-bs-toggle="modal" data-bs-target="#bankModal" class="dropdown-item">Yeni Banka</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!--end col-->
+                        </div>
+                    </div><!-- end card header -->
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-lg-12">
+                                <table class="table table-nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Kod</th>
+                                            <th scope="col">Ad</th>
+                                            <th scope="col">İşlemler</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($banks as $bank)
+                                            <tr>
+                                                <td>{{ $bank->code }}</td>
+                                                <td>{{ $bank->name }}</td>
+                                                <td>
+                                                    <div class="dropdown d-inline-block">
+                                                        <button class="btn btn-soft-secondary btn-sm dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <i class="ri-more-fill align-middle"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu dropdown-menu-end">
+                                                            <li><a wire:click="edit({{ $bank->id }})" class="dropdown-item">Düzenle</a></li>
+                                                            <li><a wire:click="confirmDelete({{ $bank->id }})" class="dropdown-item">Sil</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+
+                                {{ $banks->links() }}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end card body -->
+                </div>
+                <!-- end card -->
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
     </div>
-
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Kod</th>
-                <th>Ad</th>
-                <th>Aktif</th>
-                <th>İşlem</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($banks as $bank)
-                <tr>
-                    <td>{{ $bank->code }}</td>
-                    <td>{{ $bank->name }}</td>
-                    <td>{{ $bank->active ? 'Evet' : 'Hayır' }}</td>
-                    <td>
-                        <button class="btn btn-sm btn-warning" wire:click="openModal('edit', {{ $bank->id }})">Düzenle</button>
-                        <button class="btn btn-sm btn-danger" wire:click="$emit('confirmDelete', {{ $bank->id }})">Sil</button>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-
-    {{ $banks->links() }}
+    <!-- container-fluid -->
 
     <!-- Modal -->
-    <div class="modal fade" id="bankModal" tabindex="-1" role="dialog" aria-labelledby="bankModalLabel" aria-hidden="true" wire:ignore.self>
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <form wire:submit.prevent="save">
+    <div wire:ignore.self class="modal fade" id="bankModal" tabindex="-1">
+        <div class="modal-dialog">
+            <form wire:submit.prevent="{{ $isEditMode ? 'update' : 'store' }}">
+                <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="bankModalLabel">{{ $modalMode === 'create' ? 'Yeni Banka' : 'Bankayı Düzenle' }}</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Kapat">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <h5 class="modal-title">{{ $isEditMode ? 'Banka Düzenle' : 'Yeni Banka' }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-
                     <div class="modal-body">
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label>Kod</label>
                             <input type="text" class="form-control" wire:model.defer="code">
-                            @error('code') <small class="text-danger">{{ $message }}</small> @enderror
+                            @error('code') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
-
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label>Ad</label>
                             <input type="text" class="form-control" wire:model.defer="name">
-                            @error('name') <small class="text-danger">{{ $message }}</small> @enderror
-                        </div>
-
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" wire:model="active" id="activeCheck">
-                            <label class="form-check-label" for="activeCheck">Aktif</label>
+                            @error('name') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                     </div>
-
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">İptal</button>
-                        <button type="submit" class="btn btn-primary">Kaydet</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                        <button type="submit" class="btn btn-primary">{{ $isEditMode ? 'Güncelle' : 'Kaydet' }}</button>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 
-
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" wire:ignore.self>
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title">Silme Onayı</h5>
-                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Kapat">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Bu bankayı silmek istediğinize emin misiniz?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Vazgeç</button>
-                    <button type="button" wire:click="delete" class="btn btn-danger">Evet, Sil</button>
+    <!-- Delete Confirmation -->
+    @if($confirmingDelete)
+        <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Silme Onayı</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>Bu bankayı silmek istediğinizden emin misiniz?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" wire:click="$set('confirmingDelete', false)">Vazgeç</button>
+                        <button class="btn btn-danger" wire:click="delete">Evet, Sil</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endif
+
+    <script>
+        window.addEventListener('modal-close', () => {
+            let modal = bootstrap.Modal.getInstance(document.getElementById('bankModal'));
+            modal.hide();
+        });
+
+        window.addEventListener('modal-open', () => {
+            let modal = new bootstrap.Modal(document.getElementById('bankModal'));
+            modal.show();
+        });
+    </script>
 
 </div>
-
-
-@push('scripts')
-<script>
-    window.addEventListener('show-bank-modal', () => {
-        $('#bankModal').modal('show');
-    });
-
-    window.addEventListener('hide-bank-modal', () => {
-        $('#bankModal').modal('hide');
-    });
-
-    window.addEventListener('show-delete-modal', () => {
-        $('#deleteModal').modal('show');
-    });
-
-    window.addEventListener('hide-delete-modal', () => {
-        $('#deleteModal').modal('hide');
-    });
-
-    window.addEventListener('toast', event => {
-        const { type, message } = event.detail;
-        const toast = document.createElement('div');
-        toast.className = `toast align-items-center text-bg-${type} border-0 show`;
-        toast.role = 'alert';
-        toast.innerHTML = `
-            <div class="d-flex">
-                <div class="toast-body">${message}</div>
-                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
-            </div>
-        `;
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 4000);
-    });
-</script>
-@endpush
