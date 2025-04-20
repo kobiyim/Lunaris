@@ -5,12 +5,13 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Lunaris\Item;
+use App\Models\Lunaris\UnitSet;
 
 class ItemManager extends Component
 {
     use WithPagination;
 
-    public $code, $name, $unit_set_id, $item_id;
+    public $code, $name, $unit_set_id, $item_id, $unitSets, $search;
     public $isEditMode = false;
     public $confirmingDelete = false;
     public $deleteId;
@@ -22,10 +23,15 @@ class ItemManager extends Component
         'unit_set_id' => 'required|integer',
     ];
 
+    public function mount()
+    {
+        $this->unitSets = UnitSet::all();
+    }
+
     public function render()
     {
         return view('livewire.item-component', [
-            'items' => Item::orderByDesc('id')->paginate(10),
+            'items' => Item::where('name', 'LIKE', '%' . $this->search . '%')->orderByDesc('id')->paginate(10),
         ]);
     }
 
