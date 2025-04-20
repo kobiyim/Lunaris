@@ -17,7 +17,7 @@
                         <div class="row row-cols-lg-auto g-3 align-items-center">
                             <div class="col-12">
                                 <label class="visually-hidden" for="inlineFormInputGroupUsername">Bankalar?</label>
-                                <input type="text" class="form-control" wire:model.live.debounce.250ms="name" placeholder="Bankalar?">
+                                <input type="text" class="form-control" wire:model.live.debounce.250ms="search" placeholder="Bankalar?">
                             </div>
                             <!--end col-->
                             <div class="col-12">
@@ -50,7 +50,7 @@
                                         <tr>
                                             <th scope="col">Kod</th>
                                             <th scope="col">Ad</th>
-                                            <th scope="col">İşlemler</th>
+                                            <th scope="col" width="5%">İşlemler</th>
                                         </tr>
                                     </thead>
                                     <tbody>
