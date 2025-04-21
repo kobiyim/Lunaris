@@ -4,37 +4,40 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Lunaris\Unit;
 use App\Models\Lunaris\UnitSet;
+use App\Models\Lunaris\Unit;
 
 class UnitManager extends Component
 {
     use WithPagination;
 
-    public $unit_set_id, $code, $name, $line_number, $unit_id;
+    public $search, $code, $name, $unit_set_id, $unit_id;
     public $isEditMode = false;
     public $confirmingDelete = false;
     public $deleteId;
     public $successMessage;
 
     protected $rules = [
-        'unit_set_id' => 'required|exists:unit_sets,id',
         'code' => 'required|max:8',
-        'name' => 'required|max:512',
-        'line_number' => 'required|max:512',
+        'name' => 'required|max:2056',
     ];
+
+    public function mount($bankId)
+    {
+        $this->unit_set_id = $bankId;
+    }
 
     public function render()
     {
         return view('livewire.unit-component', [
-            'units' => Unit::with('unitSet')->orderByDesc('id')->paginate(10),
+            'units' => Unit::where('unit_set_id', $this->unit_set_id)->orderByDesc('id')->paginate(10),
             'unitSets' => UnitSet::all(),
-        ]);
+        ])->extends('components.layouts.app')->section('content');
     }
 
     public function resetForm()
     {
-        $this->reset(['unit_set_id', 'code', 'name', 'line_number', 'unit_id', 'isEditMode']);
+        $this->reset(['unit_set_id', 'code', 'name', 'unit_id', 'isEditMode']);
         $this->resetValidation();
     }
 
@@ -46,7 +49,6 @@ class UnitManager extends Component
             'unit_set_id' => $this->unit_set_id,
             'code' => $this->code,
             'name' => $this->name,
-            'line_number' => $this->line_number,
         ]);
 
         $this->resetForm();
@@ -58,10 +60,8 @@ class UnitManager extends Component
     {
         $unit = Unit::findOrFail($id);
         $this->unit_id = $id;
-        $this->unit_set_id = $unit->unit_set_id;
         $this->code = $unit->code;
         $this->name = $unit->name;
-        $this->line_number = $unit->line_number;
         $this->isEditMode = true;
 
         $this->dispatch('modal-open');
@@ -73,10 +73,8 @@ class UnitManager extends Component
 
         $unit = Unit::findOrFail($this->unit_id);
         $unit->update([
-            'unit_set_id' => $this->unit_set_id,
             'code' => $this->code,
             'name' => $this->name,
-            'line_number' => $this->line_number,
         ]);
 
         $this->resetForm();

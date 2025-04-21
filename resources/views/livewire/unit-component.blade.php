@@ -1,5 +1,5 @@
 <div>
-    <div class="container mt-4">
+    <div class="container-fluid">
 
         @if ($successMessage)
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -8,35 +8,80 @@
             </div>
         @endif
 
-        <button class="btn btn-primary mb-2" wire:click="resetForm" data-bs-toggle="modal" data-bs-target="#unitModal">Yeni Birim</button>
+        <!-- end page title -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header align-items-center d-flex">
+                        <h4 class="card-title mb-0 flex-grow-1">Cari Hesaplar</h4>
+                        <div class="row row-cols-lg-auto g-3 align-items-center">
+                            <div class="col-12">
+                                <label class="visually-hidden" for="inlineFormInputGroupUsername">Cariler?</label>
+                                <input type="text" class="form-control" wire:model.live.debounce.250ms="search" placeholder="Cariler?">
+                            </div>
+                            <!--end col-->
+                            <div class="col-12">
+                                <label class="visually-hidden" for="inlineFormSelectPref">Preference</label>
+                                <select class="form-select" aria-label=".form-select-sm example">
+                                    <option selected="">Hepsi</option>
+                                    <option value="1">Aktif</option>
+                                    <option value="2">Pasif</option>
+                                </select>
+                            </div>
+                            <!--end col-->
+                            <div class="col-12">
+                                <div class="dropdown d-inline-block">
+                                    <button class="btn btn-soft-secondary btn-md dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        İşlemler
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a wire:click="resetForm" data-bs-toggle="modal" data-bs-target="#unitModal" class="dropdown-item">Yeni Cari Hesap</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!--end col-->
+                        </div>
+                    </div><!-- end card header -->
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-lg-12">
+                                <table class="table table-nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th>Birim Seti</th>
+                                            <th>Kod</th>
+                                            <th>Ad</th>
+                                            <th>İşlemler</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($units as $unit)
+                                            <tr>
+                                                <td>{{ $unit->unitSet->name }}</td>
+                                                <td>{{ $unit->code }}</td>
+                                                <td>{{ $unit->name }}</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-info" wire:click="edit({{ $unit->id }})">Düzenle</button>
+                                                    <button class="btn btn-sm btn-danger" wire:click="confirmDelete({{ $unit->id }})">Sil</button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
 
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Birim Seti</th>
-                    <th>Kod</th>
-                    <th>Ad</th>
-                    <th>Satır Numarası</th>
-                    <th>İşlemler</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($units as $unit)
-                    <tr>
-                        <td>{{ $unit->unitSet->name }}</td>
-                        <td>{{ $unit->code }}</td>
-                        <td>{{ $unit->name }}</td>
-                        <td>{{ $unit->line_number }}</td>
-                        <td>
-                            <button class="btn btn-sm btn-info" wire:click="edit({{ $unit->id }})">Düzenle</button>
-                            <button class="btn btn-sm btn-danger" wire:click="confirmDelete({{ $unit->id }})">Sil</button>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-
-        {{ $units->links() }}
+                                {{ $units->links() }}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end card body -->
+                </div>
+                <!-- end card -->
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- container-fluid -->
 
         <!-- Modal -->
         <div wire:ignore.self class="modal fade" id="unitModal" tabindex="-1">
@@ -67,11 +112,6 @@
                                 <label>Ad</label>
                                 <input type="text" class="form-control" wire:model.defer="name">
                                 @error('name') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="mb-3">
-                                <label>Satır Numarası</label>
-                                <input type="text" class="form-control" wire:model.defer="line_number">
-                                @error('line_number') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -115,4 +155,5 @@
             modal.show();
         });
     </script>
+
 </div>

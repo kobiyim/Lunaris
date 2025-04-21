@@ -14,6 +14,7 @@ Route::group([], function() {
 	Route::get('unit-sets', App\Http\Livewire\UnitSetManager::class);
 
 	Route::get('bank/{bankId}/accounts', App\Http\Livewire\BankAccounts::class);
+	Route::get('unit-set/{bankId}', App\Http\Livewire\UnitManager::class);
 
 	Route::group([ 'prefix' => 'bank' ], function() {
 		Route::get('fiches', App\Http\Livewire\BankFiches::class);

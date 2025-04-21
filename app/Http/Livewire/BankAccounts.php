@@ -89,7 +89,7 @@ class BankAccounts extends Component
 
     public function delete()
     {
-        Card::findOrFail($this->deleteId)->delete();
+        BankAccount::findOrFail($this->deleteId)->delete();
         $this->confirmingDelete = false;
         $this->successMessage = "Banka hesabı başarıyla silindi.";
     }
