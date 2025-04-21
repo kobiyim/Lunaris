@@ -10,7 +10,7 @@ class VaultManager extends Component
 {
     use WithPagination;
 
-    public $code, $name, $unit_set_id, $item_id;
+    public $code, $name, $vault_id, $is_active, $search;
     public $isEditMode = false;
     public $confirmingDelete = false;
     public $deleteId;
@@ -18,20 +18,19 @@ class VaultManager extends Component
 
     protected $rules = [
         'code' => 'required|max:8',
-        'name' => 'required|max:512',
-        'unit_set_id' => 'required|integer',
+        'name' => 'required|max:2056',
     ];
 
     public function render()
     {
-        return view('livewire.item-component', [
-            'items' => Vault::orderByDesc('id')->paginate(10),
-        ]);
+        return view('livewire.vault-manager', [
+            'vaults' => Vault::where('name', 'LIKE', '%' . $this->search . '%')->orderByDesc('id')->paginate(10),
+        ])->extends('components.layouts.app')->section('content');
     }
 
     public function resetForm()
     {
-        $this->reset(['code', 'name', 'unit_set_id', 'item_id', 'isEditMode']);
+        $this->reset(['code', 'name', 'vault_id', 'isEditMode']);
         $this->resetValidation();
     }
 
@@ -42,21 +41,20 @@ class VaultManager extends Component
         Vault::create([
             'code' => $this->code,
             'name' => $this->name,
-            'unit_set_id' => $this->unit_set_id,
+            'active' => 1
         ]);
 
         $this->resetForm();
         $this->dispatch('modal-close');
-        $this->successMessage = "Stok başarıyla eklendi.";
+        $this->successMessage = "Kasa başarıyla eklendi.";
     }
 
     public function edit($id)
     {
-        $item = Vault::findOrFail($id);
-        $this->item_id = $id;
-        $this->code = $item->code;
-        $this->name = $item->name;
-        $this->unit_set_id = $item->unit_set_id;
+        $card = Vault::findOrFail($id);
+        $this->vault_id = $id;
+        $this->code = $card->code;
+        $this->name = $card->name;
         $this->isEditMode = true;
 
         $this->dispatch('modal-open');
@@ -66,16 +64,15 @@ class VaultManager extends Component
     {
         $this->validate();
 
-        $item = Vault::findOrFail($this->item_id);
-        $item->update([
+        $card = Vault::findOrFail($this->card_id);
+        $card->update([
             'code' => $this->code,
             'name' => $this->name,
-            'unit_set_id' => $this->unit_set_id,
         ]);
 
         $this->resetForm();
         $this->dispatch('modal-close');
-        $this->successMessage = "Stok başarıyla güncellendi.";
+        $this->successMessage = "Kasa başarıyla güncellendi.";
     }
 
     public function confirmDelete($id)
@@ -88,6 +85,6 @@ class VaultManager extends Component
     {
         Vault::findOrFail($this->deleteId)->delete();
         $this->confirmingDelete = false;
-        $this->successMessage = "Stok başarıyla silindi.";
+        $this->successMessage = "Kasa başarıyla silindi.";
     }
 }
