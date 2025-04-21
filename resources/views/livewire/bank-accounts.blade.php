@@ -13,11 +13,11 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
-                        <h4 class="card-title mb-0 flex-grow-1">Bankalar</h4>
+                        <h4 class="card-title mb-0 flex-grow-1">Banka Hesapları</h4>
                         <div class="row row-cols-lg-auto g-3 align-items-center">
                             <div class="col-12">
-                                <label class="visually-hidden" for="inlineFormInputGroupUsername">Bankalar?</label>
-                                <input type="text" class="form-control" wire:model.live.debounce.250ms="search" placeholder="Bankalar?">
+                                <label class="visually-hidden" for="inlineFormInputGroupUsername">Banka Hesap?</label>
+                                <input type="text" class="form-control" wire:model.live.debounce.250ms="search" placeholder="Banka Hesap?">
                             </div>
                             <!--end col-->
                             <div class="col-12">
@@ -35,7 +35,7 @@
                                         İşlemler
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a wire:click="resetForm" data-bs-toggle="modal" data-bs-target="#bankModal" class="dropdown-item">Yeni Banka</a></li>
+                                        <li><a wire:click="resetForm" data-bs-toggle="modal" data-bs-target="#bankAccountModal" class="dropdown-item">Yeni Banka Hesap</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -54,19 +54,18 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($banks as $bank)
+                                        @foreach($bankAccounts as $bankAccount)
                                             <tr>
-                                                <td>{{ $bank->code }}</td>
-                                                <td>{{ $bank->name }}</td>
-                                                <td>
+                                                <td>{{ $bankAccount->code }}</td>
+                                                <td>{{ $bankAccount->name }}</td>
+                                                <td class="text-center">
                                                     <div class="dropdown d-inline-block">
                                                         <button class="btn btn-soft-secondary btn-sm dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                             <i class="ri-more-fill align-middle"></i>
                                                         </button>
                                                         <ul class="dropdown-menu dropdown-menu-end">
-                                                            <li><a wire:click="edit({{ $bank->id }})" class="dropdown-item">Düzenle</a></li>
-                                                            <li><a wire:click="confirmDelete({{ $bank->id }})" class="dropdown-item">Sil</a></li>
-                                                            <li><a wire:navigate href="{{ url('bank/' . $bank->id . '/accounts') }}" class="dropdown-item">Hesaplar</a></li>
+                                                            <li><a wire:click="edit({{ $bankAccount->id }})" class="dropdown-item">Düzenle</a></li>
+                                                            <li><a wire:click="confirmDelete({{ $bankAccount->id }})" class="dropdown-item">Sil</a></li>
                                                         </ul>
                                                     </div>
                                                 </td>
@@ -75,7 +74,6 @@
                                     </tbody>
                                 </table>
 
-                                {{ $banks->links() }}
                             </div>
                         </div>
                     </div>
@@ -90,12 +88,12 @@
     <!-- container-fluid -->
 
     <!-- Modal -->
-    <div wire:ignore.self class="modal fade" id="bankModal" tabindex="-1">
+    <div wire:ignore.self class="modal fade" id="bankAccountModal" tabindex="-1">
         <div class="modal-dialog">
             <form wire:submit.prevent="{{ $isEditMode ? 'update' : 'store' }}">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">{{ $isEditMode ? 'Banka Düzenle' : 'Yeni Banka' }}</h5>
+                        <h5 class="modal-title">{{ $isEditMode ? 'Banka Hesap Düzenle' : 'Yeni Banka Hesap' }}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
@@ -128,7 +126,7 @@
                         <h5 class="modal-title">Silme Onayı</h5>
                     </div>
                     <div class="modal-body">
-                        <p>Bu bankayı silmek istediğinizden emin misiniz?</p>
+                        <p>Bu banka hesabını silmek istediğinizden emin misiniz?</p>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" wire:click="$set('confirmingDelete', false)">Vazgeç</button>
@@ -141,12 +139,12 @@
 
     <script>
         window.addEventListener('modal-close', () => {
-            let modal = bootstrap.Modal.getInstance(document.getElementById('bankModal'));
+            let modal = bootstrap.Modal.getInstance(document.getElementById('bankAccountModal'));
             modal.hide();
         });
 
         window.addEventListener('modal-open', () => {
-            let modal = new bootstrap.Modal(document.getElementById('bankModal'));
+            let modal = new bootstrap.Modal(document.getElementById('bankAccountModal'));
             modal.show();
         });
     </script>

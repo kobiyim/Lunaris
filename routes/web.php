@@ -13,6 +13,8 @@ Route::group([], function() {
 	Route::get('vaults', App\Http\Livewire\VaultManager::class);
 	Route::get('unit-sets', App\Http\Livewire\UnitSetManager::class);
 
+	Route::get('bank/{bankId}/accounts', App\Http\Livewire\BankAccounts::class);
+
 	Route::group([ 'prefix' => 'bank' ], function() {
 		Route::get('fiches', App\Http\Livewire\BankFiches::class);
 		Route::get('movements', App\Http\Livewire\BankMovements::class);
