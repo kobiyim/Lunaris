@@ -8,18 +8,31 @@ Route::group([], function() {
 	Route::get('/', function() { return view('welcome'); });
 
 	Route::get('cards', App\Http\Livewire\CardManager::class);
-	Route::get('banks', App\Http\Livewire\BankManager::class);
+	
 	Route::get('items', App\Http\Livewire\ItemManager::class);
-	Route::get('vaults', App\Http\Livewire\VaultManager::class);
+	
 	Route::get('unit-sets', App\Http\Livewire\UnitSetManager::class);
 
 	Route::get('bank/{bankId}/accounts', App\Http\Livewire\BankAccounts::class);
 	Route::get('unit-set/{bankId}', App\Http\Livewire\UnitManager::class);
 
-	Route::group([ 'prefix' => 'bank' ], function() {
-		Route::get('fiches', App\Http\Livewire\BankFiches::class);
-		Route::get('movements', App\Http\Livewire\BankMovements::class);
-		Route::get('fiche/create', App\Http\Livewire\BankFicheForm::class);
+	Route::get('banks', App\Http\Livewire\Bank\BankManager::class);
+	Route::group([ 'prefix' => 'bank', 'namespace' => 'App\Http\Livewire\Bank' ], function() {
+		Route::get('fiches', Fiches::class);
+		Route::get('movements', Movements::class);
+
+		Route::get('fiche/create', NewFiche::class);
+	});
+
+	Route::group([ 'prefix' => 'invoice', 'namespace' => 'App\Http\Livewire\Invoice' ], function() {
+		Route::get('sales', Sales::class);
+		Route::get('purchase', Purchase::class);
+	});
+
+	Route::get('vaults', App\Http\Livewire\Vault\VaultManager::class);
+	Route::group([ 'prefix' => 'vault', 'namespace' => 'App\Http\Livewire\Vault' ], function() {
+		Route::get('fiches', Fiches::class);
+		Route::get('movements', Movements::class);
 	});
 });
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Bank;
 
 use Livewire\Component;
 use App\Models\Lunaris\BankFiche;
 
-class BankFiches extends Component
+class Fiches extends Component
 {
     public $confirmingDelete = false;
     public $deleteId;

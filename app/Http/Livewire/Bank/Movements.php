@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Bank;
 
 use Livewire\Component;
 use App\Models\Lunaris\BankFicheLine;
 
-class BankMovements extends Component
+class Movements extends Component
 {
     public function render()
     {

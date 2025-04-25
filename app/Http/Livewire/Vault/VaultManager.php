@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Vault;
 
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Lunaris\Bank;
+use App\Models\Lunaris\Vault;
 
-class BankManager extends Component
+class VaultManager extends Component
 {
     use WithPagination;
 
-    public $code, $name, $bank_id, $is_active, $search;
+    public $code, $name, $vault_id, $is_active, $search;
     public $isEditMode = false;
     public $confirmingDelete = false;
     public $deleteId;
@@ -23,14 +23,14 @@ class BankManager extends Component
 
     public function render()
     {
-        return view('livewire.bank-manager', [
-            'banks' => Bank::where('name', 'LIKE', '%' . $this->search . '%')->orderByDesc('id')->paginate(10),
+        return view('livewire.vault-manager', [
+            'vaults' => Vault::where('name', 'LIKE', '%' . $this->search . '%')->orderByDesc('id')->paginate(10),
         ])->extends('components.layouts.app')->section('content');
     }
 
     public function resetForm()
     {
-        $this->reset(['code', 'name', 'bank_id', 'isEditMode']);
+        $this->reset(['code', 'name', 'vault_id', 'isEditMode']);
         $this->resetValidation();
     }
 
@@ -38,21 +38,21 @@ class BankManager extends Component
     {
         $this->validate();
 
-        Bank::create([
+        Vault::create([
             'code' => $this->code,
             'name' => $this->name,
-            'is_active' => 1
+            'active' => 1
         ]);
 
         $this->resetForm();
         $this->dispatch('modal-close');
-        $this->successMessage = "Banka başarıyla eklendi.";
+        $this->successMessage = "Kasa başarıyla eklendi.";
     }
 
     public function edit($id)
     {
-        $card = Bank::findOrFail($id);
-        $this->bank_id = $id;
+        $card = Vault::findOrFail($id);
+        $this->vault_id = $id;
         $this->code = $card->code;
         $this->name = $card->name;
         $this->isEditMode = true;
@@ -64,7 +64,7 @@ class BankManager extends Component
     {
         $this->validate();
 
-        $card = Bank::findOrFail($this->card_id);
+        $card = Vault::findOrFail($this->card_id);
         $card->update([
             'code' => $this->code,
             'name' => $this->name,
@@ -72,7 +72,7 @@ class BankManager extends Component
 
         $this->resetForm();
         $this->dispatch('modal-close');
-        $this->successMessage = "Banka başarıyla güncellendi.";
+        $this->successMessage = "Kasa başarıyla güncellendi.";
     }
 
     public function confirmDelete($id)
@@ -83,8 +83,8 @@ class BankManager extends Component
 
     public function delete()
     {
-        Bank::findOrFail($this->deleteId)->delete();
+        Vault::findOrFail($this->deleteId)->delete();
         $this->confirmingDelete = false;
-        $this->successMessage = "Banka başarıyla silindi.";
+        $this->successMessage = "Kasa başarıyla silindi.";
     }
 }

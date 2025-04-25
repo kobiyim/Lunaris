@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Bank;
 
 use Livewire\Component;
 use App\Models\BankFiche;
 use App\Models\BankFicheLine;
 use Illuminate\Support\Collection;
 
-class BankFicheForm extends Component
+class NewFiche extends Component
 {
     public $date_;
     public $ficheno;

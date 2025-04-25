@@ -54,10 +54,10 @@
                 <ul class="navbar-nav" id="navbar-nav">
                     <li class="menu-title"><span data-key="t-menu">Menu</span></li>
                     <li class="nav-item">
-                        <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                        <a class="nav-link menu-link" href="#anaKayitlar" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="anaKayitlar">
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Ana Kayıtlar</span>
                         </a>
-                        <div class="collapse menu-dropdown" id="sidebarDashboards">
+                        <div class="collapse menu-dropdown" id="anaKayitlar">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
                                     <a href="{{ url('cards') }}" class="nav-link" wire:navigate> Cariler </a>
@@ -78,10 +78,10 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                        <a class="nav-link menu-link" href="#faturalar" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="faturalar">
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Faturalar</span>
                         </a>
-                        <div class="collapse menu-dropdown" id="sidebarDashboards">
+                        <div class="collapse menu-dropdown" id="faturalar">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
                                     <a href="{{ url('invoice/sales') }}" class="nav-link" wire:navigate> Satış Faturaları </a>
@@ -93,10 +93,10 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                        <a class="nav-link menu-link" href="#banka" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="banka">
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Banka</span>
                         </a>
-                        <div class="collapse menu-dropdown" id="sidebarDashboards">
+                        <div class="collapse menu-dropdown" id="banka">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
                                     <a href="{{ url('bank/fiches') }}" class="nav-link" wire:navigate> Banka Fişleri </a>
@@ -108,10 +108,10 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                        <a class="nav-link menu-link" href="#cariHesap" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="cariHesap">
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Cari Hesap</span>
                         </a>
-                        <div class="collapse menu-dropdown" id="sidebarDashboards">
+                        <div class="collapse menu-dropdown" id="cariHesap">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
                                     <a href="{{ url('card/account-fiches') }}" class="nav-link" wire:navigate> Cari Hesap Fişleri </a>
@@ -120,10 +120,10 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                        <a class="nav-link menu-link" href="#kasa" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="kasa">
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Kasa</span>
                         </a>
-                        <div class="collapse menu-dropdown" id="sidebarDashboards">
+                        <div class="collapse menu-dropdown" id="kasa">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
                                     <a href="{{ url('vault/fiches') }}" class="nav-link" wire:navigate> Kasa Fişleri </a>
@@ -135,10 +135,10 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                        <a class="nav-link menu-link" href="#cekVeSenet" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="cekVeSenet">
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Çek ve Senet</span>
                         </a>
-                        <div class="collapse menu-dropdown" id="sidebarDashboards">
+                        <div class="collapse menu-dropdown" id="cekVeSenet">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
                                     <a href="{{ url('cash-items') }}" class="nav-link" wire:navigate> Çek ve Senetler </a>
