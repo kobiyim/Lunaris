@@ -149,6 +149,33 @@
                             </ul>
                         </div>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="#sistem" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sistem">
+                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Sistem</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sistem">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="{{ url('cash-items') }}" class="nav-link" wire:navigate> Aktiviteler </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('payrolls') }}" class="nav-link" wire:navigate> Sorgu Takibi </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('payrolls') }}" class="nav-link" wire:navigate> Kullanıcılar </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('payrolls') }}" class="nav-link" wire:navigate> Roller </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('payrolls') }}" class="nav-link" wire:navigate> İzinler </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('payrolls') }}" class="nav-link" wire:navigate> Yedeklemeler </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
                     <!-- end Dashboard Menu -->
                 </ul>
             </div>
