@@ -8,7 +8,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\User;
+use App\Models\Kobiyim\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -50,7 +50,7 @@ class KobiyimUser extends Command
             ],
             [
                 'name'     => 'required|min:3|max:128',
-                'phone'    => 'required|size:16|unique:users,phone',
+                'phone'    => 'required|size:16|unique:kobiyim_users,phone',
                 'password' => 'required|min:8',
                 'type'     => 'required',
             ],

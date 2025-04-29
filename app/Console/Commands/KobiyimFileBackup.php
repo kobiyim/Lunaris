@@ -8,7 +8,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Backup;
+use App\Models\Kobiyim\Backup;
 use Illuminate\Console\Command;
 
 class KobiyimFileBackup extends Command
