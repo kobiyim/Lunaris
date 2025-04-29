@@ -17,14 +17,14 @@ class CardManager extends Component
     public $successMessage;
 
     protected $rules = [
-        'code' => 'required|max:8',
+        'code' => 'required|max:13',
         'name' => 'required|max:2056',
     ];
 
     public function render()
     {
         return view('livewire.card-component', [
-            'cards' => Card::where('name', 'LIKE', '%' . $this->search . '%')->orderByDesc('id')->paginate(10),
+            'cards' => Card::where('name', 'LIKE', '%' . $this->search . '%')->orWhere('code', 'LIKE', '%' . $this->search . '%')->orderByDesc('id')->paginate(10),
         ])->extends('components.layouts.app')->section('content');
     }
 
