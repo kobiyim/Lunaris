@@ -4,8 +4,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Livewire\Dashboard;
 
-Route::group([], function() {
-	Route::get('/', function() { return view('welcome'); });
+Route::group([ 'middleware' => 'auth' ], function() {
+	Route::get('/', function() { return view('welcome'); })->name('dashboard');
 
 	Route::get('cards', App\Http\Livewire\CardManager::class);
 	
