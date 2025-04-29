@@ -66,6 +66,7 @@
                                                         <ul class="dropdown-menu dropdown-menu-end">
                                                             <li><a wire:click="edit({{ $bankAccount->id }})" class="dropdown-item">Düzenle</a></li>
                                                             <li><a wire:click="confirmDelete({{ $bankAccount->id }})" class="dropdown-item">Sil</a></li>
+                                                            <li><a wire:navigate href="{{ url('bank/' . $bankAccount->id . '/credit-cards') }}" class="dropdown-item">Kartları</a></li>
                                                         </ul>
                                                     </div>
                                                 </td>

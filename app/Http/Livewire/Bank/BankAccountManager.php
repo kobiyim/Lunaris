@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Bank;
 
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Lunaris\Bank;
 use App\Models\Lunaris\BankAccount;
 
-class BankAccounts extends Component
+class BankAccountManager extends Component
 {
     use WithPagination;
 

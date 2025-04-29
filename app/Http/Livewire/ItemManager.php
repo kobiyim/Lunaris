@@ -31,7 +31,7 @@ class ItemManager extends Component
     public function render()
     {
         return view('livewire.item-component', [
-            'items' => Item::where('name', 'LIKE', '%' . $this->search . '%')->orderByDesc('id')->paginate(10),
+            'items' => Item::where('name', 'LIKE', '%' . $this->search . '%')->orWhere('code', 'LIKE', '%' . $this->search . '%')->orderByDesc('id')->paginate(10),
         ]);
     }
 

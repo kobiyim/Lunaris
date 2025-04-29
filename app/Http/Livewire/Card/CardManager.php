@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Card;
 
 use Livewire\Component;
 use Livewire\WithPagination;
