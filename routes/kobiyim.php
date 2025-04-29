@@ -20,5 +20,5 @@ Route::group(['namespace' => '\App\Auth\Http\Controllers', 'middleware' => 'gues
 });
 
 
-Route::post('logout', 'AuthenticatedSessionController@destroy')
+Route::post('logout', '\App\Auth\Http\Controllers\AuthenticatedSessionController@destroy')
      ->name('logout');
