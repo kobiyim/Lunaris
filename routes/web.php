@@ -2,30 +2,30 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Livewire\Dashboard;
+use App\Livewire\Dashboard;
 
 Route::group([ 'middleware' => 'auth' ], function() {
 	Route::get('/', function() { return view('welcome'); })->name('dashboard');
 
-	Route::get('cards', App\Http\Livewire\Card\CardManager::class);
+	Route::get('cards', App\Livewire\Card\CardManager::class);
 	
-	Route::get('items', App\Http\Livewire\ItemManager::class);
+	Route::get('items', App\Livewire\ItemManager::class);
 	
-	Route::get('unit-sets', App\Http\Livewire\UnitSetManager::class);
+	Route::get('unit-sets', App\Livewire\UnitSetManager::class);
 
-	Route::get('bank/{bankId}/accounts', App\Http\Livewire\Bank\BankAccountManager::class);
-	Route::get('bank/{bankAccountId}/credit-cards', App\Http\Livewire\Bank\BankCreditCardManager::class);
-	Route::get('unit-set/{bankId}', App\Http\Livewire\UnitManager::class);
+	Route::get('bank/{bankId}/accounts', App\Livewire\Bank\BankAccountManager::class);
+	Route::get('bank/{bankAccountId}/credit-cards', App\Livewire\Bank\BankCreditCardManager::class);
+	Route::get('unit-set/{bankId}', App\Livewire\UnitManager::class);
 
-	Route::get('banks', App\Http\Livewire\Bank\BankManager::class);
-	Route::group([ 'prefix' => 'bank', 'namespace' => 'App\Http\Livewire\Bank' ], function() {
+	Route::get('banks', App\Livewire\Bank\BankManager::class);
+	Route::group([ 'prefix' => 'bank', 'namespace' => 'App\Livewire\Bank' ], function() {
 		Route::get('fiches', Fiches::class);
 		Route::get('movements', Movements::class);
 
 		Route::get('fiche/create', NewFiche::class);
 	});
 
-	Route::group([ 'prefix' => 'invoice', 'namespace' => 'App\Http\Livewire\Invoice' ], function() {
+	Route::group([ 'prefix' => 'invoice', 'namespace' => 'App\Livewire\Invoice' ], function() {
 		Route::get('sales', Sales\Fiches::class);
 		Route::get('sales/create', Sales\Create::class);
 		Route::get('sales/{salesId}', Sales\Show::class);
@@ -37,8 +37,8 @@ Route::group([ 'middleware' => 'auth' ], function() {
 		Route::get('pruchase/{purchaseId}/edit', Purchase\Edit::class);
 	});
 
-	Route::get('vaults', App\Http\Livewire\Vault\VaultManager::class);
-	Route::group([ 'prefix' => 'vault', 'namespace' => 'App\Http\Livewire\Vault' ], function() {
+	Route::get('vaults', App\Livewire\Vault\VaultManager::class);
+	Route::group([ 'prefix' => 'vault', 'namespace' => 'App\Livewire\Vault' ], function() {
 		Route::get('fiches', Fiches::class);
 		Route::get('movements', Movements::class);
 	});
