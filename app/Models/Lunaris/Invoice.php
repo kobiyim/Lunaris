@@ -14,7 +14,7 @@ class Invoice extends Model
     protected $fillable = [
         'card_id',
         'invoice_no',
-        'date',
+        'date_',
         'description',
         'type',
         'sign',
@@ -24,5 +24,17 @@ class Invoice extends Model
     public function details()
     {
         return $this->hasMany(InvoiceDetail::class);
+    }
+
+    public function card()
+    {
+        return $this->belongsTo(Card::class);
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'date_' => 'date',
+        ];
     }
 }

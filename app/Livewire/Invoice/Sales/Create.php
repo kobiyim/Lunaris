@@ -3,23 +3,29 @@
 namespace App\Livewire\Invoice\Sales;
 
 use Livewire\Component;
-use App\Models\Invoice;
-use App\Models\InvoiceDetail;
+use App\Models\Lunaris\Card;
+use App\Models\Lunaris\Item;
+use App\Models\Lunaris\Invoice;
+use App\Models\Lunaris\InvoiceDetail;
 
 class Create extends Component
 {
-    public $card_id, $invoice_no, $date, $description, $type, $sign, $total;
+    public $card_id, $invoice_no, $date_, $description, $type, $sign, $total, $stocks;
     
     public $details = []; // Satır detayları
 
     public function mount()
     {
+        $this->stocks = Item::where('active', 1)->orderBy('name')->get()->pluck('name', 'id');
+
         $this->resetInputFields();
     }
 
     public function render()
     {
-        return view('invoice.sales.create');
+        $data['cards'] = Card::where('active', 1)->orderBy('name')->get()->pluck('name', 'id');
+
+        return view('invoice.sales.create', $data);
     }
 
     private function resetInputFields()
@@ -33,7 +39,8 @@ class Create extends Component
         $this->total = 0;
         $this->details = [
             [
-                'stock_id' => '', 'unit_id' => '', 'quantity' => 1, 'description' => '', 'price' => 0, 'total' => 0],
+                'stock_id' => $this->stocks->first(), 'unit_id' => '', 'quantity' => 1, 'description' => '', 'price' => 0, 'total' => 0,
+            ],
         ];
     }
 
@@ -60,8 +67,8 @@ class Create extends Component
     {
         $validatedInvoice = $this->validate([
             'card_id' => 'required',
-            'invoice_no' => 'required|unique:invoices,invoice_no,' . $this->invoiceId,
-            'date' => 'required|date',
+            'invoice_no' => 'required|unique:lunaris_invoices,invoice_no',
+            'date_' => 'required|date',
             'type' => 'required',
             'sign' => 'required',
             'total' => 'required|numeric',
@@ -74,19 +81,17 @@ class Create extends Component
             'details.*.price' => 'required|numeric|min:0',
         ]);
 
-        DB::transaction(function () use ($validatedInvoice) {
-            $invoice = Invoice::updateOrCreate(
-                ['id' => $this->invoiceId],
-                $validatedInvoice
-            );
+        $invoice = Invoice::create(
+            $validatedInvoice
+        );
 
-            // Yeni detayları kaydet
-            foreach ($this->details as $detail) {
-                $invoice->details()->create($detail);
-            }
-        });
+        // Yeni detayları kaydet
+        foreach ($this->details as $detail) {
+            $invoice->details()->create($detail);
+        }
 
-        session()->flash('message', $this->invoiceId ? 'Fatura ve detaylar güncellendi.' : 'Fatura ve detaylar eklendi.');
+
+        session()->flash('message', 'Fatura ve detaylar eklendi.');
         $this->resetInputFields();
 
         return redirect()->url('invoice/sales');

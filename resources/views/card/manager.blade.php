@@ -22,10 +22,10 @@
                             <!--end col-->
                             <div class="col-12">
                                 <label class="visually-hidden" for="inlineFormSelectPref">Preference</label>
-                                <select class="form-select" aria-label=".form-select-sm example">
-                                    <option selected="">Hepsi</option>
+                                <select class="form-select" aria-label=".form-select-sm example" wire:model.live.change="active">
+                                    <option selected="" value="2">Hepsi</option>
                                     <option value="1">Aktif</option>
-                                    <option value="2">Pasif</option>
+                                    <option value="0">Pasif</option>
                                 </select>
                             </div>
                             <!--end col-->
@@ -50,6 +50,12 @@
                                         <tr>
                                             <th scope="col">Kod</th>
                                             <th scope="col">Ad</th>
+                                            <th scope="col">OÖG</th>
+                                            <th scope="col">OGG</th>
+                                            <th scope="col">Risk Oranı</th>
+                                            <th scope="col">Risk Skoru</th>
+                                            <th scope="col">Kalan Bakiye</th>
+                                            <th scope="col">Bakiye</th>
                                             <th scope="col" width="5%">İşlemler</th>
                                         </tr>
                                     </thead>
@@ -58,6 +64,12 @@
                                             <tr>
                                                 <td>{{ $card->code }}</td>
                                                 <td>{{ $card->name }}</td>
+                                                <td>{{ '0' }}</td>
+                                                <td>{{ '0' }}</td>
+                                                <td>{{ '0' }}</td>
+                                                <td>{{ '0' }}</td>
+                                                <td>{{ '0' }}</td>
+                                                <td>{{ '0' }}</td>
                                                 <td class="text-center">
                                                     <div class="dropdown d-inline-block">
                                                         <button class="btn btn-soft-secondary btn-sm dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -66,6 +78,7 @@
                                                         <ul class="dropdown-menu dropdown-menu-end">
                                                             <li><a wire:click="edit({{ $card->id }})" class="dropdown-item">Düzenle</a></li>
                                                             <li><a wire:click="confirmDelete({{ $card->id }})" class="dropdown-item">Sil</a></li>
+                                                            <li><a wire:navigate href="{{ url('card/' . $card->id . '/ekstre') }}" class="dropdown-item">Ekstre</a></li>
                                                         </ul>
                                                     </div>
                                                 </td>

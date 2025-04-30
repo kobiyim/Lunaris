@@ -11,7 +11,7 @@ class Card extends Model
 
     protected $table = 'lunaris_cards';
 
-    protected $fillable = ['code', 'name'];
+    protected $fillable = ['code', 'name', 'active'];
 
     public $timestamps = false;
 }
