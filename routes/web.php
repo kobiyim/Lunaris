@@ -33,8 +33,8 @@ Route::group([ 'middleware' => 'auth' ], function() {
 
 		Route::get('purchase', Purchase\Fiches::class);
 		Route::get('purchase/create', Purchase\Create::class);
-		Route::get('pruchase/{purchaseId}', Purchase\Show::class);
-		Route::get('pruchase/{purchaseId}/edit', Purchase\Edit::class);
+		Route::get('purchase/{purchaseId}', Purchase\Show::class);
+		Route::get('purchase/{purchaseId}/edit', Purchase\Edit::class);
 	});
 
 	Route::get('vaults', App\Livewire\Vault\VaultManager::class);

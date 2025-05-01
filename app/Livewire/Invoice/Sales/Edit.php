@@ -3,8 +3,9 @@
 namespace App\Livewire\Invoice\Sales;
 
 use Livewire\Component;
-use App\Models\Invoice;
-use App\Models\InvoiceDetail;
+use App\Models\Lunaris\Card;
+use App\Models\Lunaris\Invoice;
+use App\Models\Lunaris\InvoiceDetail;
 
 class Edit extends Component
 {
@@ -12,9 +13,9 @@ class Edit extends Component
     
     public $details = []; // Satır detayları
 
-    public function mount($invoiceId)
+    public function mount($salesId)
     {
-        $invoice = Invoice::with('details')->findOrFail($id);
+        $invoice = Invoice::with('details')->findOrFail($salesId);
         $this->invoiceId = $invoice->id;
         $this->card_id = $invoice->card_id;
         $this->invoice_no = $invoice->invoice_no;
@@ -29,7 +30,9 @@ class Edit extends Component
 
     public function render()
     {
-        return view('invoice.sales.create');
+        $data['cards'] = Card::where('active', 1)->orderBy('name')->get()->pluck('name', 'id');
+
+        return view('invoice.sales.create', $data);
     }
 
     public function addDetail()

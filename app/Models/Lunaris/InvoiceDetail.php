@@ -25,4 +25,15 @@ class InvoiceDetail extends Model
     {
         return $this->belongsTo(Invoice::class);
     }
+
+    public function item()
+    {
+        return $this->belongsTo(Item::class, 'stock_id');
+    }
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
+    }
+
 }

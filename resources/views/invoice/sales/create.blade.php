@@ -42,40 +42,55 @@
                     <div class="card-body">
                         <div class="row g-3">
                             <div class="col-lg-12">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Stok</th>
+                                            <th>Birim</th>
+                                            <th>Miktar</th>
+                                            <th>Açıklama</th>
+                                            <th>Fiyatı</th>
+                                            <th>Toplam</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($details as $index => $detail)
+                                            <tr>
+                                                    <td>
+                                                        <select wire:model.change="details.{{ $index }}.stock_id" class="form-control">
+                                                            @foreach (\App\Models\Lunaris\Item::all() as $state)
+                                                                <option value="{{ $state->id }}" @if($loop->first) selected @endif >{{ $state->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <select wire:model="details.{{$index}}.unit_id" class="form-control">
+                                                            @foreach (\App\Models\Lunaris\Unit::where('unit_set_id', \App\Models\Lunaris\Item::find($details[$index]['stock_id'])->unit_set_id)->get() as $unit)
+                                                                <option value="{{ $unit->id }}">{{ $unit->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" wire:model="details.{{$index}}.quantity" class="form-control" placeholder="Miktar" step="0.001">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" wire:model="details.{{$index}}.description" class="form-control" placeholder="Açıklama">
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" wire:model="details.{{$index}}.price" class="form-control" placeholder="Fiyat" step="0.01">
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" wire:model="details.{{$index}}.total" class="form-control" placeholder="Toplam" readonly>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" wire:click="removeDetail({{ $index }})" class="btn btn-danger btn-sm">X</button>
+                                                    </td>
+                                            </tr>
+                                        @endforeach
 
-                                    @foreach($details as $index => $detail)
-                                        <div class="row mb-2">
-                                            <div class="col">
-                                                <select wire:model.change="details.{{ $index }}.stock_id" class="form-control">
-                                                    @foreach (\App\Models\Lunaris\Item::all() as $state)
-                                                        <option value="{{ $state->id }}" @if($loop->first) selected @endif >{{ $state->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="col">
-                                                <select wire:model="details.{{$index}}.unit_id" class="form-control">
-                                                    @foreach (\App\Models\Lunaris\Unit::where('unit_set_id', \App\Models\Lunaris\Item::find($details[$index]['stock_id'])->unit_set_id)->get() as $unit)
-                                                        <option value="{{ $unit->id }}">{{ $unit->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="col">
-                                                <input type="number" wire:model="details.{{$index}}.quantity" class="form-control" placeholder="Miktar" step="0.001">
-                                            </div>
-                                            <div class="col">
-                                                <input type="text" wire:model="details.{{$index}}.description" class="form-control" placeholder="Açıklama">
-                                            </div>
-                                            <div class="col">
-                                                <input type="number" wire:model="details.{{$index}}.price" class="form-control" placeholder="Fiyat" step="0.01">
-                                            </div>
-                                            <div class="col">
-                                                <input type="number" wire:model="details.{{$index}}.total" class="form-control" placeholder="Toplam" readonly>
-                                            </div>
-                                            <div class="col-auto">
-                                                <button type="button" wire:click="removeDetail({{ $index }})" class="btn btn-danger btn-sm">X</button>
-                                            </div>
-                                        </div>
-                                    @endforeach
+                                    </tbody>
+                                </table>
 
                                     <button type="button" wire:click="addDetail" class="btn btn-secondary mb-3">+ Satır Ekle</button>
 
