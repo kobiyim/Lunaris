@@ -1,6 +1,6 @@
 <div>
     <div class="container-fluid">
-
+<form wire:submit.prevent="store">
         <!-- end page title -->
         <div class="row">
             <div class="col-lg-3">
@@ -42,24 +42,22 @@
                     <div class="card-body">
                         <div class="row g-3">
                             <div class="col-lg-12">
-                                <form wire:submit.prevent="store">
+
                                     @foreach($details as $index => $detail)
                                         <div class="row mb-2">
                                             <div class="col">
                                                 <select wire:model.change="details.{{ $index }}.stock_id" class="form-control">
                                                     @foreach (\App\Models\Lunaris\Item::all() as $state)
-                                                        <option value="{{ $state->id }}" @if($loop->last) selected @endif >{{ $state->name }}</option>
+                                                        <option value="{{ $state->id }}" @if($loop->first) selected @endif >{{ $state->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                             <div class="col">
-                                                @if($details[$index]['stock_id'])
-                                                    <select wire:model="details.{{$index}}.unit_id" class="form-control">
-                                                        @foreach (\App\Models\Lunaris\Unit::where('unit_set_id', \App\Models\Lunaris\Item::find($stocks->keys()->first())->unit_set_id)->get() as $unit)
-                                                            <option value="{{ $unit->id }}">{{ $unit->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                @endif
+                                                <select wire:model="details.{{$index}}.unit_id" class="form-control">
+                                                    @foreach (\App\Models\Lunaris\Unit::where('unit_set_id', \App\Models\Lunaris\Item::find($details[$index]['stock_id'])->unit_set_id)->get() as $unit)
+                                                        <option value="{{ $unit->id }}">{{ $unit->name }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                             <div class="col">
                                                 <input type="number" wire:model="details.{{$index}}.quantity" class="form-control" placeholder="Miktar" step="0.001">

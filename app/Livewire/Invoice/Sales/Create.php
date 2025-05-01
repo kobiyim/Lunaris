@@ -10,7 +10,7 @@ use App\Models\Lunaris\InvoiceDetail;
 
 class Create extends Component
 {
-    public $card_id, $invoice_no, $date_, $description, $type, $sign, $total, $stocks;
+    public $card_id, $invoice_no, $date_, $description, $type, $total, $stocks;
     
     public $details = []; // Satır detayları
 
@@ -35,32 +35,22 @@ class Create extends Component
         $this->date = now();
         $this->description = '';
         $this->type = '';
-        $this->sign = '';
         $this->total = 0;
         $this->details = [
             [
-                'stock_id' => $this->stocks->first(), 'unit_id' => '', 'quantity' => 1, 'description' => '', 'price' => 0, 'total' => 0,
+                'stock_id' => $this->stocks->keys()->first(), 'unit_id' => '', 'quantity' => 1, 'description' => '', 'price' => 0, 'total' => 0,
             ],
         ];
     }
 
     public function addDetail()
     {
-        $this->details[] = ['stock_id' => '', 'unit_id' => '', 'quantity' => 1, 'description' => '', 'price' => 0, 'total' => 0];
+        $this->details[] = ['stock_id' => $this->stocks->keys()->first(), 'unit_id' => '', 'quantity' => 1, 'description' => '', 'price' => 0, 'total' => 0];
     }
 
     public function removeDetail($index)
     {
         unset($this->details[$index]);
-    }
-
-    public function updatedDetails()
-    {
-        foreach ($this->details as &$detail) {
-            $detail['total'] = (float)$detail['quantity'] * (float)$detail['price'];
-        }
-
-        $this->total = array_sum(array_column($this->details, 'total'));
     }
 
     public function store()
@@ -70,7 +60,6 @@ class Create extends Component
             'invoice_no' => 'required|unique:lunaris_invoices,invoice_no',
             'date_' => 'required|date',
             'type' => 'required',
-            'sign' => 'required',
             'total' => 'required|numeric',
         ]);
 
@@ -81,15 +70,26 @@ class Create extends Component
             'details.*.price' => 'required|numeric|min:0',
         ]);
 
-        $invoice = Invoice::create(
-            $validatedInvoice
-        );
+        foreach ($this->details as &$detail) {
+            $detail['total'] = (float)$detail['quantity'] * (float)$detail['price'];
+        }
+
+        $this->total = array_sum(array_column($this->details, 'total'));
+
+        $invoice = Invoice::create([
+                'card_id' => $this->card_id,
+                'invoice_no' => $this->invoice_no,
+                'date_' => $this->date_,
+                'description' => $this->description,
+                'type' => $this->type,
+                'sign' => signOfSalesInvoice($this->type),
+                'total' => $this->total
+            ]);
 
         // Yeni detayları kaydet
         foreach ($this->details as $detail) {
             $invoice->details()->create($detail);
         }
-
 
         session()->flash('message', 'Fatura ve detaylar eklendi.');
         $this->resetInputFields();

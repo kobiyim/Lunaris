@@ -6,7 +6,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
-                        <h4 class="card-title mb-0 flex-grow-1">Cari Hesaplar</h4>
+                        <h4 class="card-title mb-0 flex-grow-1">Satış Faturaları</h4>
                         <div class="row row-cols-lg-auto g-3 align-items-center">
                             <div class="col-12">
                                 <label class="visually-hidden" for="inlineFormInputGroupUsername">Cariler?</label>
@@ -44,7 +44,7 @@
                                         @foreach($fiches as $fiche)
                                             <tr>
                                                 <td>{{ $fiche->date_->format('d.m.Y') }}</td>
-                                                <td>{{ $fiche->fiche_no }}</td>
+                                                <td>{{ $fiche->invoice_no }}</td>
                                                 <td>{{ salesTypes($fiche->type) }}</td>
                                                 <td>{{ $fiche->card->name }}</td>
                                                 <td>{{ moneyFormat($fiche->total) }}</td>
@@ -54,6 +54,7 @@
                                                             <i class="ri-more-fill align-middle"></i>
                                                         </button>
                                                         <ul class="dropdown-menu dropdown-menu-end">
+                                                            <li><a wire:navigate href="{{ url('invoice/sales/' . $fiche->id) }}" class="dropdown-item">İncele</a></li>
                                                             <li><a wire:navigate href="{{ url('invoice/sales/' . $fiche->id  . '/edit') }}" class="dropdown-item">Düzenle</a></li>
                                                             <li><a wire:click="confirmDelete({{ $fiche->id }})" class="dropdown-item">Sil</a></li>
                                                         </ul>
