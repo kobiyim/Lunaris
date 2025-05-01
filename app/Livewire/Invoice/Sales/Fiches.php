@@ -26,7 +26,11 @@ class Fiches extends Component
 
     public function delete()
     {
-        Invoice::findOrFail($this->deleteId)->delete();
+        $invoice = Invoice::findOrFail($this->deleteId);
+
+        $invoice->details()->delete();
+        $invoice->delete();
+
         $this->confirmingDelete = false;
         $this->successMessage = "Fatura başarıyla silindi.";
     }
