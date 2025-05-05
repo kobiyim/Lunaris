@@ -36,6 +36,25 @@
 		return $types[$type];
 	}
 
+	function cardTransactions($type = null) {
+		$types = [
+			'1' => 'Alacak Dekontu',
+			'2' => 'Borç Dekontu',
+			'3' => 'Virman Fişi'
+		];
+
+		return ($type == null) ? $types : $types[$type];
+	}
+
+	function signOfCardTransaction($type) {
+		$types = [
+			'1' => '1',
+			'2' => '0'
+		];
+
+		return $types[$type];
+	}
+
     function moneyFormat($amount)
     {
         return number_format($amount, 2, ',', '.');

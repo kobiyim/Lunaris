@@ -12,7 +12,7 @@
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <div class="form-group mb-2">
-                                    <input type="text" wire:model="fiche_no" placeholder="Invoice No" class="form-control">
+                                    <input type="text" wire:model="fiche_no" placeholder="Fiş Numarası" class="form-control">
                                 </div>
                                 <div class="form-group mb-2">
                                     <input type="date" wire:model="date_" class="form-control">

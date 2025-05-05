@@ -8,6 +8,10 @@ Route::group([ 'middleware' => 'auth' ], function() {
 	Route::get('/', function() { return view('welcome'); })->name('dashboard');
 
 	Route::get('cards', App\Livewire\Card\CardManager::class);
+	Route::get('card/transaction-fiches', App\Livewire\Card\TransactionFiches::class);
+
+	Route::get('payrolls', \App\Livewire\CashItem\PayrollManager::class);
+	Route::get('cash-items', \App\Livewire\CashItem\CashItemManager::class);
 	
 	Route::get('items', App\Livewire\ItemManager::class);
 	

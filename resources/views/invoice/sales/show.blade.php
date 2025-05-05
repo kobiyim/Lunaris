@@ -61,7 +61,7 @@
                                                 <td>
                                                     {{ $detail->unit->name }}
                                                 </td>
-                                                <td>
+                                                <td class="text-end">
                                                     {{ $detail->quantity }}
                                                 </td>
                                                 <td>

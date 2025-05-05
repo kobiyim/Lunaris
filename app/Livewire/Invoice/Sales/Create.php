@@ -4,6 +4,7 @@ namespace App\Livewire\Invoice\Sales;
 
 use Livewire\Component;
 use App\Models\Lunaris\Card;
+use App\Models\Lunaris\CardActivity;
 use App\Models\Lunaris\Item;
 use App\Models\Lunaris\Invoice;
 use App\Models\Lunaris\InvoiceDetail;
@@ -77,14 +78,23 @@ class Create extends Component
         $this->total = array_sum(array_column($this->details, 'total'));
 
         $invoice = Invoice::create([
-                'card_id' => $this->card_id,
-                'invoice_no' => $this->invoice_no,
-                'date_' => $this->date_,
-                'description' => $this->description,
-                'type' => $this->type,
-                'sign' => signOfSalesInvoice($this->type),
-                'total' => $this->total
-            ]);
+            'card_id' => $this->card_id,
+            'invoice_no' => $this->invoice_no,
+            'date_' => $this->date_,
+            'description' => $this->description,
+            'type' => $this->type,
+            'sign' => signOfSalesInvoice($this->type),
+            'total' => $this->total
+        ]);
+
+        CardActivity::create([
+            'card_id' => $this->card_id,
+            'type' => 1,
+            'subject_id' => $invoice->id,
+            'sign' => signOfSalesInvoice($this->type),
+            'date_' => $this->date_,
+            'total' => $this->total
+        ]);
 
         // Yeni detayları kaydet
         foreach ($this->details as $detail) {

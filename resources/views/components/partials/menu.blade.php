@@ -114,7 +114,7 @@
                         <div class="collapse menu-dropdown" id="cariHesap">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
-                                    <a href="{{ url('card/account-fiches') }}" class="nav-link" wire:navigate> Cari Hesap Fişleri </a>
+                                    <a href="{{ url('card/transaction-fiches') }}" class="nav-link" wire:navigate> Cari Hesap Fişleri </a>
                                 </li>
                             </ul>
                         </div>

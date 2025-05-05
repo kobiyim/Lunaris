@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Bank;
+namespace App\Livewire\CashItem;
 
 use Livewire\Component;
 use App\Models\Lunaris\Card;

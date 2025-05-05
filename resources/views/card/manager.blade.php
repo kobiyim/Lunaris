@@ -69,7 +69,10 @@
                                                 <td>{{ '0' }}</td>
                                                 <td>{{ '0' }}</td>
                                                 <td>{{ '0' }}</td>
-                                                <td>{{ '0' }}</td>
+                                                @php
+                                                    $balance = $card->activities()->where('sign', 0)->sum('total') - $card->activities()->where('sign', 1)->sum('total');
+                                                @endphp
+                                                <td class="text-end">{{ moneyFormat(abs($balance)) }} {{ ($balance < 0) ? '(B)' : '(A)' }}</td>
                                                 <td class="text-center">
                                                     <div class="dropdown d-inline-block">
                                                         <button class="btn btn-soft-secondary btn-sm dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">

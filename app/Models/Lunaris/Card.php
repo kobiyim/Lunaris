@@ -14,4 +14,9 @@ class Card extends Model
     protected $fillable = ['code', 'name', 'active'];
 
     public $timestamps = false;
+
+    public function activities()
+    {
+        return $this->hasMany(CardActivity::class);
+    }
 }
