@@ -1,6 +1,5 @@
 <div>
     <div class="container-fluid">
-<form wire:submit.prevent="store">
         <!-- end page title -->
         <div class="row">
             <div class="col-lg-3">
@@ -18,7 +17,7 @@
                                     {{ $invoice->invoice_no }}
                                 </div>
                                 <div class="form-group mb-2">
-                                    {{ $invoice->date_ }}
+                                    {{ $invoice->date_->format('d.m.Y') }}
                                 </div>
                                 <div class="form-group mb-2">
                                     {{ $invoice->description }}
@@ -43,7 +42,7 @@
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <table class="table table-striped">
-                                    <thead>
+                                    <thead class="table-light">
                                         <tr>
                                             <th>Stok</th>
                                             <th>Birim</th>
@@ -51,7 +50,6 @@
                                             <th>Açıklama</th>
                                             <th>Fiyatı</th>
                                             <th>Toplam</th>
-                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -69,23 +67,26 @@
                                                 <td>
                                                     {{ $detail->description }}
                                                 </td>
-                                                <td>
-                                                    {{ $detail->price }}
+                                                <td class="text-end">
+                                                    {{ moneyFormat($detail->price) }}
                                                 </td>
-                                                <td>
-                                                    {{ $detail->total }}
+                                                <td class="text-end">
+                                                    {{ moneyFormat($detail->total) }}
                                                 </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
+                                    <tfoot class="table-light">
+                                        <tr>
+                                            <td colspan="5" class="text-end">
+                                                Genel Toplam:
+                                            </td>
+                                            <td class="text-end">
+                                                {{ moneyFormat($invoice->total) }} ₺
+                                            </td>
+                                        </tr>
+                                    </tfoot>
                                 </table>
-
-                                    <div class="form-group">
-                                        <label>Genel Toplam: {{ moneyFormat($invoice->total) }} ₺</label>
-                                    </div>
-
-                                    <button class="btn btn-primary">Kaydet</button>
-                                </form>
 
                             </div>
                         </div>
@@ -101,3 +102,5 @@
     <!-- container-fluid -->
 
 </div>
+
+@section('title', 'Fatura İncele')

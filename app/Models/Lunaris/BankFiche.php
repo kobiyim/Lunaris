@@ -11,7 +11,7 @@ class BankFiche extends Model
 
     protected $fillable = [
         'date_',
-        'ficheno',
+        'fiche_no',
         'transaction',
         'sign',
         'total',
@@ -22,6 +22,8 @@ class BankFiche extends Model
         'date_' => 'date',
         'total' => 'float',
     ];
+
+    public $timestamps = false;
 
     public function lines(): HasMany
     {

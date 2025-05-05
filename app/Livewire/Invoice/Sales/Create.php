@@ -92,8 +92,7 @@ class Create extends Component
         }
 
         session()->flash('message', 'Fatura ve detaylar eklendi.');
-        $this->resetInputFields();
 
-        return redirect()->url('invoice/sales');
+        $this->resetInputFields();
     }
 }

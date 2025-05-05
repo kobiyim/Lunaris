@@ -3,27 +3,29 @@
 namespace App\Livewire\Bank;
 
 use Livewire\Component;
-use App\Models\BankFiche;
-use App\Models\BankFicheLine;
+use App\Models\Lunaris\Card;
+use App\Models\Lunaris\Bank;
+use App\Models\Lunaris\BankFiche;
+use App\Models\Lunaris\BankFicheLine;
 use Illuminate\Support\Collection;
 
-class NewFiche extends Component
+class Create extends Component
 {
     public $date_;
-    public $ficheno;
+    public $fiche_no;
     public $transaction;
     public $sign = '+';
     public $total;
     public $description;
+    public $cards;
 
     public $lines = [];
 
     protected $rules = [
         'date_' => 'required|date',
-        'ficheno' => 'required|string|unique:banka_fişleri,ficheno',
+        'fiche_no' => 'required|string|unique:lunaris_bank_fiches,fiche_no',
         'transaction' => 'required|string',
         'sign' => 'required|in:+,-',
-        'total' => 'required|numeric|min:0',
         'description' => 'nullable|string',
         'lines.*.bank_account_id' => 'required|integer',
         'lines.*.card_id' => 'nullable|integer',
@@ -33,12 +35,16 @@ class NewFiche extends Component
 
     public function mount()
     {
+        $this->banks = Bank::where('active', 1)->orderBy('name')->get()->pluck('name', 'id');
+        $this->cards = Card::where('active', 1)->orderBy('name')->get()->pluck('name', 'id');
+
         $this->addLine(); // sayfa açıldığında bir satır gözüksün
     }
 
     public function addLine()
     {
         $this->lines[] = [
+            'bank_id' => '',
             'bank_account_id' => '',
             'card_id' => '',
             'description' => '',
@@ -52,15 +58,17 @@ class NewFiche extends Component
         $this->lines = array_values($this->lines); // indexleri düzelt
     }
 
-    public function save()
+    public function store()
     {
         $validated = $this->validate();
 
+        $this->total = array_sum(array_column($this->lines, 'amount'));
+
         $fiche = BankFiche::create([
             'date_' => $this->date_,
-            'ficheno' => $this->ficheno,
+            'fiche_no' => $this->fiche_no,
             'transaction' => $this->transaction,
-            'sign' => $this->sign,
+            'sign' => signOfBankTransaction($this->transaction),
             'total' => $this->total,
             'description' => $this->description,
         ]);
@@ -70,12 +78,12 @@ class NewFiche extends Component
         }
 
         session()->flash('success', 'Banka fişi ve satırları başarıyla oluşturuldu.');
-        $this->reset(); // her şeyi temizle
-        $this->addLine(); // yeni boş satır
+
+        return redirect('bank/fiches');
     }
 
     public function render()
     {
-        return view('bank-fiche-form');
+        return view('bank.create');
     }
 }

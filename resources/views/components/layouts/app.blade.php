@@ -2,7 +2,7 @@
 <html lang="en" data-layout="horizontal" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable" data-theme="saas" data-theme-colors="default">
     <head>
         <meta charset="utf-8" />
-        <title>Form Advanced | Velzon - Admin & Dashboard Template</title>
+        <title>@yield('title')</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         @include('components.partials.head')

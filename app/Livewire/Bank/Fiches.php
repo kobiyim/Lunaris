@@ -12,7 +12,7 @@ class Fiches extends Component
 
     public function render()
     {
-        return view('bank-fiches', [
+        return view('bank.fiches', [
             'bankFiches' => BankFiche::paginate(10)
         ]);
     }
@@ -25,7 +25,7 @@ class Fiches extends Component
 
     public function delete()
     {
-        Card::findOrFail($this->deleteId)->delete();
+        BankFiche::findOrFail($this->deleteId)->delete();
         $this->confirmingDelete = false;
         $this->successMessage = "Cari hesap başarıyla silindi.";
     }

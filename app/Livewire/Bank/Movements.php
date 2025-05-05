@@ -9,7 +9,7 @@ class Movements extends Component
 {
     public function render()
     {
-        return view('bank-movements', [
+        return view('bank.movements', [
             'bankFicheLines' => BankFicheLine::paginate(10)
         ]);
     }

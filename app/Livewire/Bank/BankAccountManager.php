@@ -29,7 +29,7 @@ class BankAccountManager extends Component
 
     public function render()
     {
-        return view('bank-accounts', [
+        return view('bank.accounts', [
             'bankAccounts' => BankAccount::where('bank_id', $this->bank_id)->where('name', 'LIKE', '%' . $this->search . '%')->orderByDesc('id')->paginate(10),
         ])->extends('components.layouts.app')->section('content');
     }

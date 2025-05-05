@@ -22,7 +22,7 @@ Route::group([ 'middleware' => 'auth' ], function() {
 		Route::get('fiches', Fiches::class);
 		Route::get('movements', Movements::class);
 
-		Route::get('fiche/create', NewFiche::class);
+		Route::get('fiche/create', Create::class);
 	});
 
 	Route::group([ 'prefix' => 'invoice', 'namespace' => 'App\Livewire\Invoice' ], function() {

@@ -23,7 +23,7 @@ class BankManager extends Component
 
     public function render()
     {
-        return view('bank-manager', [
+        return view('bank.manager', [
             'banks' => Bank::where('name', 'LIKE', '%' . $this->search . '%')->orderByDesc('id')->paginate(10),
         ])->extends('components.layouts.app')->section('content');
     }

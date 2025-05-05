@@ -21,6 +21,8 @@ class BankFicheLine extends Model
         'amount' => 'float',
     ];
 
+    public $timestamps = false;
+
     public function fiche(): BelongsTo
     {
         return $this->belongsTo(BankFiche::class, 'bank_fiche_id');
