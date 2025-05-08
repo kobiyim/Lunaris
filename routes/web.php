@@ -43,8 +43,8 @@ Route::group([ 'middleware' => 'auth', 'namespace' => 'App\Livewire' ], function
 
 	Route::get('vaults', Vault\VaultManager::class);
 	Route::group([ 'prefix' => 'vault', 'namespace' => 'Vault' ], function() {
-		Route::get('create', Create::class);
-		Route::get('edit/{vaultFicheId}', Edit::class);
+		Route::get('fiche/create', Create::class);
+		Route::get('fiche/{vaultFicheId}/edit', Edit::class);
 		Route::get('fiches', Fiches::class);
 		Route::get('movements', Movements::class);
 	});

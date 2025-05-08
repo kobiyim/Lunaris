@@ -23,7 +23,7 @@ class VaultManager extends Component
 
     public function render()
     {
-        return view('vault-manager', [
+        return view('vault.manager', [
             'vaults' => Vault::where('name', 'LIKE', '%' . $this->search . '%')->orderByDesc('id')->paginate(10),
         ])->extends('components.layouts.app')->section('content');
     }
