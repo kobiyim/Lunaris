@@ -1,6 +1,7 @@
 <div>
     <div class="container-fluid">
 <form wire:submit.prevent="store">
+    <div wire:ignore>
         <!-- end page title -->
         <div class="row">
             <div class="col-lg-3">
@@ -99,6 +100,7 @@
                                     </div>
 
                                     <button class="btn btn-primary">Kaydet</button>
+                                </div>
                                 </form>
 
                                 @if (session()->has('message'))

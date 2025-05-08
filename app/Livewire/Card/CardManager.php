@@ -87,8 +87,13 @@ class CardManager extends Component
 
     public function delete()
     {
-        Card::findOrFail($this->deleteId)->delete();
+        $card = Card::find($this->deleteId);
+
+        Card::find($this->deleteId)->update([
+            'active' => ($card->active == 1) ? 0 : 1
+        ]);
+
         $this->confirmingDelete = false;
-        $this->successMessage = "Cari hesap başarıyla silindi.";
+        $this->successMessage = "Cari hesap durumu değiştirildi.";
     }
 }
