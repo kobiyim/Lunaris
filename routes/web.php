@@ -11,6 +11,7 @@ Route::group([ 'middleware' => 'auth', 'namespace' => 'App\Livewire' ], function
 	Route::get('card/transaction-fiches',Card\TransactionFiches::class);
 
 	Route::get('payrolls', CashItem\PayrollManager::class);
+	Route::get('payroll/create', CashItem\Create::class);
 	Route::get('cash-items', CashItem\CashItemManager::class);
 	
 	Route::get('items', ItemManager::class);
@@ -49,4 +50,3 @@ Route::group([ 'middleware' => 'auth', 'namespace' => 'App\Livewire' ], function
 		Route::get('movements', Movements::class);
 	});
 });
-

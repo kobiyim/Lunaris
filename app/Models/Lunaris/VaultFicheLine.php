@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class VaultFicheLine extends Model
 {
-    protected $table = 'lunaris_bank_vault_lines';
+    protected $table = 'lunaris_vault_fiche_lines';
 
     protected $fillable = [
         'vault_id',
