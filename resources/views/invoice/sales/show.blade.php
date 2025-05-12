@@ -6,50 +6,48 @@
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
                         <h4 class="card-title mb-0 flex-grow-1">Fatura Detayı</h4>
-                    </div><!-- end card header -->
+                    </div>
                     <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-lg-12">
-                                <div class="form-group mb-2">
-                                    {{ $invoice->card->name }}
-                                </div>
-                                <div class="form-group mb-2">
-                                    {{ $invoice->invoice_no }}
-                                </div>
-                                <div class="form-group mb-2">
-                                    {{ $invoice->date_->format('d.m.Y') }}
-                                </div>
-                                <div class="form-group mb-2">
-                                    {{ $invoice->description }}
-                                </div>
-                                <div class="form-group mb-2">
-                                    {{ salesTypes($invoice->type) }}
-                                </div>
-                            </div>
+                        <div class="mb-2">
+                            <label for="choices-publish-status-input" class="form-label">Fatura No:</label>
+                            <div class="fw-bolder">{{ $invoice->invoice_no }}</div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="choices-publish-status-input" class="form-label">Cari:</label>
+                            <div class="fw-bolder">{{ $invoice->card->name }}</div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="choices-publish-status-input" class="form-label">Tarih:</label>
+                            <div class="fw-bolder">{{ $invoice->date_->format('d.m.Y') }}</div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="choices-publish-status-input" class="form-label">Açıklama:</label>
+                            <div class="fw-bolder">{{ $invoice->description }}</div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="choices-publish-status-input" class="form-label">Fatura Türü:</label>
+                            <div class="fw-bolder">{{ salesTypes($invoice->type) }}</div>
                         </div>
                     </div>
-                    <!-- end card body -->
                 </div>
-                <!-- end card -->
             </div>
-            <!-- end col -->
             <div class="col-lg-9">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
                         <h4 class="card-title mb-0 flex-grow-1">Fatura Detayları</h4>
-                    </div><!-- end card header -->
+                    </div>
                     <div class="card-body">
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <table class="table table-striped">
-                                    <thead class="table-light">
+                                    <thead>
                                         <tr>
-                                            <th>Stok</th>
-                                            <th>Birim</th>
-                                            <th>Miktar</th>
+                                            <th width="20%">Stok</th>
                                             <th>Açıklama</th>
-                                            <th>Fiyatı</th>
-                                            <th>Toplam</th>
+                                            <th width="7%">Miktar</th>
+                                            <th width="7%">Birim</th>
+                                            <th width="12%">Fiyatı</th>
+                                            <th width="12%">Toplam</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -59,13 +57,13 @@
                                                     {{ $detail->item->name }}
                                                 </td>
                                                 <td>
-                                                    {{ $detail->unit->name }}
+                                                    {{ $detail->description }}
                                                 </td>
                                                 <td class="text-end">
                                                     {{ $detail->quantity }}
                                                 </td>
                                                 <td>
-                                                    {{ $detail->description }}
+                                                    {{ $detail->unit->name }}
                                                 </td>
                                                 <td class="text-end">
                                                     {{ moneyFormat($detail->price) }}
@@ -87,20 +85,13 @@
                                         </tr>
                                     </tfoot>
                                 </table>
-
                             </div>
                         </div>
                     </div>
-                    <!-- end card body -->
                 </div>
-                <!-- end card -->
             </div>
-            <!-- end col -->
         </div>
-        <!-- end row -->
     </div>
-    <!-- container-fluid -->
-
 </div>
 
 @section('title', 'Fatura İncele')

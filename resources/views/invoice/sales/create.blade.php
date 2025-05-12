@@ -1,63 +1,59 @@
 <div>
     <div class="container-fluid">
-<form wire:submit.prevent="store">
-    <div wire:ignore>
-        <!-- end page title -->
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="card">
-                    <div class="card-header align-items-center d-flex">
-                        <h4 class="card-title mb-0 flex-grow-1">Fatura Detayı</h4>
-                    </div><!-- end card header -->
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-lg-12">
-                                <div class="form-group mb-2">
-                                    {{ html()->select('', $cards)->attributes([ 'wire:model' => 'card_id', 'class' => 'form-control']) }}
-                                </div>
-                                <div class="form-group mb-2">
-                                    <input type="text" wire:model="invoice_no" placeholder="Invoice No" class="form-control">
-                                </div>
-                                <div class="form-group mb-2">
-                                    <input type="date" wire:model="date_" class="form-control">
-                                </div>
-                                <div class="form-group mb-2">
-                                    <textarea wire:model="description" placeholder="Description" class="form-control"></textarea>
-                                </div>
-                                <div class="form-group mb-2">
-                                    {{ html()->select('', salesTypes())->attributes([ 'wire:model' => 'type', 'class' => 'form-control']) }}
-                                </div>
+        <form wire:submit.prevent="store">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="card">
+                        <div class="card-header align-items-center d-flex">
+                            <h4 class="card-title mb-0 flex-grow-1">Fatura Detayı</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-2">
+                                <label for="choices-publish-status-input" class="form-label">Fatura No:</label>
+                                <input type="text" wire:model="invoice_no" placeholder="Invoice No" class="form-control">
+                            </div>
+                            <div class="mb-2">
+                                <label for="choices-publish-status-input" class="form-label">Cari:</label>
+                                {{ html()->select('', $cards)->attributes([ 'wire:model' => 'card_id', 'class' => 'form-control form-select']) }}
+                            </div>
+                            <div class="mb-2">
+                                <label for="choices-publish-status-input" class="form-label">Tarih:</label>
+                                <input type="date" wire:model="date_" class="form-control">
+                            </div>
+                            <div class="mb-2">
+                                <label for="choices-publish-status-input" class="form-label">Açıklama:</label>
+                                <textarea wire:model="description" placeholder="Description" class="form-control"></textarea>
+                            </div>
+                            <div class="mb-2">
+                                <label for="choices-publish-status-input" class="form-label">Fatura Türü:</label>
+                                {{ html()->select('', salesTypes())->attributes([ 'wire:model' => 'type', 'class' => 'form-control']) }}
                             </div>
                         </div>
                     </div>
-                    <!-- end card body -->
                 </div>
-                <!-- end card -->
-            </div>
-            <!-- end col -->
-            <div class="col-lg-9">
-                <div class="card">
-                    <div class="card-header align-items-center d-flex">
-                        <h4 class="card-title mb-0 flex-grow-1">Fatura Detayları</h4>
-                    </div><!-- end card header -->
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-lg-12">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Stok</th>
-                                            <th>Birim</th>
-                                            <th>Miktar</th>
-                                            <th>Açıklama</th>
-                                            <th>Fiyatı</th>
-                                            <th>Toplam</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($details as $index => $detail)
+                <div class="col-lg-9">
+                    <div class="card">
+                        <div class="card-header align-items-center d-flex">
+                            <h4 class="card-title mb-0 flex-grow-1">Fatura Detayları</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-lg-12">
+                                    <table class="table table-striped table-sm">
+                                        <thead>
                                             <tr>
+                                                <th width="20%">Stok</th>
+                                                <th>Açıklama</th>
+                                                <th width="7%">Miktar</th>
+                                                <th width="7%">Birim</th>
+                                                <th width="12%">Fiyatı</th>
+                                                <th width="12%">Toplam</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($details as $index => $detail)
+                                                <tr>
                                                     <td>
                                                         <select wire:model.change="details.{{ $index }}.stock_id" class="form-control">
                                                             @foreach (\App\Models\Lunaris\Item::all() as $state)
@@ -66,17 +62,17 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select wire:model="details.{{$index}}.unit_id" class="form-control">
-                                                            @foreach (\App\Models\Lunaris\Unit::where('unit_set_id', \App\Models\Lunaris\Item::find($details[$index]['stock_id'])->unit_set_id)->get() as $unit)
-                                                                <option value="{{ $unit->id }}">{{ $unit->name }}</option>
-                                                            @endforeach
-                                                        </select>
+                                                        <input type="text" wire:model="details.{{$index}}.description" class="form-control" placeholder="Açıklama">
                                                     </td>
                                                     <td>
                                                         <input type="number" wire:model="details.{{$index}}.quantity" class="form-control" placeholder="Miktar" step="0.001">
                                                     </td>
                                                     <td>
-                                                        <input type="text" wire:model="details.{{$index}}.description" class="form-control" placeholder="Açıklama">
+                                                        <select wire:model="details.{{$index}}.unit_id" class="form-control">
+                                                            @foreach (\App\Models\Lunaris\Unit::where('unit_set_id', \App\Models\Lunaris\Item::find($details[$index]['stock_id'])->unit_set_id)->get() as $unit)
+                                                                <option value="{{ $unit->id }}">{{ $unit->name }}</option>
+                                                            @endforeach
+                                                        </select>
                                                     </td>
                                                     <td>
                                                         <input type="number" wire:model="details.{{$index}}.price" class="form-control" placeholder="Fiyat" step="0.01">
@@ -87,11 +83,10 @@
                                                     <td>
                                                         <button type="button" wire:click="removeDetail({{ $index }})" class="btn btn-danger btn-sm">X</button>
                                                     </td>
-                                            </tr>
-                                        @endforeach
-
-                                    </tbody>
-                                </table>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
 
                                     <button type="button" wire:click="addDetail" class="btn btn-secondary mb-3">+ Satır Ekle</button>
 
@@ -101,7 +96,6 @@
 
                                     <button class="btn btn-primary">Kaydet</button>
                                 </div>
-                                </form>
 
                                 @if (session()->has('message'))
                                     <div class="alert alert-success mt-2">{{ session('message') }}</div>
@@ -109,14 +103,8 @@
                             </div>
                         </div>
                     </div>
-                    <!-- end card body -->
                 </div>
-                <!-- end card -->
             </div>
-            <!-- end col -->
-        </div>
-        <!-- end row -->
+        </form>
     </div>
-    <!-- container-fluid -->
-
 </div>

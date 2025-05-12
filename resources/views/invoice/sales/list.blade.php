@@ -1,7 +1,5 @@
 <div>
     <div class="container-fluid">
-
-        <!-- end page title -->
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
@@ -12,7 +10,6 @@
                                 <label class="visually-hidden" for="inlineFormInputGroupUsername">Cariler?</label>
                                 <input type="text" class="form-control" wire:model.live.debounce.250ms="search" placeholder="Cariler?">
                             </div>
-                            <!--end col-->
                             <div class="col-12">
                                 <div class="dropdown d-inline-block">
                                     <button class="btn btn-soft-secondary btn-md dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -23,20 +20,20 @@
                                     </ul>
                                 </div>
                             </div>
-                            <!--end col-->
                         </div>
-                    </div><!-- end card header -->
+                    </div>
                     <div class="card-body">
                         <div class="row g-3">
                             <div class="col-lg-12">
-                                <table class="table table-nowrap">
+                                <table class="table table-striped table-sm align-middle">
                                     <thead>
-                                        <tr>
-                                            <th scope="col">Tarih</th>
-                                            <th scope="col">Fiş No</th>
-                                            <th scope="col">Türü</th>
+                                        <tr class="text-center">
+                                            <th scope="col" width="6%">Tarih</th>
+                                            <th scope="col" width="7%">Fiş No</th>
+                                            <th scope="col" width="8%">Belge No</th>
+                                            <th scope="col" width="8%">Türü</th>
                                             <th scope="col">Müşteri</th>
-                                            <th scope="col">Tutarı</th>
+                                            <th scope="col" width="8%">Tutarı</th>
                                             <th scope="col" width="5%">İşlemler</th>
                                         </tr>
                                     </thead>
@@ -45,9 +42,10 @@
                                             <tr>
                                                 <td>{{ $fiche->date_->format('d.m.Y') }}</td>
                                                 <td>{{ $fiche->invoice_no }}</td>
+                                                <td></td>
                                                 <td>{{ salesTypes($fiche->type) }}</td>
                                                 <td>{{ $fiche->card->name }}</td>
-                                                <td>{{ moneyFormat($fiche->total) }}</td>
+                                                <td class="text-end">{{ moneyFormat($fiche->total) }}</td>
                                                 <td class="text-center">
                                                     <div class="dropdown d-inline-block">
                                                         <button class="btn btn-soft-secondary btn-sm dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -69,15 +67,10 @@
                             </div>
                         </div>
                     </div>
-                    <!-- end card body -->
                 </div>
-                <!-- end card -->
             </div>
-            <!-- end col -->
         </div>
-        <!-- end row -->
     </div>
-    <!-- container-fluid -->
 
     <!-- Delete Confirmation -->
     @if($confirmingDelete)

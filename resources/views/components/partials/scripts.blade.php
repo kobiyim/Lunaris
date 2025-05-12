@@ -6,8 +6,6 @@
 <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/toastify-js'></script>
     <!-- multi.js -->
     <script src="{{ asset('libs') }}/multi.js/multi.min.js"></script>
-    <!-- autocomplete js -->
-    <script src="{{ asset('libs') }}/%40tarekraafat/autocomplete.js/autoComplete.min.js"></script>
     <!-- init js -->
     <script src="{{ asset('js') }}/pages/form-advanced.init.js"></script>
     <!-- input spin init -->
