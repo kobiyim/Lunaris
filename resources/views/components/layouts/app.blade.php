@@ -47,8 +47,26 @@
         <!--end back-to-top-->
 
         <!-- JAVASCRIPT -->
-        @include('components.partials.scripts')
         @livewireScripts
+        @include('components.partials.scripts')
+        <script>
+            Livewire.on('swal', (data) => {
+                Swal.fire({
+                    title: data.title || '',
+                    text: data.text || '',
+                    icon: data.icon || 'info',
+                    confirmButtonText: data.confirmButtonText || 'Tamam',
+
+
+                    position: "top-right",
+                    type: 'success',
+                    title: message,
+                    showConfirmButton: !1,
+                    timer: time
+                });
+            });
+        </script>
+
         @stack('scripts')
     </body>
 </html>

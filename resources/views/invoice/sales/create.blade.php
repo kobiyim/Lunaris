@@ -35,6 +35,11 @@
                     <div class="card">
                         <div class="card-header align-items-center d-flex">
                             <h4 class="card-title mb-0 flex-grow-1">Fatura Detayları</h4>
+                            <div class="flex-shrink-0">
+                                <div class="form-check form-switch form-switch-right form-switch-md">
+                                    <a class="btn btn-secondary" wire:navigate href="{{ url('invoice/sales') }}">Faturalar</a>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="row g-3">

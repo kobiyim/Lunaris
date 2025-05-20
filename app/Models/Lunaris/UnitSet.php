@@ -16,6 +16,7 @@ class UnitSet extends Model
     protected $fillable = [
         'code',
         'name',
+        'active'
     ];
 
     public function units()

@@ -1,5 +1,5 @@
 <div>
-    <div class="container-fluid">
+    <div class="container-lg">
 
         @if ($successMessage)
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -13,7 +13,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
-                        <h4 class="card-title mb-0 flex-grow-1">Cari Hesaplar</h4>
+                        <h4 class="card-title mb-0 flex-grow-1">{{ $unit->name }} Birim Seti</h4>
                         <div class="row row-cols-lg-auto g-3 align-items-center">
                             <div class="col-12">
                                 <label class="visually-hidden" for="inlineFormInputGroupUsername">Cariler?</label>
@@ -48,21 +48,26 @@
                                 <table class="table table-nowrap">
                                     <thead>
                                         <tr>
-                                            <th>Birim Seti</th>
                                             <th>Kod</th>
                                             <th>Ad</th>
-                                            <th>İşlemler</th>
+                                            <th width="5%">İşlemler</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($units as $unit)
                                             <tr>
-                                                <td>{{ $unit->unitSet->name }}</td>
                                                 <td>{{ $unit->code }}</td>
                                                 <td>{{ $unit->name }}</td>
                                                 <td>
-                                                    <button class="btn btn-sm btn-info" wire:click="edit({{ $unit->id }})">Düzenle</button>
-                                                    <button class="btn btn-sm btn-danger" wire:click="confirmDelete({{ $unit->id }})">Sil</button>
+                                                    <div class="dropdown d-inline-block">
+                                                        <button class="btn btn-soft-secondary btn-sm dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <i class="ri-more-fill align-middle"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu dropdown-menu-end">
+                                                            <li><a wire:click="edit({{ $unit->id }})" class="dropdown-item">Düzenle</a></li>
+                                                            <li><a wire:click="confirmDelete({{ $unit->id }})" class="dropdown-item">Sil</a></li>
+                                                        </ul>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -93,16 +98,6 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="mb-3">
-                                <label>Birim Seti</label>
-                                <select class="form-select" wire:model.defer="unit_set_id">
-                                    <option value="">Seçiniz</option>
-                                    @foreach($unitSets as $unitSet)
-                                        <option value="{{ $unitSet->id }}">{{ $unitSet->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('unit_set_id') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
                             <div class="mb-3">
                                 <label>Kod</label>
                                 <input type="text" class="form-control" wire:model.defer="code">

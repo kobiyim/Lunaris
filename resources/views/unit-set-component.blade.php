@@ -1,5 +1,5 @@
 <div>
-    <div class="container-fluid">
+    <div class="container-lg">
 
         @if ($successMessage)
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -55,10 +55,9 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($unitSets as $set)
-                                            <tr>
+                                            <tr @if($set->active) class="table-success" @else class="table-danger" @endif>
                                                 <td>{{ $set->code }}</td>
                                                 <td>{{ $set->name }}</td>
-                                                <td>{{ $set->active ? 'Evet' : 'Hayır' }}</td>
                                                 <td>
                                                     <div class="dropdown d-inline-block">
                                                         <button class="btn btn-soft-secondary btn-sm dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">

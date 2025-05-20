@@ -82,8 +82,13 @@ class UnitSetManager extends Component
 
     public function delete()
     {
-        UnitSet::findOrFail($this->deleteId)->delete();
+        $unitSet = UnitSet::find($this->deleteId);
+
+        UnitSet::find($this->deleteId)->update([
+            'active' => ($unitSet->active == 1) ? 0 : 1
+        ]);
+
         $this->confirmingDelete = false;
-        $this->successMessage = "Birim seti başarıyla silindi.";
+        $this->successMessage = "Birim seti durumu başarıyla değiştirildi.";
     }
 }

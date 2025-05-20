@@ -33,7 +33,7 @@ class Create extends Component
     {
         $this->card_id = '';
         $this->invoice_no = '';
-        $this->date = now();
+        $this->date_ = now();
         $this->description = '';
         $this->type = '';
         $this->total = 0;

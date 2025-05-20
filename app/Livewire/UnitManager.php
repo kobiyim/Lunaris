@@ -11,7 +11,7 @@ class UnitManager extends Component
 {
     use WithPagination;
 
-    public $search, $code, $name, $unit_set_id, $unit_id;
+    public $search, $code, $name, $unit_set_id, $unit_id, $unit;
     public $isEditMode = false;
     public $confirmingDelete = false;
     public $deleteId;
@@ -24,6 +24,8 @@ class UnitManager extends Component
 
     public function mount($bankId)
     {
+        $this->unit = UnitSet::find($bankId);
+
         $this->unit_set_id = $bankId;
     }
 
@@ -37,7 +39,7 @@ class UnitManager extends Component
 
     public function resetForm()
     {
-        $this->reset(['unit_set_id', 'code', 'name', 'unit_id', 'isEditMode']);
+        $this->reset(['code', 'name', 'unit_id', 'isEditMode']);
         $this->resetValidation();
     }
 
@@ -79,6 +81,12 @@ class UnitManager extends Component
 
         $this->resetForm();
         $this->dispatch('modal-close');
+        
+$this->dispatch('swal', [
+    'title' => 'Başarılı!',
+    'text' => 'Kayıt başarıyla eklendi.',
+    'icon' => 'success',
+]);
         $this->successMessage = "Birim başarıyla güncellendi.";
     }
 
