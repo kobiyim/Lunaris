@@ -48,7 +48,7 @@
                                 <table class="table table-nowrap">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Kod</th>
+                                            <th scope="col" width="10%">Kod</th>
                                             <th scope="col">Ad</th>
                                             <th scope="col" width="5%">İşlemler</th>
                                         </tr>

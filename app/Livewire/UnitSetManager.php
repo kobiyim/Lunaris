@@ -41,6 +41,7 @@ class UnitSetManager extends Component
         UnitSet::create([
             'code' => $this->code,
             'name' => $this->name,
+            'active' => 1
         ]);
 
         $this->resetForm();

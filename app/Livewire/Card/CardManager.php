@@ -17,6 +17,8 @@ class CardManager extends Component
     public $deleteId;
     public $successMessage;
 
+    public $showDetail = false;
+
     protected $rules = [
         'code' => 'required|max:13',
         'name' => 'required|max:2056',
@@ -37,6 +39,11 @@ class CardManager extends Component
     {
         $this->reset(['code', 'name', 'card_id', 'isEditMode']);
         $this->resetValidation();
+    }
+
+    public function changeDetail()
+    {
+        $this->showDetail = ($this->showDetail == true) ? false : true;
     }
 
     public function store()

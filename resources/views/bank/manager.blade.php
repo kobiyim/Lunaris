@@ -1,5 +1,5 @@
 <div>
-    <div class="container-fluid">
+    <div class="container-lg">
 
         @if ($successMessage)
             <div class="alert alert-success alert-dismissible fade show" role="alert">

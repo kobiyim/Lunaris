@@ -1,5 +1,5 @@
 <div>
-    <div class="container-fluid">
+    <div class="container-lg">
 
         @if ($successMessage)
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -45,10 +45,10 @@
                     <div class="card-body">
                         <div class="row g-3">
                             <div class="col-lg-12">
-                                <table class="table table-bordered">
+                                <table class="table table-nowrap">
                                     <thead>
                                         <tr>
-                                            <th>Kod</th>
+                                            <th width="5%">Kod</th>
                                             <th>Ad</th>
                                             <th>Birim Seti</th>
                                             <th width="5%">İşlemler</th>

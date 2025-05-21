@@ -1,5 +1,5 @@
 <div>
-    <div class="container-fluid">
+    <div class="@if($showDetail) container-fluid @else container-lg @endif">
 
         @if ($successMessage)
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -36,6 +36,7 @@
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-end">
                                         <li><a wire:click="resetForm" data-bs-toggle="modal" data-bs-target="#cardModal" class="dropdown-item">Yeni Cari Hesap</a></li>
+                                        <li><a wire:click="changeDetail" class="dropdown-item">Detaylı İncele</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -50,11 +51,13 @@
                                         <tr>
                                             <th scope="col">Kod</th>
                                             <th scope="col">Ad</th>
-                                            <th scope="col">OÖG</th>
-                                            <th scope="col">OGG</th>
-                                            <th scope="col">Risk Oranı</th>
-                                            <th scope="col">Risk Skoru</th>
-                                            <th scope="col">Kalan Bakiye</th>
+                                            @if($showDetail)
+                                                <th scope="col">OÖG</th>
+                                                <th scope="col">OGG</th>
+                                                <th scope="col">Risk Oranı</th>
+                                                <th scope="col">Risk Skoru</th>
+                                                <th scope="col">Kalan Bakiye</th>
+                                            @endif
                                             <th scope="col">Bakiye</th>
                                             <th scope="col" width="5%">İşlemler</th>
                                         </tr>
@@ -64,11 +67,13 @@
                                             <tr>
                                                 <td>{{ $card->code }}</td>
                                                 <td>{{ $card->name }}</td>
-                                                <td>{{ '0' }}</td>
-                                                <td>{{ '0' }}</td>
-                                                <td>{{ '0' }}</td>
-                                                <td>{{ '0' }}</td>
-                                                <td>{{ '0' }}</td>
+                                                @if($showDetail)
+                                                    <td>{{ '0' }}</td>
+                                                    <td>{{ '0' }}</td>
+                                                    <td>{{ '0' }}</td>
+                                                    <td>{{ '0' }}</td>
+                                                    <td>{{ '0' }}</td>
+                                                @endif
                                                 @php
                                                     $balance = $card->activities()->where('sign', 0)->sum('total') - $card->activities()->where('sign', 1)->sum('total');
                                                 @endphp
@@ -90,7 +95,7 @@
                                     </tbody>
                                 </table>
 
-                                {{ $cards->links() }}
+                                {{ $cards->links('vendor.pagination.bootstrap-5') }}
                             </div>
                         </div>
                     </div>

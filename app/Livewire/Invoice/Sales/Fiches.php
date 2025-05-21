@@ -14,7 +14,7 @@ class Fiches extends Component
     public function render()
     {
         return view('invoice.sales.list', [
-            'fiches' => Invoice::whereIn('type', [ 1, 3 ])->paginate(10)
+            'fiches' => Invoice::whereIn('type', [ 1, 3 ])->orderBy('date_', 'desc')->paginate(10)
         ]);
     }
 
