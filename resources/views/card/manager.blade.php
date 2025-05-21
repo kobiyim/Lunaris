@@ -45,57 +45,58 @@
                     </div><!-- end card header -->
                     <div class="card-body">
                         <div class="row g-3">
-                            <div class="col-lg-12"><div class="table-responsive table-card">
-                                <table class="table table-borderless table-nowrap">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Kod</th>
-                                            <th scope="col">Ad</th>
-                                            @if($showDetail)
-                                                <th scope="col">OÖG</th>
-                                                <th scope="col">OGG</th>
-                                                <th scope="col">Risk Oranı</th>
-                                                <th scope="col">Risk Skoru</th>
-                                                <th scope="col">Kalan Bakiye</th>
-                                            @endif
-                                            <th scope="col">Bakiye</th>
-                                            <th scope="col" width="5%">İşlemler</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($cards as $card)
+                            <div class="col-lg-12">
+                                <div class="table-responsive table-card">
+                                    <table class="table table-nowrap align-middle">
+                                        <thead>
                                             <tr>
-                                                <td>{{ $card->code }}</td>
-                                                <td>{{ $card->name }}</td>
+                                                <th scope="col">Kod</th>
+                                                <th scope="col">Ad</th>
                                                 @if($showDetail)
-                                                    <td>{{ '0' }}</td>
-                                                    <td>{{ '0' }}</td>
-                                                    <td>{{ '0' }}</td>
-                                                    <td>{{ '0' }}</td>
-                                                    <td>{{ '0' }}</td>
+                                                    <th scope="col">OÖG</th>
+                                                    <th scope="col">OGG</th>
+                                                    <th scope="col">Risk Oranı</th>
+                                                    <th scope="col">Risk Skoru</th>
+                                                    <th scope="col">Kalan Bakiye</th>
                                                 @endif
-                                                @php
-                                                    $balance = $card->activities()->where('sign', 0)->sum('total') - $card->activities()->where('sign', 1)->sum('total');
-                                                @endphp
-                                                <td class="text-end">{{ moneyFormat(abs($balance)) }} {{ ($balance < 0) ? '(B)' : '(A)' }}</td>
-                                                <td class="text-center">
-                                                    <div class="dropdown d-inline-block">
-                                                        <button class="btn btn-soft-secondary btn-sm dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <i class="ri-more-fill align-middle"></i>
-                                                        </button>
-                                                        <ul class="dropdown-menu dropdown-menu-end">
-                                                            <li><a wire:click="edit({{ $card->id }})" class="dropdown-item">Düzenle</a></li>
-                                                            <li><a wire:click="confirmDelete({{ $card->id }})" class="dropdown-item">Sil</a></li>
-                                                            <li><a wire:navigate href="{{ url('card/' . $card->id . '/ekstre') }}" class="dropdown-item">Ekstre</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
+                                                <th scope="col">Bakiye</th>
+                                                <th scope="col" width="5%">İşlemler</th>
                                             </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-
-                                {{ $cards->links('vendor.pagination.bootstrap-5') }}</div>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($cards as $card)
+                                                <tr>
+                                                    <td>{{ $card->code }}</td>
+                                                    <td>{{ $card->name }}</td>
+                                                    @if($showDetail)
+                                                        <td>{{ '0' }}</td>
+                                                        <td>{{ '0' }}</td>
+                                                        <td>{{ '0' }}</td>
+                                                        <td>{{ '0' }}</td>
+                                                        <td>{{ '0' }}</td>
+                                                    @endif
+                                                    @php
+                                                        $balance = $card->activities()->where('sign', 0)->sum('total') - $card->activities()->where('sign', 1)->sum('total');
+                                                    @endphp
+                                                    <td class="text-end">{{ moneyFormat(abs($balance)) }} {{ ($balance < 0) ? '(B)' : '(A)' }}</td>
+                                                    <td class="text-center">
+                                                        <div class="dropdown d-inline-block">
+                                                            <button class="btn btn-soft-secondary btn-sm dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <i class="ri-more-fill align-middle"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                                <li><a wire:click="edit({{ $card->id }})" class="dropdown-item">Düzenle</a></li>
+                                                                <li><a wire:click="confirmDelete({{ $card->id }})" class="dropdown-item">Sil</a></li>
+                                                                <li><a wire:navigate href="{{ url('card/' . $card->id . '/ekstre') }}" class="dropdown-item">Ekstre</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {{ $cards->links('vendor.pagination.bootstrap-5') }}
                             </div>
                         </div>
                     </div>

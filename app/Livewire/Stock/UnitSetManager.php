@@ -1,17 +1,14 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Stock;
 
-use App\Models\Lunaris\Unit;
 use App\Models\Lunaris\UnitSet;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class UnitManager extends Component
+class UnitSetManager extends Component
 {
     use WithPagination;
-
-    public $search;
 
     public $code;
 
@@ -19,9 +16,9 @@ class UnitManager extends Component
 
     public $unit_set_id;
 
-    public $unit_id;
+    public $is_active;
 
-    public $unit;
+    public $search;
 
     public $isEditMode = false;
 
@@ -33,27 +30,19 @@ class UnitManager extends Component
 
     protected $rules = [
         'code' => 'required|max:8',
-        'name' => 'required|max:2056',
+        'name' => 'required|max:512',
     ];
-
-    public function mount($bankId)
-    {
-        $this->unit = UnitSet::find($bankId);
-
-        $this->unit_set_id = $bankId;
-    }
 
     public function render()
     {
-        return view('unit-component', [
-            'units' => Unit::where('unit_set_id', $this->unit_set_id)->orderByDesc('id')->paginate(10),
-            'unitSets' => UnitSet::all(),
+        return view('unit-set-component', [
+            'unitSets' => UnitSet::where('name', 'LIKE', '%'.$this->search.'%')->orderByDesc('id')->paginate(10),
         ])->extends('components.layouts.app')->section('content');
     }
 
     public function resetForm()
     {
-        $this->reset(['code', 'name', 'unit_id', 'isEditMode']);
+        $this->reset(['code', 'name', 'unit_set_id', 'isEditMode']);
         $this->resetValidation();
     }
 
@@ -61,23 +50,23 @@ class UnitManager extends Component
     {
         $this->validate();
 
-        Unit::create([
-            'unit_set_id' => $this->unit_set_id,
+        UnitSet::create([
             'code' => $this->code,
             'name' => $this->name,
+            'active' => 1,
         ]);
 
         $this->resetForm();
         $this->dispatch('modal-close');
-        $this->successMessage = 'Birim başarıyla eklendi.';
+        $this->successMessage = 'Birim seti başarıyla eklendi.';
     }
 
     public function edit($id)
     {
-        $unit = Unit::findOrFail($id);
-        $this->unit_id = $id;
-        $this->code = $unit->code;
-        $this->name = $unit->name;
+        $unitSet = UnitSet::findOrFail($id);
+        $this->unit_set_id = $id;
+        $this->code = $unitSet->code;
+        $this->name = $unitSet->name;
         $this->isEditMode = true;
 
         $this->dispatch('modal-open');
@@ -87,21 +76,15 @@ class UnitManager extends Component
     {
         $this->validate();
 
-        $unit = Unit::findOrFail($this->unit_id);
-        $unit->update([
+        $unitSet = UnitSet::findOrFail($this->unit_set_id);
+        $unitSet->update([
             'code' => $this->code,
             'name' => $this->name,
         ]);
 
         $this->resetForm();
         $this->dispatch('modal-close');
-
-        $this->dispatch('swal', [
-            'title' => 'Başarılı!',
-            'text' => 'Kayıt başarıyla eklendi.',
-            'icon' => 'success',
-        ]);
-        $this->successMessage = 'Birim başarıyla güncellendi.';
+        $this->successMessage = 'Birim seti başarıyla güncellendi.';
     }
 
     public function confirmDelete($id)
@@ -112,8 +95,13 @@ class UnitManager extends Component
 
     public function delete()
     {
-        Unit::findOrFail($this->deleteId)->delete();
+        $unitSet = UnitSet::find($this->deleteId);
+
+        UnitSet::find($this->deleteId)->update([
+            'active' => ($unitSet->active == 1) ? 0 : 1,
+        ]);
+
         $this->confirmingDelete = false;
-        $this->successMessage = 'Birim başarıyla silindi.';
+        $this->successMessage = 'Birim seti durumu başarıyla değiştirildi.';
     }
 }

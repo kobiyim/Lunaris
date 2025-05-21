@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Stock;
 
 use App\Models\Lunaris\Item;
 use App\Models\Lunaris\UnitSet;

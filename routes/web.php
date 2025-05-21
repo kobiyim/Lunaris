@@ -14,13 +14,13 @@ Route::group(['middleware' => 'auth', 'namespace' => 'App\Livewire'], function (
     Route::get('payroll/create', CashItem\Create::class);
     Route::get('cash-items', CashItem\CashItemManager::class);
 
-    Route::get('items', ItemManager::class);
+    Route::get('items', Stock\ItemManager::class);
 
-    Route::get('unit-sets', UnitSetManager::class);
+    Route::get('unit-sets', Stock\UnitSetManager::class);
 
     Route::get('bank/{bankId}/accounts', Bank\BankAccountManager::class);
     Route::get('bank/{bankAccountId}/credit-cards', Bank\BankCreditCardManager::class);
-    Route::get('unit-set/{bankId}', UnitManager::class);
+    Route::get('unit-set/{bankId}', Stock\UnitManager::class);
 
     Route::get('banks', Bank\BankManager::class);
     Route::group(['prefix' => 'bank', 'namespace' => 'Bank'], function () {
