@@ -2,18 +2,30 @@
 
 namespace App\Livewire;
 
+use App\Models\Lunaris\UnitSet;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Lunaris\UnitSet;
 
 class UnitSetManager extends Component
 {
     use WithPagination;
 
-    public $code, $name, $unit_set_id, $is_active, $search;
+    public $code;
+
+    public $name;
+
+    public $unit_set_id;
+
+    public $is_active;
+
+    public $search;
+
     public $isEditMode = false;
+
     public $confirmingDelete = false;
+
     public $deleteId;
+
     public $successMessage;
 
     protected $rules = [
@@ -24,7 +36,7 @@ class UnitSetManager extends Component
     public function render()
     {
         return view('unit-set-component', [
-            'unitSets' => UnitSet::where('name', 'LIKE', '%' . $this->search . '%')->orderByDesc('id')->paginate(10),
+            'unitSets' => UnitSet::where('name', 'LIKE', '%'.$this->search.'%')->orderByDesc('id')->paginate(10),
         ])->extends('components.layouts.app')->section('content');
     }
 
@@ -41,12 +53,12 @@ class UnitSetManager extends Component
         UnitSet::create([
             'code' => $this->code,
             'name' => $this->name,
-            'active' => 1
+            'active' => 1,
         ]);
 
         $this->resetForm();
         $this->dispatch('modal-close');
-        $this->successMessage = "Birim seti başarıyla eklendi.";
+        $this->successMessage = 'Birim seti başarıyla eklendi.';
     }
 
     public function edit($id)
@@ -72,7 +84,7 @@ class UnitSetManager extends Component
 
         $this->resetForm();
         $this->dispatch('modal-close');
-        $this->successMessage = "Birim seti başarıyla güncellendi.";
+        $this->successMessage = 'Birim seti başarıyla güncellendi.';
     }
 
     public function confirmDelete($id)
@@ -86,10 +98,10 @@ class UnitSetManager extends Component
         $unitSet = UnitSet::find($this->deleteId);
 
         UnitSet::find($this->deleteId)->update([
-            'active' => ($unitSet->active == 1) ? 0 : 1
+            'active' => ($unitSet->active == 1) ? 0 : 1,
         ]);
 
         $this->confirmingDelete = false;
-        $this->successMessage = "Birim seti durumu başarıyla değiştirildi.";
+        $this->successMessage = 'Birim seti durumu başarıyla değiştirildi.';
     }
 }

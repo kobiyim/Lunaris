@@ -2,14 +2,27 @@
 
 namespace App\Livewire\Invoice\Purchase;
 
-use Livewire\Component;
 use App\Models\Invoice;
-use App\Models\InvoiceDetail;
+use Livewire\Component;
 
 class Edit extends Component
 {
-    public $invoiceId, $card_id, $invoice_no, $date, $description, $type, $sign, $total;
-    
+    public $invoiceId;
+
+    public $card_id;
+
+    public $invoice_no;
+
+    public $date;
+
+    public $description;
+
+    public $type;
+
+    public $sign;
+
+    public $total;
+
     public $details = []; // Satır detayları
 
     public function mount($invoiceId)
@@ -45,7 +58,7 @@ class Edit extends Component
     public function updatedDetails()
     {
         foreach ($this->details as &$detail) {
-            $detail['total'] = (float)$detail['quantity'] * (float)$detail['price'];
+            $detail['total'] = (float) $detail['quantity'] * (float) $detail['price'];
         }
 
         $this->total = array_sum(array_column($this->details, 'total'));
@@ -55,7 +68,7 @@ class Edit extends Component
     {
         $validatedInvoice = $this->validate([
             'card_id' => 'required',
-            'invoice_no' => 'required|unique:invoices,invoice_no,' . $this->invoiceId,
+            'invoice_no' => 'required|unique:invoices,invoice_no,'.$this->invoiceId,
             'date' => 'required|date',
             'type' => 'required',
             'sign' => 'required',
@@ -72,7 +85,7 @@ class Edit extends Component
         DB::transaction(function () use ($validatedInvoice) {
             $invoice = Invoice::updateOrCreate(
                 ['id' => $this->invoiceId],
-                $validatedInvoice
+                $validatedInvoice,
             );
 
             // Yeni detayları kaydet

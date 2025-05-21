@@ -2,9 +2,8 @@
 
 namespace App\Livewire\Invoice\Sales;
 
-use Livewire\Component;
 use App\Models\Lunaris\Invoice;
-use App\Models\Lunaris\InvoiceDetail;
+use Livewire\Component;
 
 class Show extends Component
 {

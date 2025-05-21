@@ -1,61 +1,67 @@
 <?php
 
-	function salesTypes($type = null) {
-		$types = [
-			'1' => 'Satış Faturası',
-			'3' => 'Satış İade Faturası'
-		];
+function salesTypes($type = null)
+{
+    $types = [
+        '1' => 'Satış Faturası',
+        '3' => 'Satış İade Faturası',
+    ];
 
-		return ($type == null) ? $types : $types[$type];
-	}
+    return ($type == null) ? $types : $types[$type];
+}
 
-	function signOfSalesInvoice($type) {
-		$types = [
-			'1' => '1',
-			'3' => '0'
-		];
+function signOfSalesInvoice($type)
+{
+    $types = [
+        '1' => '1',
+        '3' => '0',
+    ];
 
-		return $types[$type];
-	}
+    return $types[$type];
+}
 
-	function bankTransactions($type = null) {
-		$types = [
-			'1' => 'Gelen Havale',
-			'2' => 'Gönderilen Havale'
-		];
+function bankTransactions($type = null)
+{
+    $types = [
+        '1' => 'Gelen Havale',
+        '2' => 'Gönderilen Havale',
+    ];
 
-		return ($type == null) ? $types : $types[$type];
-	}
+    return ($type == null) ? $types : $types[$type];
+}
 
-	function signOfBankTransaction($type) {
-		$types = [
-			'1' => '1',
-			'2' => '0'
-		];
+function signOfBankTransaction($type)
+{
+    $types = [
+        '1' => '1',
+        '2' => '0',
+    ];
 
-		return $types[$type];
-	}
+    return $types[$type];
+}
 
-	function cardTransactions($type = null) {
-		$types = [
-			'1' => 'Alacak Dekontu',
-			'2' => 'Borç Dekontu',
-			'3' => 'Virman Fişi'
-		];
+function cardTransactions($type = null)
+{
+    $types = [
+        '1' => 'Alacak Dekontu',
+        '2' => 'Borç Dekontu',
+        '3' => 'Virman Fişi',
+    ];
 
-		return ($type == null) ? $types : $types[$type];
-	}
+    return ($type == null) ? $types : $types[$type];
+}
 
-	function signOfCardTransaction($type) {
-		$types = [
-			'1' => '1',
-			'2' => '0'
-		];
+function signOfCardTransaction($type)
+{
+    $types = [
+        '1' => '1',
+        '2' => '0',
+    ];
 
-		return $types[$type];
-	}
+    return $types[$type];
+}
 
-    function moneyFormat($amount)
-    {
-        return number_format($amount, 2, ',', '.');
-    }
+function moneyFormat($amount)
+{
+    return number_format($amount, 2, ',', '.');
+}

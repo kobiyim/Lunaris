@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Kobiyim
+ * Kobiyim.
  *
  * @version v3.0.9
  */

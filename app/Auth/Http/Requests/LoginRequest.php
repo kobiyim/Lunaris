@@ -14,7 +14,7 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone'    => 'required|string|size:16',
+            'phone' => 'required|string|size:16',
             'password' => 'required|string',
         ];
     }
@@ -22,8 +22,8 @@ class LoginRequest extends FormRequest
     public function messages()
     {
         return [
-            'phone.required'    => 'Sisteme giriş için telefon numaranız gerekli.',
-            'phone.size'        => 'Telefon numaranızı tam giriniz.',
+            'phone.required' => 'Sisteme giriş için telefon numaranız gerekli.',
+            'phone.size' => 'Telefon numaranızı tam giriniz.',
             'password.required' => 'Şifrenizi giriniz.',
         ];
     }

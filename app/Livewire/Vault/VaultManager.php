@@ -2,18 +2,30 @@
 
 namespace App\Livewire\Vault;
 
+use App\Models\Lunaris\Vault;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Lunaris\Vault;
 
 class VaultManager extends Component
 {
     use WithPagination;
 
-    public $code, $name, $vault_id, $is_active, $search;
+    public $code;
+
+    public $name;
+
+    public $vault_id;
+
+    public $is_active;
+
+    public $search;
+
     public $isEditMode = false;
+
     public $confirmingDelete = false;
+
     public $deleteId;
+
     public $successMessage;
 
     protected $rules = [
@@ -24,7 +36,7 @@ class VaultManager extends Component
     public function render()
     {
         return view('vault.manager', [
-            'vaults' => Vault::where('name', 'LIKE', '%' . $this->search . '%')->orderByDesc('id')->paginate(10),
+            'vaults' => Vault::where('name', 'LIKE', '%'.$this->search.'%')->orderByDesc('id')->paginate(10),
         ])->extends('components.layouts.app')->section('content');
     }
 
@@ -41,12 +53,12 @@ class VaultManager extends Component
         Vault::create([
             'code' => $this->code,
             'name' => $this->name,
-            'active' => 1
+            'active' => 1,
         ]);
 
         $this->resetForm();
         $this->dispatch('modal-close');
-        $this->successMessage = "Kasa başarıyla eklendi.";
+        $this->successMessage = 'Kasa başarıyla eklendi.';
     }
 
     public function edit($id)
@@ -72,7 +84,7 @@ class VaultManager extends Component
 
         $this->resetForm();
         $this->dispatch('modal-close');
-        $this->successMessage = "Kasa başarıyla güncellendi.";
+        $this->successMessage = 'Kasa başarıyla güncellendi.';
     }
 
     public function confirmDelete($id)
@@ -85,6 +97,6 @@ class VaultManager extends Component
     {
         Vault::findOrFail($this->deleteId)->delete();
         $this->confirmingDelete = false;
-        $this->successMessage = "Kasa başarıyla silindi.";
+        $this->successMessage = 'Kasa başarıyla silindi.';
     }
 }

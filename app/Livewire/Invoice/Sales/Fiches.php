@@ -2,19 +2,19 @@
 
 namespace App\Livewire\Invoice\Sales;
 
-use Livewire\Component;
 use App\Models\Lunaris\Invoice;
-use App\Models\Lunaris\InvoiceDetail;
+use Livewire\Component;
 
 class Fiches extends Component
 {
     public $confirmingDelete = false;
+
     public $deleteId;
 
     public function render()
     {
         return view('invoice.sales.list', [
-            'fiches' => Invoice::whereIn('type', [ 1, 3 ])->orderBy('date_', 'desc')->paginate(10)
+            'fiches' => Invoice::whereIn('type', [1, 3])->orderBy('date_', 'desc')->paginate(10),
         ]);
     }
 
@@ -32,6 +32,6 @@ class Fiches extends Component
         $invoice->delete();
 
         $this->confirmingDelete = false;
-        $this->successMessage = "Fatura başarıyla silindi.";
+        $this->successMessage = 'Fatura başarıyla silindi.';
     }
 }

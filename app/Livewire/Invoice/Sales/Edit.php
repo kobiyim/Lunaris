@@ -2,20 +2,37 @@
 
 namespace App\Livewire\Invoice\Sales;
 
-use Livewire\Component;
 use App\Models\Lunaris\Card;
 use App\Models\Lunaris\CardActivity;
-use App\Models\Lunaris\Item;
 use App\Models\Lunaris\Invoice;
 use App\Models\Lunaris\InvoiceDetail;
+use App\Models\Lunaris\Item;
+use Livewire\Component;
 
 class Edit extends Component
 {
     public $invoiceId;
+
     public $invoice;
-    public $card_id, $invoice_no, $date_, $description, $type, $total, $stocks;
+
+    public $card_id;
+
+    public $invoice_no;
+
+    public $date_;
+
+    public $description;
+
+    public $type;
+
+    public $total;
+
+    public $stocks;
+
     public $details = [];
+
     public $deleted = [];
+
     public $newCreation = [];
 
     public function mount($salesId)
@@ -48,6 +65,7 @@ class Edit extends Component
     public function render()
     {
         $data['cards'] = Card::where('active', 1)->orderBy('name')->get()->pluck('name', 'id');
+
         return view('invoice.sales.edit', $data);
     }
 
@@ -55,7 +73,7 @@ class Edit extends Component
     {
         $this->validate([
             'card_id' => 'required',
-            'invoice_no' => 'required|unique:lunaris_invoices,invoice_no,' . $this->invoice->id,
+            'invoice_no' => 'required|unique:lunaris_invoices,invoice_no,'.$this->invoice->id,
             'date_' => 'required|date',
             'type' => 'required',
         ]);
@@ -68,7 +86,7 @@ class Edit extends Component
         ]);
 
         foreach ($this->details as &$detail) {
-            $detail['total'] = (float)$detail['quantity'] * (float)$detail['price'];
+            $detail['total'] = (float) $detail['quantity'] * (float) $detail['price'];
         }
 
         $this->validate([
@@ -79,7 +97,7 @@ class Edit extends Component
         ]);
 
         foreach ($this->newCreation as &$detail) {
-            $detail['total'] = (float)$detail['quantity'] * (float)$detail['price'];
+            $detail['total'] = (float) $detail['quantity'] * (float) $detail['price'];
         }
 
         $this->total = array_sum(array_column($this->details, 'total')) + array_sum(array_column($this->newCreation, 'total'));
@@ -90,7 +108,7 @@ class Edit extends Component
             'date_' => $this->date_,
             'description' => $this->description,
             'sign' => signOfSalesInvoice($this->type),
-            'total' => $this->total
+            'total' => $this->total,
         ]);
 
         // Yeni detayları kaydet
@@ -98,7 +116,7 @@ class Edit extends Component
             InvoiceDetail::find($detail)->delete();
         }
 
-        foreach( $this->newCreation as $detail) {
+        foreach ($this->newCreation as $detail) {
             InvoiceDetail::create([
                 'invoice_id' => $this->invoiceId,
                 'stock_id' => $detail['stock_id'],
@@ -106,7 +124,7 @@ class Edit extends Component
                 'quantity' => $detail['quantity'],
                 'description' => $detail['description'],
                 'price' => $detail['price'],
-                'total' => $detail['total']
+                'total' => $detail['total'],
             ]);
         }
 
@@ -116,10 +134,11 @@ class Edit extends Component
             'subject_id' => $this->invoiceId,
         ])->update([
             'date_' => $this->date_,
-            'total' => $this->total
+            'total' => $this->total,
         ]);
 
         session()->flash('message', 'Fatura güncellendi.');
+
         return redirect()->route('faturalar.index');
     }
 

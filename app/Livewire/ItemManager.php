@@ -2,19 +2,33 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
-use Livewire\WithPagination;
 use App\Models\Lunaris\Item;
 use App\Models\Lunaris\UnitSet;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 class ItemManager extends Component
 {
     use WithPagination;
 
-    public $code, $name, $unit_set_id, $item_id, $unitSets, $search;
+    public $code;
+
+    public $name;
+
+    public $unit_set_id;
+
+    public $item_id;
+
+    public $unitSets;
+
+    public $search;
+
     public $isEditMode = false;
+
     public $confirmingDelete = false;
+
     public $deleteId;
+
     public $successMessage;
 
     protected $rules = [
@@ -31,7 +45,7 @@ class ItemManager extends Component
     public function render()
     {
         return view('item-component', [
-            'items' => Item::where('name', 'LIKE', '%' . $this->search . '%')->orWhere('code', 'LIKE', '%' . $this->search . '%')->orderByDesc('id')->paginate(10),
+            'items' => Item::where('name', 'LIKE', '%'.$this->search.'%')->orWhere('code', 'LIKE', '%'.$this->search.'%')->orderByDesc('id')->paginate(10),
         ]);
     }
 
@@ -53,7 +67,7 @@ class ItemManager extends Component
 
         $this->resetForm();
         $this->dispatch('modal-close');
-        $this->successMessage = "Stok başarıyla eklendi.";
+        $this->successMessage = 'Stok başarıyla eklendi.';
     }
 
     public function edit($id)
@@ -81,7 +95,7 @@ class ItemManager extends Component
 
         $this->resetForm();
         $this->dispatch('modal-close');
-        $this->successMessage = "Stok başarıyla güncellendi.";
+        $this->successMessage = 'Stok başarıyla güncellendi.';
     }
 
     public function confirmDelete($id)
@@ -94,6 +108,6 @@ class ItemManager extends Component
     {
         Item::findOrFail($this->deleteId)->delete();
         $this->confirmingDelete = false;
-        $this->successMessage = "Stok başarıyla silindi.";
+        $this->successMessage = 'Stok başarıyla silindi.';
     }
 }

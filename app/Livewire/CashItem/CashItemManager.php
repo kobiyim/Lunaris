@@ -2,19 +2,30 @@
 
 namespace App\Livewire\CashItem;
 
+use App\Models\Lunaris\Card;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Lunaris\Card;
 
 class CashItemManager extends Component
 {
     use WithPagination;
 
-    public $search, $code, $name, $card_id;
+    public $search;
+
+    public $code;
+
+    public $name;
+
+    public $card_id;
+
     public $active = 2;
+
     public $isEditMode = false;
+
     public $confirmingDelete = false;
+
     public $deleteId;
+
     public $successMessage;
 
     protected $rules = [
@@ -24,9 +35,11 @@ class CashItemManager extends Component
 
     public function render()
     {
-        $cards = Card::where('name', 'LIKE', '%' . $this->search . '%');
+        $cards = Card::where('name', 'LIKE', '%'.$this->search.'%');
 
-        if($this->active != '2') { $cards->where('active', $this->active); };
+        if ($this->active != '2') {
+            $cards->where('active', $this->active);
+        }
 
         return view('card.manager', [
             'cards' => $cards->orderByDesc('id')->paginate(10),
@@ -50,7 +63,7 @@ class CashItemManager extends Component
 
         $this->resetForm();
         $this->dispatch('modal-close');
-        $this->successMessage = "Cari hesap başarıyla eklendi.";
+        $this->successMessage = 'Cari hesap başarıyla eklendi.';
     }
 
     public function edit($id)
@@ -76,7 +89,7 @@ class CashItemManager extends Component
 
         $this->resetForm();
         $this->dispatch('modal-close');
-        $this->successMessage = "Cari hesap başarıyla güncellendi.";
+        $this->successMessage = 'Cari hesap başarıyla güncellendi.';
     }
 
     public function confirmDelete($id)
@@ -89,6 +102,6 @@ class CashItemManager extends Component
     {
         Card::findOrFail($this->deleteId)->delete();
         $this->confirmingDelete = false;
-        $this->successMessage = "Cari hesap başarıyla silindi.";
+        $this->successMessage = 'Cari hesap başarıyla silindi.';
     }
 }

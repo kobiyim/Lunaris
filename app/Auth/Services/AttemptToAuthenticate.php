@@ -22,8 +22,8 @@ class AttemptToAuthenticate
     {
         if (
             Auth::attempt([
-                'phone'     => $request->phone,
-                'password'  => $request->password,
+                'phone' => $request->phone,
+                'password' => $request->password,
                 'is_active' => 1,
             ])
         ) {
@@ -37,8 +37,6 @@ class AttemptToAuthenticate
     {
         $this->limiter->increment($request);
 
-        throw ValidationException::withMessages([
-            'message' => ['Giriş bilgilernizi kontrol ediniz veya sistem yöneticisine danışınız.'],
-        ]);
+        throw ValidationException::withMessages(['message' => ['Giriş bilgilernizi kontrol ediniz veya sistem yöneticisine danışınız.']]);
     }
 }

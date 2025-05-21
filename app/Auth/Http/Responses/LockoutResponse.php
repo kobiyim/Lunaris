@@ -19,9 +19,7 @@ class LockoutResponse implements Responsable
     public function toResponse($request)
     {
         return with($this->limiter->availableIn($request), function ($seconds) {
-            throw ValidationException::withMessages([
-                'phone' => 'Çok fazla giriş denemesi yaptınız.\nGiriş denemeleriniz engellendi. '.$seconds,
-            ])->status(Response::HTTP_TOO_MANY_REQUESTS);
+            throw ValidationException::withMessages(['phone' => 'Çok fazla giriş denemesi yaptınız.\nGiriş denemeleriniz engellendi. '.$seconds])->status(Response::HTTP_TOO_MANY_REQUESTS);
         });
     }
 }

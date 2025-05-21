@@ -19,9 +19,8 @@ class CardActivity extends Model
         'sign',
         'date_',
         'total',
-        'description'
+        'description',
     ];
 
     public $timestamps = false;
-
 }

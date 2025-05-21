@@ -2,19 +2,33 @@
 
 namespace App\Livewire;
 
+use App\Models\Lunaris\Unit;
+use App\Models\Lunaris\UnitSet;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Lunaris\UnitSet;
-use App\Models\Lunaris\Unit;
 
 class UnitManager extends Component
 {
     use WithPagination;
 
-    public $search, $code, $name, $unit_set_id, $unit_id, $unit;
+    public $search;
+
+    public $code;
+
+    public $name;
+
+    public $unit_set_id;
+
+    public $unit_id;
+
+    public $unit;
+
     public $isEditMode = false;
+
     public $confirmingDelete = false;
+
     public $deleteId;
+
     public $successMessage;
 
     protected $rules = [
@@ -55,7 +69,7 @@ class UnitManager extends Component
 
         $this->resetForm();
         $this->dispatch('modal-close');
-        $this->successMessage = "Birim başarıyla eklendi.";
+        $this->successMessage = 'Birim başarıyla eklendi.';
     }
 
     public function edit($id)
@@ -81,13 +95,13 @@ class UnitManager extends Component
 
         $this->resetForm();
         $this->dispatch('modal-close');
-        
-$this->dispatch('swal', [
-    'title' => 'Başarılı!',
-    'text' => 'Kayıt başarıyla eklendi.',
-    'icon' => 'success',
-]);
-        $this->successMessage = "Birim başarıyla güncellendi.";
+
+        $this->dispatch('swal', [
+            'title' => 'Başarılı!',
+            'text' => 'Kayıt başarıyla eklendi.',
+            'icon' => 'success',
+        ]);
+        $this->successMessage = 'Birim başarıyla güncellendi.';
     }
 
     public function confirmDelete($id)
@@ -100,6 +114,6 @@ $this->dispatch('swal', [
     {
         Unit::findOrFail($this->deleteId)->delete();
         $this->confirmingDelete = false;
-        $this->successMessage = "Birim başarıyla silindi.";
+        $this->successMessage = 'Birim başarıyla silindi.';
     }
 }

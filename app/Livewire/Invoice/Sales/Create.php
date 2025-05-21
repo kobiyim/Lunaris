@@ -2,17 +2,28 @@
 
 namespace App\Livewire\Invoice\Sales;
 
-use Livewire\Component;
 use App\Models\Lunaris\Card;
 use App\Models\Lunaris\CardActivity;
-use App\Models\Lunaris\Item;
 use App\Models\Lunaris\Invoice;
-use App\Models\Lunaris\InvoiceDetail;
+use App\Models\Lunaris\Item;
+use Livewire\Component;
 
 class Create extends Component
 {
-    public $card_id, $invoice_no, $date_, $description, $type, $total, $stocks;
-    
+    public $card_id;
+
+    public $invoice_no;
+
+    public $date_;
+
+    public $description;
+
+    public $type;
+
+    public $total;
+
+    public $stocks;
+
     public $details = []; // Satır detayları
 
     public function mount()
@@ -72,7 +83,7 @@ class Create extends Component
         ]);
 
         foreach ($this->details as &$detail) {
-            $detail['total'] = (float)$detail['quantity'] * (float)$detail['price'];
+            $detail['total'] = (float) $detail['quantity'] * (float) $detail['price'];
         }
 
         $this->total = array_sum(array_column($this->details, 'total'));
@@ -84,7 +95,7 @@ class Create extends Component
             'description' => $this->description,
             'type' => $this->type,
             'sign' => signOfSalesInvoice($this->type),
-            'total' => $this->total
+            'total' => $this->total,
         ]);
 
         CardActivity::create([
@@ -93,7 +104,7 @@ class Create extends Component
             'subject_id' => $invoice->id,
             'sign' => signOfSalesInvoice($this->type),
             'date_' => $this->date_,
-            'total' => $this->total
+            'total' => $this->total,
         ]);
 
         // Yeni detayları kaydet

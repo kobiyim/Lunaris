@@ -2,19 +2,30 @@
 
 namespace App\Livewire\Card;
 
+use App\Models\Lunaris\Card;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Lunaris\Card;
 
 class CardManager extends Component
 {
     use WithPagination;
 
-    public $search, $code, $name, $card_id;
+    public $search;
+
+    public $code;
+
+    public $name;
+
+    public $card_id;
+
     public $active = 2;
+
     public $isEditMode = false;
+
     public $confirmingDelete = false;
+
     public $deleteId;
+
     public $successMessage;
 
     public $showDetail = false;
@@ -26,9 +37,11 @@ class CardManager extends Component
 
     public function render()
     {
-        $cards = Card::where('name', 'LIKE', '%' . $this->search . '%');
+        $cards = Card::where('name', 'LIKE', '%'.$this->search.'%');
 
-        if($this->active != '2') { $cards->where('active', $this->active); };
+        if ($this->active != '2') {
+            $cards->where('active', $this->active);
+        }
 
         return view('card.manager', [
             'cards' => $cards->orderByDesc('id')->paginate(10),
@@ -57,7 +70,7 @@ class CardManager extends Component
 
         $this->resetForm();
         $this->dispatch('modal-close');
-        $this->successMessage = "Cari hesap başarıyla eklendi.";
+        $this->successMessage = 'Cari hesap başarıyla eklendi.';
     }
 
     public function edit($id)
@@ -83,7 +96,7 @@ class CardManager extends Component
 
         $this->resetForm();
         $this->dispatch('modal-close');
-        $this->successMessage = "Cari hesap başarıyla güncellendi.";
+        $this->successMessage = 'Cari hesap başarıyla güncellendi.';
     }
 
     public function confirmDelete($id)
@@ -97,10 +110,10 @@ class CardManager extends Component
         $card = Card::find($this->deleteId);
 
         Card::find($this->deleteId)->update([
-            'active' => ($card->active == 1) ? 0 : 1
+            'active' => ($card->active == 1) ? 0 : 1,
         ]);
 
         $this->confirmingDelete = false;
-        $this->successMessage = "Cari hesap durumu değiştirildi.";
+        $this->successMessage = 'Cari hesap durumu değiştirildi.';
     }
 }

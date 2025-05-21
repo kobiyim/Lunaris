@@ -2,19 +2,30 @@
 
 namespace App\Livewire\Bank;
 
+use App\Models\Lunaris\BankAccount;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Lunaris\Bank;
-use App\Models\Lunaris\BankAccount;
 
 class BankAccountManager extends Component
 {
     use WithPagination;
 
-    public $search, $code, $name, $bank_id, $bank_account_id;
+    public $search;
+
+    public $code;
+
+    public $name;
+
+    public $bank_id;
+
+    public $bank_account_id;
+
     public $isEditMode = false;
+
     public $confirmingDelete = false;
+
     public $deleteId;
+
     public $successMessage;
 
     protected $rules = [
@@ -30,7 +41,7 @@ class BankAccountManager extends Component
     public function render()
     {
         return view('bank.accounts', [
-            'bankAccounts' => BankAccount::where('bank_id', $this->bank_id)->where('name', 'LIKE', '%' . $this->search . '%')->orderByDesc('id')->paginate(10),
+            'bankAccounts' => BankAccount::where('bank_id', $this->bank_id)->where('name', 'LIKE', '%'.$this->search.'%')->orderByDesc('id')->paginate(10),
         ])->extends('components.layouts.app')->section('content');
     }
 
@@ -52,7 +63,7 @@ class BankAccountManager extends Component
 
         $this->resetForm();
         $this->dispatch('modal-close');
-        $this->successMessage = "Banka hesabı başarıyla eklendi.";
+        $this->successMessage = 'Banka hesabı başarıyla eklendi.';
     }
 
     public function edit($id)
@@ -78,7 +89,7 @@ class BankAccountManager extends Component
 
         $this->resetForm();
         $this->dispatch('modal-close');
-        $this->successMessage = "Banka hesabı başarıyla güncellendi.";
+        $this->successMessage = 'Banka hesabı başarıyla güncellendi.';
     }
 
     public function confirmDelete($id)
@@ -91,6 +102,6 @@ class BankAccountManager extends Component
     {
         BankAccount::findOrFail($this->deleteId)->delete();
         $this->confirmingDelete = false;
-        $this->successMessage = "Banka hesabı başarıyla silindi.";
+        $this->successMessage = 'Banka hesabı başarıyla silindi.';
     }
 }

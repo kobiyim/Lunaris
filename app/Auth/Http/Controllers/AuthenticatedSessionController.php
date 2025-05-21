@@ -29,10 +29,10 @@ class AuthenticatedSessionController extends \Illuminate\Routing\Controller
     {
         return $this->loginPipeline($request)->then(function ($request) {
             activityRecord([
-                'description'  => 'Kullanıcı sisteme giriş yaptı.',
+                'description' => 'Kullanıcı sisteme giriş yaptı.',
                 'subject_type' => 'Session',
-                'subject_id'   => Auth::id(),
-                'causer_id'    => Auth::id(),
+                'subject_id' => Auth::id(),
+                'causer_id' => Auth::id(),
             ]);
 
             return redirect()->route('dashboard');
@@ -51,10 +51,10 @@ class AuthenticatedSessionController extends \Illuminate\Routing\Controller
     public function destroy(Request $request)
     {
         activityRecord([
-            'description'  => 'Kullanıcı çıkış yaptı.',
+            'description' => 'Kullanıcı çıkış yaptı.',
             'subject_type' => 'Session',
-            'subject_id'   => Auth::id(),
-            'causer_id'    => Auth::id(),
+            'subject_id' => Auth::id(),
+            'causer_id' => Auth::id(),
         ]);
 
         $this->guard->logout();

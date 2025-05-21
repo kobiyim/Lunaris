@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Kobiyim
+ * Kobiyim.
  *
  * @version v3.0.9
  */
@@ -38,10 +38,10 @@ class KobiyimDatabaseBackup extends Command
             ->dumpToFile($dir);
 
         Backup::create([
-            'filename'  => $filename,
-            'dir'       => $dir,
-            'type'      => 'sql',
-            'size'      => \File::size($dir),
+            'filename' => $filename,
+            'dir' => $dir,
+            'type' => 'sql',
+            'size' => \File::size($dir),
             'is_loaded' => 0,
         ]);
 

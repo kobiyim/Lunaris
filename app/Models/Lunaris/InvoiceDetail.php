@@ -35,5 +35,4 @@ class InvoiceDetail extends Model
     {
         return $this->belongsTo(Unit::class);
     }
-
 }

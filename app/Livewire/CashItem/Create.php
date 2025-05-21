@@ -2,22 +2,26 @@
 
 namespace App\Livewire\CashItem;
 
-use Livewire\Component;
-use App\Models\Lunaris\Card;
-use App\Models\Lunaris\CardActivity;
 use App\Models\Lunaris\Bank;
 use App\Models\Lunaris\BankFiche;
-use App\Models\Lunaris\BankFicheLine;
-use Illuminate\Support\Collection;
+use App\Models\Lunaris\Card;
+use App\Models\Lunaris\CardActivity;
+use Livewire\Component;
 
 class Create extends Component
 {
     public $date_;
+
     public $fiche_no;
+
     public $transaction;
+
     public $sign = '+';
+
     public $total;
+
     public $description;
+
     public $cards;
 
     public $lines = [];
@@ -83,7 +87,7 @@ class Create extends Component
                 'subject_id' => $fiche->id,
                 'sign' => signOfBankTransaction($this->transaction),
                 'date_' => $this->date_,
-                'total' => $line['amount']
+                'total' => $line['amount'],
             ]);
         }
 

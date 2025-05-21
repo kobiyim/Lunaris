@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Kobiyim
+ * Kobiyim.
  *
  * @version v3.0.9
  */
@@ -32,7 +32,6 @@ class KobiyimFileBackup extends Command
         $dirsToZip = env('BACKUPFILES');
 
         foreach (explode(';', $dirsToZip) as $dir) {
-
             $zip = new \ZipArchive;
 
             $input_folder = realpath(base_path($dir));
@@ -65,17 +64,16 @@ class KobiyimFileBackup extends Command
                     $zip->close();
 
                     Backup::create([
-                        'filename'  => $backupFilename.'.zip',
-                        'dir'       => $backupDir,
-                        'type'      => 'zip',
-                        'size'      => \File::size($backupDir),
+                        'filename' => $backupFilename.'.zip',
+                        'dir' => $backupDir,
+                        'type' => 'zip',
+                        'size' => \File::size($backupDir),
                         'is_loaded' => 0,
                     ]);
                 } else {
                     exit('Could not create a zip archive, migth be write permissions or other reason.');
                 }
             }
-
         }
 
         $this->info('Sunucu üzerine dosyaların yedeklemesi tamamlandı.');
