@@ -14,7 +14,7 @@ class Fiches extends Component
     public function render()
     {
         return view('invoice.purchase.list', [
-            'fiches' => Invoice::whereIn('type', [2, 4])->paginate(10),
+            'fiches' => Invoice::whereIn('type', [2, 4])->orderBy('date_', 'desc')->paginate(10),
         ]);
     }
 
@@ -26,7 +26,11 @@ class Fiches extends Component
 
     public function delete()
     {
-        Invoice::findOrFail($this->deleteId)->delete();
+        $invoice = Invoice::findOrFail($this->deleteId);
+
+        $invoice->details()->delete();
+        $invoice->delete();
+
         $this->confirmingDelete = false;
         $this->successMessage = 'Fatura başarıyla silindi.';
     }

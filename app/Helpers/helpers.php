@@ -20,6 +20,36 @@ function signOfSalesInvoice($type)
     return $types[$type];
 }
 
+function purchaseTypes($type = null)
+{
+    $types = [
+        '2' => 'Satınalma Faturası',
+        '4' => 'Satınalma İade Faturası',
+    ];
+
+    return ($type == null) ? $types : $types[$type];
+}
+
+function signOfPurchaseInvoice($type)
+{
+    $types = [
+        '2' => '0',
+        '4' => '1',
+    ];
+
+    return $types[$type];
+}
+
+function bankFicheTypes($type = null)
+{
+    $types = [
+        '1' => 'Gelen Havale',
+        '2' => 'Gönderilen Havale',
+    ];
+
+    return ($type == null) ? $types : $types[$type];
+}
+
 function bankTransactions($type = null)
 {
     $types = [

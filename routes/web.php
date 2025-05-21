@@ -24,10 +24,12 @@ Route::group(['middleware' => 'auth', 'namespace' => 'App\Livewire'], function (
 
     Route::get('banks', Bank\BankManager::class);
     Route::group(['prefix' => 'bank', 'namespace' => 'Bank'], function () {
-        Route::get('fiches', Fiches::class);
+        Route::get('fiches', Fiche\Fiches::class);
         Route::get('movements', Movements::class);
 
-        Route::get('fiche/create', Create::class);
+        Route::get('fiche/create', Fiche\Create::class);
+        Route::get('fiche/{bankFicheId}', Fiche\Show::class);
+        Route::get('fiche/{bankFicheId}/edit', Fiche\Edit::class);
     });
 
     Route::group(['prefix' => 'invoice', 'namespace' => 'Invoice'], function () {

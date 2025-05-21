@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Invoice\Sales;
+namespace App\Livewire\Bank\Fiche;
 
 use App\Models\Lunaris\Card;
 use App\Models\Lunaris\CardActivity;

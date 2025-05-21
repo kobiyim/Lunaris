@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Bank;
+namespace App\Livewire\Bank\Fiche;
 
 use App\Models\Lunaris\BankFiche;
 use Livewire\Component;

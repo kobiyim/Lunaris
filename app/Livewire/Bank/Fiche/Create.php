@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Livewire\Invoice\Purchase;
+namespace App\Livewire\Bank\Fiche;
 
 use App\Models\Lunaris\Card;
 use App\Models\Lunaris\CardActivity;
-use App\Models\Lunaris\Invoice;
+use App\Models\Lunaris\Bank;
 use App\Models\Lunaris\Item;
 use Livewire\Component;
 
@@ -12,7 +12,7 @@ class Create extends Component
 {
     public $card_id;
 
-    public $invoice_no;
+    public $fiche_no;
 
     public $date_;
 
@@ -22,13 +22,13 @@ class Create extends Component
 
     public $total;
 
-    public $stocks;
-
     public $details = []; // Satır detayları
+
+    public $banks;
 
     public function mount()
     {
-        $this->stocks = Item::where('active', 1)->orderBy('name')->get()->pluck('name', 'id');
+        $this->banks = Bank::where('active', 1)->orderBy('name')->get()->pluck('name', 'id');
 
         $this->resetInputFields();
     }
@@ -37,7 +37,7 @@ class Create extends Component
     {
         $data['cards'] = Card::where('active', 1)->orderBy('name')->get()->pluck('name', 'id');
 
-        return view('invoice.purchase.create', $data);
+        return view('bank.fiche.create', $data);
     }
 
     private function resetInputFields()
@@ -50,14 +50,14 @@ class Create extends Component
         $this->total = 0;
         $this->details = [
             [
-                'stock_id' => $this->stocks->keys()->first(), 'unit_id' => '', 'quantity' => 1, 'description' => '', 'price' => 0, 'total' => 0,
+                'bank_id' => '', 'unit_id' => '', 'quantity' => 1, 'description' => '', 'price' => 0, 'total' => 0,
             ],
         ];
     }
 
     public function addDetail()
     {
-        $this->details[] = ['stock_id' => $this->stocks->keys()->first(), 'unit_id' => '', 'quantity' => 1, 'description' => '', 'price' => 0, 'total' => 0];
+        $this->details[] = ['stock_id' => '', 'unit_id' => '', 'quantity' => 1, 'description' => '', 'price' => 0, 'total' => 0];
     }
 
     public function removeDetail($index)
@@ -94,15 +94,15 @@ class Create extends Component
             'date_' => $this->date_,
             'description' => $this->description,
             'type' => $this->type,
-            'sign' => signOfPurchaseInvoice($this->type),
+            'sign' => signOfSalesInvoice($this->type),
             'total' => $this->total,
         ]);
 
         CardActivity::create([
             'card_id' => $this->card_id,
-            'type' => 3,
+            'type' => 1,
             'subject_id' => $invoice->id,
-            'sign' => signOfPurchaseInvoice($this->type),
+            'sign' => signOfSalesInvoice($this->type),
             'date_' => $this->date_,
             'total' => $this->total,
         ]);

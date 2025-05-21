@@ -7,17 +7,15 @@ use Livewire\Component;
 
 class Show extends Component
 {
-    public $invoiceId;
+    public $invoice;
 
-    public function mount($invoiceId)
+    public function mount($purchaseId)
     {
-        $this->invoiceId = $invoiceId;
+        $this->invoice = Invoice::find($purchaseId);
     }
 
     public function render()
     {
-        return view('invoice.sales.show', [
-            'fiches' => Invoice::find($this->invoiceId),
-        ]);
+        return view('invoice.purchase.show');
     }
 }
