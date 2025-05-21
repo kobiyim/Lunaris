@@ -45,8 +45,8 @@
                     </div><!-- end card header -->
                     <div class="card-body">
                         <div class="row g-3">
-                            <div class="col-lg-12">
-                                <table class="table table-nowrap">
+                            <div class="col-lg-12"><div class="table-responsive table-card">
+                                <table class="table table-borderless table-nowrap">
                                     <thead>
                                         <tr>
                                             <th scope="col">Kod</th>
@@ -95,7 +95,7 @@
                                     </tbody>
                                 </table>
 
-                                {{ $cards->links('vendor.pagination.bootstrap-5') }}
+                                {{ $cards->links('vendor.pagination.bootstrap-5') }}</div>
                             </div>
                         </div>
                     </div>

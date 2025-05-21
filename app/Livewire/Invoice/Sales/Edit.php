@@ -4,6 +4,7 @@ namespace App\Livewire\Invoice\Sales;
 
 use Livewire\Component;
 use App\Models\Lunaris\Card;
+use App\Models\Lunaris\CardActivity;
 use App\Models\Lunaris\Item;
 use App\Models\Lunaris\Invoice;
 use App\Models\Lunaris\InvoiceDetail;
@@ -41,9 +42,7 @@ class Edit extends Component
                 'price' => $d->price,
                 'total' => $d->total,
             ];
-        })->toArray();
-
-        dd($this->details);
+        })->keyBy('id')->toArray();
     }
 
     public function render()
@@ -110,6 +109,15 @@ class Edit extends Component
                 'total' => $detail['total']
             ]);
         }
+
+        CardActivity::where([
+            'card_id' => $this->card_id,
+            'type' => 1,
+            'subject_id' => $this->invoiceId,
+        ])->update([
+            'date_' => $this->date_,
+            'total' => $this->total
+        ]);
 
         session()->flash('message', 'Fatura güncellendi.');
         return redirect()->route('faturalar.index');

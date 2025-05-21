@@ -98,7 +98,44 @@
                                                         <input type="number" wire:model="details.{{ $index }}.total" class="form-control" readonly>
                                                     </td>
                                                     <td>
-                                                        <button type="button" wire:click="removeDetail({{ $index }})" class="btn btn-danger btn-sm">X</button>
+                                                        <button type="button" wire:click="removeFromDetail({{ $index }})" class="btn btn-danger btn-sm">X</button>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            @foreach($newCreation as $index => $detail)
+                                                <tr>
+                                                    <td>
+                                                        <select wire:model="newCreation.{{ $index }}.stock_id" class="form-control">
+                                                            @foreach($stocks as $id => $name)
+                                                                <option value="{{ $id }}">{{ $name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" wire:model="newCreation.{{ $index }}.description" class="form-control" placeholder="Açıklama">
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" wire:model="newCreation.{{ $index }}.quantity" class="form-control" step="0.001">
+                                                    </td>
+                                                    <td>
+                                                        <select wire:model="newCreation.{{ $index }}.unit_id" class="form-control">
+                                                            @php
+                                                                $item = \App\Models\Lunaris\Item::find($newCreation[$index]['stock_id']);
+                                                                $units = $item ? \App\Models\Lunaris\Unit::where('unit_set_id', $item->unit_set_id)->get() : [];
+                                                            @endphp
+                                                            @foreach($units as $unit)
+                                                                <option value="{{ $unit->id }}">{{ $unit->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" wire:model="newCreation.{{ $index }}.price" class="form-control" step="0.01">
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" wire:model="newCreation.{{ $index }}.total" class="form-control" readonly>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" wire:click="removeFromCreation({{ $index }})" class="btn btn-danger btn-sm">X</button>
                                                     </td>
                                                 </tr>
                                             @endforeach
