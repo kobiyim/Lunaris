@@ -26,7 +26,7 @@
                             </div>
                             <div class="mb-2">
                                 <label for="choices-publish-status-input" class="form-label">Fatura Türü:</label>
-                                {{ html()->select('', salesTypes())->attributes([ 'wire:model' => 'type', 'class' => 'form-control']) }}
+                                {{ html()->select('', [[ 'Seçiniz' => '' ] + salesTypes()])->attributes([ 'wire:model' => 'type', 'class' => 'form-control']) }}
                             </div>
                         </div>
                     </div>
@@ -60,11 +60,7 @@
                                             @foreach($details as $index => $detail)
                                                 <tr>
                                                     <td>
-                                                        <select wire:model.change="details.{{ $index }}.stock_id" class="form-control">
-                                                            @foreach (\App\Models\Lunaris\Item::all() as $state)
-                                                                <option value="{{ $state->id }}" @if($loop->first) selected @endif >{{ $state->name }}</option>
-                                                            @endforeach
-                                                        </select>
+                                                        {{ html()->select('', $stocks)->attributes([ 'wire:model.change' => 'details.' . $index . '.stock_id', 'class' => 'form-control form-select']) }}
                                                     </td>
                                                     <td>
                                                         <input type="text" wire:model="details.{{$index}}.description" class="form-control" placeholder="Açıklama">
@@ -74,9 +70,11 @@
                                                     </td>
                                                     <td>
                                                         <select wire:model="details.{{$index}}.unit_id" class="form-control">
-                                                            @foreach (\App\Models\Lunaris\Unit::where('unit_set_id', \App\Models\Lunaris\Item::find($details[$index]['stock_id'])->unit_set_id)->get() as $unit)
-                                                                <option value="{{ $unit->id }}">{{ $unit->name }}</option>
-                                                            @endforeach
+                                                            @if($details[$index]['stock_id'])
+                                                                @foreach (\App\Models\Lunaris\Unit::where('unit_set_id', \App\Models\Lunaris\Item::find($details[$index]['stock_id'])->unit_set_id)->get() as $unit)
+                                                                    <option value="{{ $unit->id }}">{{ $unit->name }}</option>
+                                                                @endforeach
+                                                            @endif
                                                         </select>
                                                     </td>
                                                     <td>

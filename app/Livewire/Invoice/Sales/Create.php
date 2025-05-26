@@ -28,14 +28,14 @@ class Create extends Component
 
     public function mount()
     {
-        $this->stocks = Item::where('active', 1)->orderBy('name')->get()->pluck('name', 'id');
+        $this->stocks = Item::where('active', 1)->orderBy('name')->get()->pluck('name', 'id')->prepend('Seçiniz', '');
 
         $this->resetInputFields();
     }
 
     public function render()
     {
-        $data['cards'] = Card::where('active', 1)->orderBy('name')->get()->pluck('name', 'id');
+        $data['cards'] = Card::where('active', 1)->orderBy('name')->get()->pluck('name', 'id')->prepend('Seçiniz', '');
 
         return view('invoice.sales.create', $data);
     }
@@ -44,7 +44,7 @@ class Create extends Component
     {
         $this->card_id = '';
         $this->invoice_no = '';
-        $this->date_ = now();
+        $this->date_ = now()->toDateString();
         $this->description = '';
         $this->type = '';
         $this->total = 0;
