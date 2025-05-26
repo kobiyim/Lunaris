@@ -42,8 +42,8 @@
                                     <tbody>
                                         @foreach($bankFicheLines as $fiche)
                                             <tr>
-                                                <td>{{ $fiche->fiche->ficheno }}</td>
-                                                <td>{{ $fiche->fiche->date_ }}</td>
+                                                <td>{{ $fiche->fiche->fiche_no }}</td>
+                                                <td>{{ $fiche->fiche->date_->format('d.m.Y') }}</td>
                                                 <td>{{ $fiche->description }}</td>
                                                 <td>@if($fiche->fiche->sign == 1) {{ $fiche->amount }} @endif</td>
                                                 <td>@if($fiche->fiche->sign == 0) {{ $fiche->amount }} @endif</td>

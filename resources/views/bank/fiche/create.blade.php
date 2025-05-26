@@ -10,7 +10,7 @@
                         <div class="card-body">
                             <div class="mb-2">
                                 <label for="choices-publish-status-input" class="form-label">Fiş No:</label>
-                                <input type="text" wire:model="invoice_no" placeholder="Invoice No" class="form-control">
+                                <input type="text" wire:model="fiche_no" placeholder="Invoice No" class="form-control">
                             </div>
                             <div class="mb-2">
                                 <label for="choices-publish-status-input" class="form-label">Tarih:</label>
@@ -22,7 +22,7 @@
                             </div>
                             <div class="mb-2">
                                 <label for="choices-publish-status-input" class="form-label">Fatura Türü:</label>
-                                {{ html()->select('', bankFicheTypes())->attributes([ 'wire:model' => 'type', 'class' => 'form-control']) }}
+                                {{ html()->select('', bankFicheTypes())->attributes([ 'wire:model' => 'transaction', 'class' => 'form-control']) }}
                             </div>
                         </div>
                     </div>
@@ -43,12 +43,11 @@
                                     <table class="table table-striped table-sm">
                                         <thead>
                                             <tr>
-                                                <th width="20%">Banka</th>
+                                                <th>Banka</th>
                                                 <th>Hesap</th>
-                                                <th width="7%">Miktar</th>
-                                                <th width="7%">Birim</th>
-                                                <th width="12%">Fiyatı</th>
-                                                <th width="12%">Toplam</th>
+                                                <th>Cari</th>
+                                                <th>Tutar</th>
+                                                <th>Açıklama</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -66,20 +65,13 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        {{ html()->select('', $cards)->attributes([ 'wire:model' => 'details.' . $index . '.stock_id', 'class' => 'form-control']) }}
+                                                        {{ html()->select('', $cards)->attributes([ 'wire:model' => 'details.' . $index . '.card_id', 'class' => 'form-control']) }}
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" wire:model="details.{{$index}}.amount" class="form-control" placeholder="Fiyat" step="0.01">
                                                     </td>
                                                     <td>
                                                         <input type="text" wire:model="details.{{$index}}.description" class="form-control" placeholder="Açıklama">
-                                                    </td>
-                                                    <td>
-                                                        <input type="number" wire:model="details.{{$index}}.quantity" class="form-control" placeholder="Miktar" step="0.001">
-                                                    </td>
-                                                    
-                                                    <td>
-                                                        <input type="number" wire:model="details.{{$index}}.price" class="form-control" placeholder="Fiyat" step="0.01">
-                                                    </td>
-                                                    <td>
-                                                        <input type="number" wire:model="details.{{$index}}.total" class="form-control" placeholder="Toplam" readonly>
                                                     </td>
                                                     <td>
                                                         <button type="button" wire:click="removeDetail({{ $index }})" class="btn btn-danger btn-sm">X</button>

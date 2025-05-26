@@ -20,6 +20,16 @@ function signOfSalesInvoice($type)
     return $types[$type];
 }
 
+function signOfBankFiche($type)
+{
+    $types = [
+        '1' => '1',
+        '2' => '0',
+    ];
+
+    return $types[$type];
+}
+
 function purchaseTypes($type = null)
 {
     $types = [
