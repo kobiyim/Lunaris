@@ -2,102 +2,106 @@
 
 namespace App\Livewire\Vault;
 
-use App\Models\Lunaris\Bank;
-use App\Models\Lunaris\BankFiche;
 use App\Models\Lunaris\Card;
 use App\Models\Lunaris\CardActivity;
+use App\Models\Lunaris\VaultFiche;
+use App\Models\Lunaris\Vault;
 use Livewire\Component;
 
 class Create extends Component
 {
-    public $date_;
-
     public $fiche_no;
 
-    public $transaction;
-
-    public $sign = '+';
-
-    public $total;
+    public $date_;
 
     public $description;
 
-    public $cards;
+    public $transaction;
 
-    public $lines = [];
+    public $total;
 
-    protected $rules = [
-        'date_' => 'required|date',
-        'fiche_no' => 'required|string|unique:lunaris_bank_fiches,fiche_no',
-        'transaction' => 'required|string',
-        'sign' => 'required|in:+,-',
-        'description' => 'nullable|string',
-        'lines.*.bank_account_id' => 'required|integer',
-        'lines.*.card_id' => 'nullable|integer',
-        'lines.*.description' => 'nullable|string',
-        'lines.*.amount' => 'required|numeric|min:0',
-    ];
+    public $details = []; // Satır detayları
+
+    public $vaults;
 
     public function mount()
     {
-        $this->banks = Bank::where('active', 1)->orderBy('name')->get()->pluck('name', 'id');
-        $this->cards = Card::where('active', 1)->orderBy('name')->get()->pluck('name', 'id');
+        $this->vaults = Vault::where('active', 1)->orderBy('name')->get()->pluck('name', 'id');
 
-        $this->addLine(); // sayfa açıldığında bir satır gözüksün
-    }
-
-    public function addLine()
-    {
-        $this->lines[] = [
-            'bank_id' => '',
-            'bank_account_id' => '',
-            'card_id' => '',
-            'description' => '',
-            'amount' => '',
-        ];
-    }
-
-    public function removeLine($index)
-    {
-        unset($this->lines[$index]);
-        $this->lines = array_values($this->lines); // indexleri düzelt
-    }
-
-    public function store()
-    {
-        $validated = $this->validate();
-
-        $this->total = array_sum(array_column($this->lines, 'amount'));
-
-        $fiche = BankFiche::create([
-            'date_' => $this->date_,
-            'fiche_no' => $this->fiche_no,
-            'transaction' => $this->transaction,
-            'sign' => signOfBankTransaction($this->transaction),
-            'total' => $this->total,
-            'description' => $this->description,
-        ]);
-
-        foreach ($this->lines as $line) {
-            $each = $fiche->lines()->create($line);
-
-            CardActivity::create([
-                'card_id' => $line['card_id'],
-                'type' => 3,
-                'subject_id' => $fiche->id,
-                'sign' => signOfBankTransaction($this->transaction),
-                'date_' => $this->date_,
-                'total' => $line['amount'],
-            ]);
-        }
-
-        session()->flash('success', 'Banka fişi ve satırları başarıyla oluşturuldu.');
-
-        return redirect('bank/fiches');
+        $this->resetInputFields();
     }
 
     public function render()
     {
-        return view('bank.create');
+        $data['cards'] = Card::where('active', 1)->orderBy('name')->get()->pluck('name', 'id');
+
+        return view('vault.fiche.create', $data);
+    }
+
+    private function resetInputFields()
+    {
+        $this->fiche_no = '';
+        $this->date_ = now();
+        $this->description = '';
+        $this->amount = 0;
+        $this->details = [
+            [
+                'vault_id' => '', 'card_id' => '', 'amount' => 0, 'description' => '',
+            ],
+        ];
+    }
+
+    public function addDetail()
+    {
+        $this->details[] = ['vault_id' => '', 'card_id' => '', 'amount' => 0, 'description' => ''];
+    }
+
+    public function removeDetail($index)
+    {
+        unset($this->details[$index]);
+    }
+
+    public function store()
+    {
+        $validatedInvoice = $this->validate([
+            'fiche_no' => 'required|unique:lunaris_vault_fiches,fiche_no',
+            'date_' => 'required|date',
+            'transaction' => 'required',
+        ]);
+
+        $validatedDetails = $this->validate([
+            'details.*.vault_id' => 'required',
+            'details.*.card_id' => 'required',
+            'details.*.amount' => 'required|numeric|min:1',
+        ]);
+
+        $this->total = array_sum(array_column($this->details, 'amount'));
+
+        $fiche = VaultFiche::create([
+            'date_' => $this->date_,
+            'fiche_no' => $this->fiche_no,
+            'transaction' => $this->transaction,
+            'sign' => signOfBankFiche($this->transaction),
+            'total' => $this->total,
+            'description' => $this->description,
+        ]);
+
+        // Yeni detayları kaydet
+        foreach ($this->details as $detail) {
+            CardActivity::create([
+                'card_id' => $detail['card_id'],
+                'type' => 1,
+                'subject_id' => $fiche->id,
+                'sign' => signOfBankFiche($this->transaction),
+                'date_' => $this->date_,
+                'total' => $this->total,
+            ]);
+
+            $fiche->lines()->create($detail);
+        }
+
+        session()->flash('message', 'Fatura ve detaylar eklendi.');
+
+        $this->resetInputFields();
     }
 }

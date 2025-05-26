@@ -2,102 +2,137 @@
 
 namespace App\Livewire\Vault;
 
-use App\Models\Lunaris\Bank;
-use App\Models\Lunaris\BankFiche;
 use App\Models\Lunaris\Card;
 use App\Models\Lunaris\CardActivity;
+use App\Models\Lunaris\VaultFiche;
+use App\Models\Lunaris\Vault;
 use Livewire\Component;
 
 class Edit extends Component
 {
-    public $date_;
+    public $ficheId;
 
-    public $fiche_no;
-
-    public $transaction;
-
-    public $sign = '+';
-
-    public $total;
-
-    public $description;
+    public $fiche;
 
     public $cards;
 
-    public $lines = [];
+    public $details = [];
 
-    protected $rules = [
-        'date_' => 'required|date',
-        'fiche_no' => 'required|string|unique:lunaris_bank_fiches,fiche_no',
-        'transaction' => 'required|string',
-        'sign' => 'required|in:+,-',
-        'description' => 'nullable|string',
-        'lines.*.bank_account_id' => 'required|integer',
-        'lines.*.card_id' => 'nullable|integer',
-        'lines.*.description' => 'nullable|string',
-        'lines.*.amount' => 'required|numeric|min:0',
-    ];
+    public $deleted = [];
 
-    public function mount()
+    public $newCreation = [];
+
+    public function mount($ficheId)
     {
-        $this->banks = Bank::where('active', 1)->orderBy('name')->get()->pluck('name', 'id');
+        $this->ficheId = $ficheId;
+        $this->fiche = VaultFiche::with('details')->findOrFail($ficheId);
+
         $this->cards = Card::where('active', 1)->orderBy('name')->get()->pluck('name', 'id');
 
-        $this->addLine(); // sayfa açıldığında bir satır gözüksün
-    }
-
-    public function addLine()
-    {
-        $this->lines[] = [
-            'bank_id' => '',
-            'bank_account_id' => '',
-            'card_id' => '',
-            'description' => '',
-            'amount' => '',
-        ];
-    }
-
-    public function removeLine($index)
-    {
-        unset($this->lines[$index]);
-        $this->lines = array_values($this->lines); // indexleri düzelt
-    }
-
-    public function store()
-    {
-        $validated = $this->validate();
-
-        $this->total = array_sum(array_column($this->lines, 'amount'));
-
-        $fiche = BankFiche::create([
-            'date_' => $this->date_,
-            'fiche_no' => $this->fiche_no,
-            'transaction' => $this->transaction,
-            'sign' => signOfBankTransaction($this->transaction),
-            'total' => $this->total,
-            'description' => $this->description,
-        ]);
-
-        foreach ($this->lines as $line) {
-            $each = $fiche->lines()->create($line);
-
-            CardActivity::create([
-                'card_id' => $line['card_id'],
-                'type' => 3,
-                'subject_id' => $fiche->id,
-                'sign' => signOfBankTransaction($this->transaction),
-                'date_' => $this->date_,
-                'total' => $line['amount'],
-            ]);
-        }
-
-        session()->flash('success', 'Banka fişi ve satırları başarıyla oluşturuldu.');
-
-        return redirect('bank/fiches');
+        $this->details = $this->fiche->details->map(function ($d) {
+            return [
+                'id' => $d->id,
+                'vault_id' => $d->vault_id,
+                'card_id' => $d->card_id,
+                'amount' => $d->amount,
+                'description' => $d->description,
+            ];
+        })->keyBy('id')->toArray();
     }
 
     public function render()
     {
-        return view('bank.create');
+        return view('vault.fiche.edit');
+    }
+
+    public function update()
+    {
+        $this->validate([
+            'card_id' => 'required',
+            'invoice_no' => 'required|unique:lunaris_invoices,invoice_no,'.$this->invoice->id,
+            'date_' => 'required|date',
+            'type' => 'required',
+        ]);
+
+        $this->validate([
+            'details.*.stock_id' => 'required',
+            'details.*.unit_id' => 'required',
+            'details.*.quantity' => 'required|numeric|min:1',
+            'details.*.price' => 'required|numeric|min:0',
+        ]);
+
+        foreach ($this->details as &$detail) {
+            $detail['total'] = (float) $detail['quantity'] * (float) $detail['price'];
+        }
+
+        $this->validate([
+            'newCreation.*.stock_id' => 'required',
+            'newCreation.*.unit_id' => 'required',
+            'newCreation.*.quantity' => 'required|numeric|min:1',
+            'newCreation.*.price' => 'required|numeric|min:0',
+        ]);
+
+        foreach ($this->newCreation as &$detail) {
+            $detail['total'] = (float) $detail['quantity'] * (float) $detail['price'];
+        }
+
+        $this->total = array_sum(array_column($this->details, 'total')) + array_sum(array_column($this->newCreation, 'total'));
+
+        $this->invoice->update([
+            'card_id' => $this->card_id,
+            'invoice_no' => $this->invoice_no,
+            'date_' => $this->date_,
+            'description' => $this->description,
+            'sign' => signOfSalesInvoice($this->type),
+            'total' => $this->total,
+        ]);
+
+        // Yeni detayları kaydet
+        foreach ($this->deleted as $detail) {
+            InvoiceDetail::find($detail)->delete();
+        }
+
+        foreach ($this->newCreation as $detail) {
+            InvoiceDetail::create([
+                'invoice_id' => $this->invoiceId,
+                'stock_id' => $detail['stock_id'],
+                'unit_id' => $detail['unit_id'],
+                'quantity' => $detail['quantity'],
+                'description' => $detail['description'],
+                'price' => $detail['price'],
+                'total' => $detail['total'],
+            ]);
+        }
+
+        CardActivity::where([
+            'card_id' => $this->card_id,
+            'type' => 1,
+            'subject_id' => $this->invoiceId,
+        ])->update([
+            'date_' => $this->date_,
+            'total' => $this->total,
+        ]);
+
+        session()->flash('message', 'Fatura güncellendi.');
+
+        return redirect('invoice/sales');
+    }
+
+    public function addDetail()
+    {
+        $this->newCreation[] = ['vault_id' => '', 'card_id' => '', 'amount' => 0, 'description' => ''];
+    }
+
+    public function removeFromDetail($index)
+    {
+        $this->deleted[] = $index;
+        unset($this->details[$index]);
+        $this->details = array_values($this->details); // Reindex after unset
+    }
+
+    public function removeFromCreation($index)
+    {
+        unset($this->newCreation[$index]);
+        $this->newCreation = array_values($this->newCreation); // Reindex after unset
     }
 }

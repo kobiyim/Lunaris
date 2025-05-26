@@ -42,7 +42,7 @@
                                             <div class="d-flex align-items-center">
                                                 <div class="flex-grow-1 overflow-hidden ms-3">
                                                     <div class="d-flex align-items-center mb-3">
-                                                        <h4 class="fs-4 flex-grow-1 mb-0"><span class="counter-value" data-target="{{ rand(10000, 4999999) }}">0</span>₺</h4>
+                                                        <h4 class="fs-4 flex-grow-1 mb-0"> {{ moneyFormat(\App\Models\Lunaris\Invoice::where('type', 1)->whereRaw('month(date_) = ' . now()->month)->sum('total')) }}₺</h4>
                                                         <span class="badge bg-danger-subtle text-danger fs-12"><i class="ri-arrow-down-s-line fs-13 align-middle me-1"></i>5.02
                                                             %</span>
                                                     </div>
