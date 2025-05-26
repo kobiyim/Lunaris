@@ -35,17 +35,33 @@ class CardManager extends Component
         'name' => 'required|max:2056',
     ];
 
+    public $sortField = 'name';
+    public $sortDirection = 'asc';
+
     public function render()
     {
-        $cards = Card::where('name', 'LIKE', '%'.$this->search.'%');
+        $cards = Card::where(function ($query) {
+                $query->where('code', 'like', '%' . $this->search . '%')
+                      ->orWhere('name', 'like', '%' . $this->search . '%');
+            });
 
         if ($this->active != '2') {
             $cards->where('active', $this->active);
         }
 
         return view('card.manager', [
-            'cards' => $cards->orderByDesc('id')->paginate(10),
-        ])->extends('components.layouts.app')->section('content');
+            'cards' => $cards->orderBy($this->sortField, $this->sortDirection)->paginate(10),
+        ]);
+    }
+
+    public function sortBy($field)
+    {
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortField = $field;
+            $this->sortDirection = 'asc';
+        }
     }
 
     public function resetForm()
