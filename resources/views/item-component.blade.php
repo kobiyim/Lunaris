@@ -48,8 +48,8 @@
                                 <table class="table table-nowrap">
                                     <thead>
                                         <tr>
-                                            <th width="5%">Kod</th>
-                                            <th>Ad</th>
+                                            <th wire:click="sortBy('code')" style="cursor: pointer;" scope="col">Kod  @if($sortField === 'code') @if($sortDirection === 'asc') ▲ @else ▼ @endif @endif </th>
+                                            <th wire:click="sortBy('name')" style="cursor: pointer;" scope="col">Ad  @if($sortField === 'name') @if($sortDirection === 'asc') ▲ @else ▼ @endif @endif </th>
                                             <th>Birim Seti</th>
                                             <th width="5%">İşlemler</th>
                                         </tr>
