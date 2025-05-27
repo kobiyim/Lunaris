@@ -15,6 +15,7 @@ Route::group(['middleware' => 'auth', 'namespace' => 'App\Livewire'], function (
     Route::get('cash-items', CashItem\CashItemManager::class);
 
     Route::get('items', Stock\ItemManager::class);
+    Route::get('item/movements', Stock\StockMovements::class);
 
     Route::get('unit-sets', Stock\UnitSetManager::class);
 

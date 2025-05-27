@@ -36,6 +36,7 @@
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-end">
                                         <li><a wire:click="resetForm" data-bs-toggle="modal" data-bs-target="#itemModal" class="dropdown-item">Yeni Stok</a></li>
+                                        <li><a href="{{ url('item/movements') }}" wire:navigate class="dropdown-item">Malzeme Hareketleri</a></li>
                                     </ul>
                                 </div>
                             </div>
