@@ -32,7 +32,7 @@ class ItemManager extends Component
     public $successMessage;
 
     protected $rules = [
-        'code' => 'required|max:8',
+        'code' => 'required|max:8|unique:lunaris_items,code',
         'name' => 'required|max:512',
         'unit_set_id' => 'required|integer',
     ];
