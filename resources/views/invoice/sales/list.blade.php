@@ -28,10 +28,9 @@
                                 <table class="table table-striped table-sm align-middle">
                                     <thead>
                                         <tr class="text-center">
-                                            <th wire:click="sortBy('code')" style="cursor: pointer;" scope="col">Kod  @if($sortField === 'code') @if($sortDirection === 'asc') ▲ @else ▼ @endif @endif </th>
-                                            <th wire:click="sortBy('date_')" style="cursor: pointer;" scope="col" width="6%">Tarih</th>
-                                            <th wire:click="sortBy('invoice_no')" style="cursor: pointer;" scope="col" width="7%">Fiş No</th>
-                                            <th wire:click="sortBy('docode')" style="cursor: pointer;" scope="col" width="8%">Belge No</th>
+                                            <th wire:click="sortBy('date_')" style="cursor: pointer;" scope="col" width="6%">Tarih  @if($sortField === 'date_') @if($sortDirection === 'asc') ▲ @else ▼ @endif @endif </th>
+                                            <th wire:click="sortBy('invoice_no')" style="cursor: pointer;" scope="col" width="7%">Fiş No  @if($sortField === 'invoice_no') @if($sortDirection === 'asc') ▲ @else ▼ @endif @endif </th>
+                                            <th wire:click="sortBy('docode')" style="cursor: pointer;" scope="col" width="8%">Belge No  @if($sortField === 'docode') @if($sortDirection === 'asc') ▲ @else ▼ @endif @endif </th>
                                             <th scope="col" width="8%">Türü</th>
                                             <th scope="col">Müşteri</th>
                                             <th scope="col" width="8%">Tutarı</th>
