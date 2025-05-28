@@ -26,7 +26,7 @@
                             </div>
                             <div class="mb-2">
                                 <label for="choices-publish-status-input" class="form-label">Fatura Türü:</label>
-                                {{ html()->select('', [[ 'Seçiniz' => '' ] + salesTypes()])->attributes([ 'wire:model' => 'type', 'class' => 'form-control']) }}
+                                {{ html()->select('', salesTypes()->prepend('Seçiniz', ''))->attributes([ 'wire:model' => 'type', 'class' => 'form-control']) }}
                             </div>
                         </div>
                     </div>

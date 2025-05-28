@@ -2,10 +2,10 @@
 
 function salesTypes($type = null)
 {
-    $types = [
+    $types = collect([
         '1' => 'Satış Faturası',
         '3' => 'Satış İade Faturası',
-    ];
+    ]);
 
     return ($type == null) ? $types : $types[$type];
 }
