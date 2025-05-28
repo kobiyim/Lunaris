@@ -25,6 +25,10 @@
                                 <textarea wire:model="description" placeholder="Description" class="form-control"></textarea>
                             </div>
                             <div class="mb-2">
+                                <label for="choices-publish-status-input" class="form-label">Belge No:</label>
+                                <input type="text" wire:model="docode" placeholder="Invoice No" class="form-control">
+                            </div>
+                            <div class="mb-2">
                                 <label for="choices-publish-status-input" class="form-label">Fatura Türü:</label>
                                 {{ html()->select('', salesTypes()->prepend('Seçiniz', ''))->attributes([ 'wire:model' => 'type', 'class' => 'form-control']) }}
                             </div>

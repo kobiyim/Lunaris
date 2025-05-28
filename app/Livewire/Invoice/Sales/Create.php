@@ -18,6 +18,8 @@ class Create extends Component
 
     public $description;
 
+    public $docode;
+
     public $type;
 
     public $total;
@@ -70,6 +72,7 @@ class Create extends Component
         $validatedInvoice = $this->validate([
             'card_id' => 'required',
             'invoice_no' => 'required|unique:lunaris_invoices,invoice_no',
+            'docode' => 'nullable',
             'date_' => 'required|date',
             'type' => 'required',
             'total' => 'required|numeric',
@@ -96,6 +99,7 @@ class Create extends Component
             'type' => $this->type,
             'sign' => signOfSalesInvoice($this->type),
             'total' => $this->total,
+            'docode' => $this->docode,
         ]);
 
         CardActivity::create([

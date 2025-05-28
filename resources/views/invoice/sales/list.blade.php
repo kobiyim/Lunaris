@@ -28,9 +28,10 @@
                                 <table class="table table-striped table-sm align-middle">
                                     <thead>
                                         <tr class="text-center">
-                                            <th scope="col" width="6%">Tarih</th>
-                                            <th scope="col" width="7%">Fiş No</th>
-                                            <th scope="col" width="8%">Belge No</th>
+                                            <th wire:click="sortBy('code')" style="cursor: pointer;" scope="col">Kod  @if($sortField === 'code') @if($sortDirection === 'asc') ▲ @else ▼ @endif @endif </th>
+                                            <th wire:click="sortBy('date_')" style="cursor: pointer;" scope="col" width="6%">Tarih</th>
+                                            <th wire:click="sortBy('invoice_no')" style="cursor: pointer;" scope="col" width="7%">Fiş No</th>
+                                            <th wire:click="sortBy('docode')" style="cursor: pointer;" scope="col" width="8%">Belge No</th>
                                             <th scope="col" width="8%">Türü</th>
                                             <th scope="col">Müşteri</th>
                                             <th scope="col" width="8%">Tutarı</th>
@@ -42,7 +43,7 @@
                                             <tr>
                                                 <td>{{ $fiche->date_->format('d.m.Y') }}</td>
                                                 <td>{{ $fiche->invoice_no }}</td>
-                                                <td></td>
+                                                <td>{{ $fiche->docode }}</td>
                                                 <td>{{ salesTypes($fiche->type) }}</td>
                                                 <td>{{ $fiche->card->name }}</td>
                                                 <td class="text-end">{{ moneyFormat($fiche->total) }}</td>
