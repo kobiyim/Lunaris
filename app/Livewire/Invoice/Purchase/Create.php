@@ -18,6 +18,8 @@ class Create extends Component
 
     public $description;
 
+    public $docode;
+
     public $type;
 
     public $total;
@@ -28,14 +30,14 @@ class Create extends Component
 
     public function mount()
     {
-        $this->stocks = Item::where('active', 1)->orderBy('name')->get()->pluck('name', 'id');
+        $this->stocks = Item::where('active', 1)->orderBy('name')->get()->pluck('name', 'id')->prepend('Seçiniz', '');
 
         $this->resetInputFields();
     }
 
     public function render()
     {
-        $data['cards'] = Card::where('active', 1)->orderBy('name')->get()->pluck('name', 'id');
+        $data['cards'] = Card::where('active', 1)->orderBy('name')->get()->pluck('name', 'id')->prepend('Seçiniz', '');
 
         return view('invoice.purchase.create', $data);
     }
@@ -44,7 +46,7 @@ class Create extends Component
     {
         $this->card_id = '';
         $this->invoice_no = '';
-        $this->date_ = now();
+        $this->date_ = now()->toDateString();
         $this->description = '';
         $this->type = '';
         $this->total = 0;
@@ -70,6 +72,7 @@ class Create extends Component
         $validatedInvoice = $this->validate([
             'card_id' => 'required',
             'invoice_no' => 'required|unique:lunaris_invoices,invoice_no',
+            'docode' => 'nullable',
             'date_' => 'required|date',
             'type' => 'required',
             'total' => 'required|numeric',
@@ -96,6 +99,7 @@ class Create extends Component
             'type' => $this->type,
             'sign' => signOfPurchaseInvoice($this->type),
             'total' => $this->total,
+            'docode' => $this->docode,
         ]);
 
         CardActivity::create([

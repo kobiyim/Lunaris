@@ -28,9 +28,9 @@
                                 <table class="table table-striped table-sm align-middle">
                                     <thead>
                                         <tr class="text-center">
-                                            <th scope="col" width="6%">Tarih</th>
-                                            <th scope="col" width="7%">Fiş No</th>
-                                            <th scope="col" width="8%">Belge No</th>
+                                            <th wire:click="sortBy('date_')" style="cursor: pointer;" scope="col" width="6%">Tarih  @if($sortField === 'date_') @if($sortDirection === 'asc') ▲ @else ▼ @endif @endif </th>
+                                            <th wire:click="sortBy('invoice_no')" style="cursor: pointer;" scope="col" width="7%">Fiş No  @if($sortField === 'invoice_no') @if($sortDirection === 'asc') ▲ @else ▼ @endif @endif </th>
+                                            <th wire:click="sortBy('docode')" style="cursor: pointer;" scope="col" width="8%">Belge No  @if($sortField === 'docode') @if($sortDirection === 'asc') ▲ @else ▼ @endif @endif </th>
                                             <th scope="col" width="8%">Türü</th>
                                             <th scope="col">Müşteri</th>
                                             <th scope="col" width="8%">Tutarı</th>
@@ -42,7 +42,7 @@
                                             <tr>
                                                 <td>{{ $fiche->date_->format('d.m.Y') }}</td>
                                                 <td>{{ $fiche->invoice_no }}</td>
-                                                <td></td>
+                                                <td>{{ $fiche->docode }}</td>
                                                 <td>{{ purchaseTypes($fiche->type) }}</td>
                                                 <td>{{ $fiche->card->name }}</td>
                                                 <td class="text-end">{{ moneyFormat($fiche->total) }}</td>

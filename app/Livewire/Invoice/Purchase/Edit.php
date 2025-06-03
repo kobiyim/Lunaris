@@ -44,7 +44,7 @@ class Edit extends Component
 
         $this->card_id = $this->invoice->card_id;
         $this->invoice_no = $this->invoice->invoice_no;
-        $this->date_ = $this->invoice->date_;
+        $this->date_ = $this->invoice->date_->toDateString();
         $this->description = $this->invoice->description;
         $this->type = $this->invoice->type;
         $this->total = $this->invoice->total;

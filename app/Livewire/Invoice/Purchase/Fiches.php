@@ -11,11 +11,43 @@ class Fiches extends Component
 
     public $deleteId;
 
+    public $search = '';
+
+    public $sortField = 'id';
+    public $sortDirection = 'desc';
+
     public function render()
     {
-        return view('invoice.purchase.list', [
-            'fiches' => Invoice::whereIn('type', [2, 4])->orderBy('date_', 'desc')->paginate(10),
-        ]);
+        $keywords = collect(explode(' ', trim($this->search)))
+            ->filter()
+            ->values();
+
+        $fiches = Invoice::with(['card'])
+            ->whereIn('type', [2, 4])
+            ->when($keywords->isNotEmpty(), function ($query) use ($keywords) {
+                foreach ($keywords as $keyword) {
+                    $query->where(function ($q) use ($keyword) {
+                        $q->whereHas('card', function ($subQ) use ($keyword) {
+                            $subQ->where('name', 'like', '%' . $keyword . '%');
+                        });
+                        $q->orWhere('docode', 'like', '%' . $keyword . '%');
+                    });
+                    //$query->orWhere('docode', 'like', '%' . $keyword . '%');
+                }
+            })
+            ->orderBy($this->sortField, $this->sortDirection)->paginate(10);
+
+        return view('invoice.purchase.list', compact('fiches'));
+    }
+
+    public function sortBy($field)
+    {
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortField = $field;
+            $this->sortDirection = 'asc';
+        }
     }
 
     public function confirmDelete($id)

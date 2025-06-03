@@ -32,10 +32,10 @@ function signOfBankFiche($type)
 
 function purchaseTypes($type = null)
 {
-    $types = [
+    $types = collect([
         '2' => 'Satınalma Faturası',
         '4' => 'Satınalma İade Faturası',
-    ];
+    ]);
 
     return ($type == null) ? $types : $types[$type];
 }

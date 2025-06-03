@@ -31,7 +31,7 @@
                             <div class="mb-2">
                                 <label class="form-label">Fatura Türü:</label>
                                 <select wire:model="type" class="form-control">
-                                    @foreach(salesTypes() as $key => $value)
+                                    @foreach(purchaseTypes() as $key => $value)
                                         <option value="{{ $key }}">{{ $value }}</option>
                                     @endforeach
                                 </select>
@@ -45,7 +45,7 @@
                         <div class="card-header align-items-center d-flex">
                             <h4 class="card-title mb-0 flex-grow-1">Fatura Detayları</h4>
                             <div class="flex-shrink-0">
-                                <a class="btn btn-secondary" wire:navigate href="{{ url('invoice/sales') }}">Faturalar</a>
+                                <a class="btn btn-secondary" wire:navigate href="{{ url('invoice/purchase') }}">Faturalar</a>
                             </div>
                         </div>
 
@@ -68,11 +68,7 @@
                                             @foreach($details as $index => $detail)
                                                 <tr>
                                                     <td>
-                                                        <select wire:model="details.{{ $index }}.stock_id" class="form-control">
-                                                            @foreach($stocks as $id => $name)
-                                                                <option value="{{ $id }}">{{ $name }}</option>
-                                                            @endforeach
-                                                        </select>
+                                                        {{ html()->select('', $stocks)->attributes([ 'wire:model.change' => 'details.' . $index . '.stock_id', 'class' => 'form-control form-select']) }}
                                                     </td>
                                                     <td>
                                                         <input type="text" wire:model="details.{{ $index }}.description" class="form-control" placeholder="Açıklama">
@@ -81,15 +77,10 @@
                                                         <input type="number" wire:model="details.{{ $index }}.quantity" class="form-control" step="0.001">
                                                     </td>
                                                     <td>
-                                                        <select wire:model="details.{{ $index }}.unit_id" class="form-control">
-                                                            @php
-                                                                $item = \App\Models\Lunaris\Item::find($details[$index]['stock_id']);
-                                                                $units = $item ? \App\Models\Lunaris\Unit::where('unit_set_id', $item->unit_set_id)->get() : [];
-                                                            @endphp
-                                                            @foreach($units as $unit)
-                                                                <option value="{{ $unit->id }}">{{ $unit->name }}</option>
-                                                            @endforeach
-                                                        </select>
+                                                        @php
+                                                            $unitss = \App\Models\Lunaris\Unit::where('unit_set_id', \App\Models\Lunaris\Item::find($details[$index]['stock_id'])->unit_set_id)->get()->pluck('name', 'id');
+                                                        @endphp
+                                                        {{ html()->select($details[$index]['unit_id'], $unitss)->attributes([ 'wire:model' => 'details.' . $index . '.unit_id', 'class' => 'form-control form-select']) }}
                                                     </td>
                                                     <td>
                                                         <input type="number" wire:model="details.{{ $index }}.price" class="form-control" step="0.01">
@@ -105,11 +96,7 @@
                                             @foreach($newCreation as $index => $detail)
                                                 <tr>
                                                     <td>
-                                                        <select wire:model="newCreation.{{ $index }}.stock_id" class="form-control">
-                                                            @foreach($stocks as $id => $name)
-                                                                <option value="{{ $id }}">{{ $name }}</option>
-                                                            @endforeach
-                                                        </select>
+                                                        {{ html()->select('', $stocks)->attributes([ 'wire:model.change' => 'newCreation.' . $index . '.stock_id', 'class' => 'form-control form-select']) }}
                                                     </td>
                                                     <td>
                                                         <input type="text" wire:model="newCreation.{{ $index }}.description" class="form-control" placeholder="Açıklama">
