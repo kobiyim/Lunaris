@@ -31,6 +31,7 @@ class Fiches extends Component
                             $subQ->where('name', 'like', '%' . $keyword . '%');
                         });
                         $q->orWhere('docode', 'like', '%' . $keyword . '%');
+                        $q->orWhere('invoice_no', 'like', '%' . $keyword . '%');
                     });
                     //$query->orWhere('docode', 'like', '%' . $keyword . '%');
                 }
