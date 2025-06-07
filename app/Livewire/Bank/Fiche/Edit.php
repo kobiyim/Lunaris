@@ -4,20 +4,18 @@ namespace App\Livewire\Bank\Fiche;
 
 use App\Models\Lunaris\Card;
 use App\Models\Lunaris\CardActivity;
-use App\Models\Lunaris\Invoice;
-use App\Models\Lunaris\InvoiceDetail;
-use App\Models\Lunaris\Item;
+use App\Models\Lunaris\BankFiche;
+use App\Models\Lunaris\Bank;
+use App\Models\Lunaris\BankFicheLine;
 use Livewire\Component;
 
 class Edit extends Component
 {
-    public $invoiceId;
+    public $bankFicheId;
 
-    public $invoice;
+    public $bankFiche;
 
-    public $card_id;
-
-    public $invoice_no;
+    public $fiche_no;
 
     public $date_;
 
@@ -27,37 +25,32 @@ class Edit extends Component
 
     public $total;
 
-    public $stocks;
-
     public $details = [];
 
     public $deleted = [];
 
     public $newCreation = [];
 
-    public function mount($salesId)
+    public function mount($bankFicheId)
     {
-        $this->invoiceId = $salesId;
-        $this->invoice = Invoice::with('details')->findOrFail($salesId);
+        $this->bankFicheId = $bankFicheId;
+        $this->bankFiche = BankFiche::findOrFail($bankFicheId);
 
-        $this->stocks = Item::where('active', 1)->orderBy('name')->get()->pluck('name', 'id');
 
-        $this->card_id = $this->invoice->card_id;
-        $this->invoice_no = $this->invoice->invoice_no;
-        $this->date_ = $this->invoice->date_;
-        $this->description = $this->invoice->description;
-        $this->type = $this->invoice->type;
-        $this->total = $this->invoice->total;
+        $this->fiche_no = $this->bankFiche->fiche_no;
+        $this->date_ = $this->bankFiche->date_;
+        $this->description = $this->bankFiche->description;
+        $this->type = $this->bankFiche->type;
+        $this->total = $this->bankFiche->total;
 
-        $this->details = $this->invoice->details->map(function ($d) {
+        $this->details = $this->bankFiche->lines->map(function ($d) {
             return [
                 'id' => $d->id,
-                'stock_id' => $d->stock_id,
-                'unit_id' => $d->unit_id,
-                'quantity' => $d->quantity,
+                'bank_id' => $d->bank_id,
+                'bank_account_id' => $d->bank_account_id,
+                'card_id' => $d->card_id,
+                'amount' => $d->amount,
                 'description' => $d->description,
-                'price' => $d->price,
-                'total' => $d->total,
             ];
         })->keyBy('id')->toArray();
     }
@@ -65,66 +58,52 @@ class Edit extends Component
     public function render()
     {
         $data['cards'] = Card::where('active', 1)->orderBy('name')->get()->pluck('name', 'id');
+        $data['banks'] = Bank::orderBy('name')->get()->pluck('name', 'id');
 
-        return view('invoice.sales.edit', $data);
+        return view('bank.fiche.edit', $data);
     }
 
     public function update()
     {
         $this->validate([
-            'card_id' => 'required',
-            'invoice_no' => 'required|unique:lunaris_invoices,invoice_no,'.$this->invoice->id,
+            'fiche_no' => 'required|unique:lunaris_bank_fiches,fiche_no',
             'date_' => 'required|date',
-            'type' => 'required',
+            'transaction' => 'required',
         ]);
 
         $this->validate([
-            'details.*.stock_id' => 'required',
-            'details.*.unit_id' => 'required',
-            'details.*.quantity' => 'required|numeric|min:1',
-            'details.*.price' => 'required|numeric|min:0',
+            'details.*.bank_id' => 'required',
+            'details.*.bank_account_id' => 'required',
+            'details.*.amount' => 'required|numeric|min:1',
         ]);
-
-        foreach ($this->details as &$detail) {
-            $detail['total'] = (float) $detail['quantity'] * (float) $detail['price'];
-        }
 
         $this->validate([
-            'newCreation.*.stock_id' => 'required',
-            'newCreation.*.unit_id' => 'required',
-            'newCreation.*.quantity' => 'required|numeric|min:1',
-            'newCreation.*.price' => 'required|numeric|min:0',
+            'details.*.bank_id' => 'required',
+            'details.*.bank_account_id' => 'required',
+            'details.*.amount' => 'required|numeric|min:1',
         ]);
 
-        foreach ($this->newCreation as &$detail) {
-            $detail['total'] = (float) $detail['quantity'] * (float) $detail['price'];
-        }
-
-        $this->total = array_sum(array_column($this->details, 'total')) + array_sum(array_column($this->newCreation, 'total'));
+        $this->total = array_sum(array_column($this->details, 'amount')) + array_sum(array_column($this->newCreation, 'amount'));
 
         $this->invoice->update([
-            'card_id' => $this->card_id,
-            'invoice_no' => $this->invoice_no,
+            'fiche_no' => $this->fiche_no,
             'date_' => $this->date_,
-            'description' => $this->description,
-            'sign' => signOfSalesInvoice($this->type),
             'total' => $this->total,
         ]);
 
         // Yeni detayları kaydet
         foreach ($this->deleted as $detail) {
-            InvoiceDetail::find($detail)->delete();
+            BankFicheLine::find($detail)->delete();
         }
 
         foreach ($this->newCreation as $detail) {
-            InvoiceDetail::create([
-                'invoice_id' => $this->invoiceId,
-                'stock_id' => $detail['stock_id'],
-                'unit_id' => $detail['unit_id'],
-                'quantity' => $detail['quantity'],
+            BankFicheLine::create([
+                'bank_fiche_id' => $this->bankFicheId,
+                'bank_id' => $detail['bank_id'],
+                'bank_account_id' => $detail['bank_account_id'],
+                'card_id' => $detail['card_id'],
                 'description' => $detail['description'],
-                'price' => $detail['price'],
-                'total' => $detail['total'],
+                'amount' => $detail['amount'],
             ]);
         }
 
@@ -144,7 +123,7 @@ class Edit extends Component
 
     public function addDetail()
     {
-        $this->newCreation[] = ['stock_id' => $this->stocks->keys()->first(), 'unit_id' => '', 'quantity' => 1, 'description' => '', 'price' => 0, 'total' => 0];
+        $this->newCreation[] = ['bank_id' => '', 'bank_account_id' => '', 'amount' => 0, 'description' => ''];
     }
 
     public function removeFromDetail($index)

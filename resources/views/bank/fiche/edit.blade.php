@@ -58,11 +58,10 @@
                                                         {{ html()->select('', $banks)->attributes([ 'wire:model.change' => 'details.' . $index . '.bank_id', 'class' => 'form-control']) }}
                                                     </td>
                                                     <td>
-                                                        <select wire:model="details.{{$index}}.bank_account_id" class="form-control">
-                                                            @foreach (\App\Models\Lunaris\BankAccount::where('bank_id', $details[$index]['bank_id'])->get()->pluck('name', 'id')->prepend('Seçiniz', '') as $accId => $accName)
-                                                                <option value="{{ $accId }}">{{ $accName }}</option>
-                                                            @endforeach
-                                                        </select>
+                                                        @php
+                                                            $unitss = \App\Models\Lunaris\BankAccount::where('bank_id', $details[$index]['bank_id'])->get()->pluck('name', 'id');
+                                                        @endphp
+                                                        {{ html()->select($details[$index]['bank_account_id'], $unitss)->attributes([ 'wire:model' => 'details.' . $index . '.bank_account_id', 'class' => 'form-control form-select']) }}
                                                     </td>
                                                     <td>
                                                         {{ html()->select('', $cards)->attributes([ 'wire:model' => 'details.' . $index . '.card_id', 'class' => 'form-control']) }}
@@ -74,7 +73,33 @@
                                                         <input type="text" wire:model="details.{{$index}}.description" class="form-control" placeholder="Açıklama">
                                                     </td>
                                                     <td>
-                                                        <button type="button" wire:click="removeDetail({{ $index }})" class="btn btn-danger btn-sm">X</button>
+                                                        <button type="button" wire:click="removeFromDetail({{ $index }})" class="btn btn-danger btn-sm">X</button>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            @foreach($newCreation as $index => $detail)
+                                                <tr>
+                                                    <td>
+                                                        {{ html()->select('', $banks)->attributes([ 'wire:model.change' => 'newCreation.' . $index . '.bank_id', 'class' => 'form-control']) }}
+                                                    </td>
+                                                    <td>
+                                                        <select wire:model="newCreation.{{$index}}.bank_account_id" class="form-control">
+                                                            @foreach (\App\Models\Lunaris\BankAccount::where('bank_id', $newCreation[$index]['bank_id'])->get()->pluck('name', 'id')->prepend('Seçiniz', '') as $accId => $accName)
+                                                                <option value="{{ $accId }}">{{ $accName }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        {{ html()->select('', $cards)->attributes([ 'wire:model' => 'newCreation.' . $index . '.card_id', 'class' => 'form-control']) }}
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" wire:model="newCreation.{{$index}}.amount" class="form-control" placeholder="Fiyat" step="0.01">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" wire:model="newCreation.{{$index}}.description" class="form-control" placeholder="Açıklama">
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" wire:click="removeFromCreation({{ $index }})" class="btn btn-danger btn-sm">X</button>
                                                     </td>
                                                 </tr>
                                             @endforeach

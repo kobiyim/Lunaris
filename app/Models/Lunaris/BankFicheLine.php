@@ -10,6 +10,7 @@ class BankFicheLine extends Model
     protected $table = 'lunaris_bank_fiche_lines';
 
     protected $fillable = [
+        'bank_id',
         'bank_account_id',
         'card_id',
         'bank_fiche_id',

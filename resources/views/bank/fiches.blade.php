@@ -1,5 +1,5 @@
 <div>
-    <div class="container-fluid">
+    <div class="container-lg">
 
         <!-- end page title -->
         <div class="row">

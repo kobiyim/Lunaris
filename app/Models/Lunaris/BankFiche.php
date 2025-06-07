@@ -29,4 +29,11 @@ class BankFiche extends Model
     {
         return $this->hasMany(BankFicheLine::class, 'bank_fiche_id');
     }
+
+    protected function casts(): array
+    {
+        return [
+            'date_' => 'date',
+        ];
+    }
 }

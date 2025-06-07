@@ -52,10 +52,10 @@ function signOfPurchaseInvoice($type)
 
 function bankFicheTypes($type = null)
 {
-    $types = [
+    $types = collect([
         '1' => 'Gelen Havale',
         '2' => 'Gönderilen Havale',
-    ];
+    ]);
 
     return ($type == null) ? $types : $types[$type];
 }

@@ -11,11 +11,39 @@ class Fiches extends Component
 
     public $deleteId;
 
+    public $search = '';
+
+    public $sortField = 'id';
+    public $sortDirection = 'desc';
+
     public function render()
     {
-        return view('bank.fiches', [
-            'bankFiches' => BankFiche::paginate(10),
-        ]);
+        $keywords = collect(explode(' ', trim($this->search)))
+            ->filter()
+            ->values();
+
+        $bankFiches = BankFiche::when($keywords->isNotEmpty(), function ($query) use ($keywords) {
+                foreach ($keywords as $keyword) {
+                    $query->where(function ($q) use ($keyword) {
+                        $q->orWhere('description', 'like', '%' . $keyword . '%');
+                        $q->orWhere('fiche_no', 'like', '%' . $keyword . '%');
+                    });
+                    //$query->orWhere('docode', 'like', '%' . $keyword . '%');
+                }
+            })
+            ->orderBy($this->sortField, $this->sortDirection)->paginate(10);
+
+        return view('bank.fiches', compact('bankFiches'));
+    }
+
+    public function sortBy($field)
+    {
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortField = $field;
+            $this->sortDirection = 'asc';
+        }
     }
 
     public function confirmDelete($id)
@@ -26,8 +54,12 @@ class Fiches extends Component
 
     public function delete()
     {
-        BankFiche::findOrFail($this->deleteId)->delete();
+        $invoice = BankFiche::findOrFail($this->deleteId);
+
+        $invoice->lines()->delete();
+        $invoice->delete();
+
         $this->confirmingDelete = false;
-        $this->successMessage = 'Cari hesap başarıyla silindi.';
+        $this->successMessage = 'Fatura başarıyla silindi.';
     }
 }

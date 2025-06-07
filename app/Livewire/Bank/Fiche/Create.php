@@ -27,14 +27,14 @@ class Create extends Component
 
     public function mount()
     {
-        $this->banks = Bank::where('active', 1)->orderBy('name')->get()->pluck('name', 'id');
+        $this->banks = Bank::where('active', 1)->orderBy('name')->get()->pluck('name', 'id')->prepend('Seçiniz', '');
 
         $this->resetInputFields();
     }
 
     public function render()
     {
-        $data['cards'] = Card::where('active', 1)->orderBy('name')->get()->pluck('name', 'id');
+        $data['cards'] = Card::where('active', 1)->orderBy('name')->get()->pluck('name', 'id')->prepend('Seçiniz', '');
 
         return view('bank.fiche.create', $data);
     }
@@ -42,7 +42,7 @@ class Create extends Component
     private function resetInputFields()
     {
         $this->fiche_no = '';
-        $this->date_ = now();
+        $this->date_ = now()->toDateString();
         $this->description = '';
         $this->amount = 0;
         $this->details = [
