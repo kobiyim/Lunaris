@@ -14,6 +14,7 @@ class Fiches extends Component
     public $search = '';
 
     public $sortField = 'id';
+
     public $sortDirection = 'desc';
 
     public function render()
@@ -28,12 +29,12 @@ class Fiches extends Component
                 foreach ($keywords as $keyword) {
                     $query->where(function ($q) use ($keyword) {
                         $q->whereHas('card', function ($subQ) use ($keyword) {
-                            $subQ->where('name', 'like', '%' . $keyword . '%');
+                            $subQ->where('name', 'like', '%'.$keyword.'%');
                         });
-                        $q->orWhere('docode', 'like', '%' . $keyword . '%');
-                        $q->orWhere('invoice_no', 'like', '%' . $keyword . '%');
+                        $q->orWhere('docode', 'like', '%'.$keyword.'%');
+                        $q->orWhere('invoice_no', 'like', '%'.$keyword.'%');
                     });
-                    //$query->orWhere('docode', 'like', '%' . $keyword . '%');
+                    // $query->orWhere('docode', 'like', '%' . $keyword . '%');
                 }
             })
             ->orderBy($this->sortField, $this->sortDirection)->paginate(10);

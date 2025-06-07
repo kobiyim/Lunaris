@@ -2,11 +2,11 @@
 
 namespace App\Livewire\Bank\Fiche;
 
+use App\Models\Lunaris\Bank;
+use App\Models\Lunaris\BankFiche;
+use App\Models\Lunaris\BankFicheLine;
 use App\Models\Lunaris\Card;
 use App\Models\Lunaris\CardActivity;
-use App\Models\Lunaris\BankFiche;
-use App\Models\Lunaris\Bank;
-use App\Models\Lunaris\BankFicheLine;
 use Livewire\Component;
 
 class Edit extends Component
@@ -35,7 +35,6 @@ class Edit extends Component
     {
         $this->bankFicheId = $bankFicheId;
         $this->bankFiche = BankFiche::findOrFail($bankFicheId);
-
 
         $this->fiche_no = $this->bankFiche->fiche_no;
         $this->date_ = $this->bankFiche->date_;

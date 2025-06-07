@@ -38,6 +38,7 @@ class ItemManager extends Component
     ];
 
     public $sortField = 'name';
+
     public $sortDirection = 'asc';
 
     public function mount()
@@ -64,8 +65,8 @@ class ItemManager extends Component
     {
         return view('item-component', [
             'items' => Item::where(function ($query) {
-                $query->where('code', 'like', '%' . $this->search . '%')
-                      ->orWhere('name', 'like', '%' . $this->search . '%');
+                $query->where('code', 'like', '%'.$this->search.'%')
+                    ->orWhere('name', 'like', '%'.$this->search.'%');
             })->orderBy($this->sortField, $this->sortDirection)->paginate(10),
         ]);
     }

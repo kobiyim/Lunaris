@@ -20,16 +20,16 @@ class StockMovements extends Component
                 foreach ($keywords as $keyword) {
                     $query->where(function ($q) use ($keyword) {
                         $q->whereHas('invoice.card', function ($subQ) use ($keyword) {
-                            $subQ->where('name', 'like', '%' . $keyword . '%');
+                            $subQ->where('name', 'like', '%'.$keyword.'%');
                         })
-                        ->orWhereHas('item', function ($subQ) use ($keyword) {
-                            $subQ->where('name', 'like', '%' . $keyword . '%');
-                        })
-                        ->orWhereHas('invoice', function ($subQ) use ($keyword) {
-                            $subQ->where('type', 'like', '%' . $keyword . '%');
-                        });
+                            ->orWhereHas('item', function ($subQ) use ($keyword) {
+                                $subQ->where('name', 'like', '%'.$keyword.'%');
+                            })
+                            ->orWhereHas('invoice', function ($subQ) use ($keyword) {
+                                $subQ->where('type', 'like', '%'.$keyword.'%');
+                            });
                     });
-                    $query->orWhere('description', 'like', '%' . $keyword . '%');
+                    $query->orWhere('description', 'like', '%'.$keyword.'%');
                 }
             })
             ->latest()
@@ -37,5 +37,4 @@ class StockMovements extends Component
 
         return view('stock.stock-movements', compact('results'));
     }
-
 }

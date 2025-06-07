@@ -36,14 +36,15 @@ class CardManager extends Component
     ];
 
     public $sortField = 'name';
+
     public $sortDirection = 'asc';
 
     public function render()
     {
         $cards = Card::where(function ($query) {
-                $query->where('code', 'like', '%' . $this->search . '%')
-                      ->orWhere('name', 'like', '%' . $this->search . '%');
-            });
+            $query->where('code', 'like', '%'.$this->search.'%')
+                ->orWhere('name', 'like', '%'.$this->search.'%');
+        });
 
         if ($this->active != '2') {
             $cards->where('active', $this->active);

@@ -14,6 +14,7 @@ class Fiches extends Component
     public $search = '';
 
     public $sortField = 'id';
+
     public $sortDirection = 'desc';
 
     public function render()
@@ -23,14 +24,14 @@ class Fiches extends Component
             ->values();
 
         $bankFiches = BankFiche::when($keywords->isNotEmpty(), function ($query) use ($keywords) {
-                foreach ($keywords as $keyword) {
-                    $query->where(function ($q) use ($keyword) {
-                        $q->orWhere('description', 'like', '%' . $keyword . '%');
-                        $q->orWhere('fiche_no', 'like', '%' . $keyword . '%');
-                    });
-                    //$query->orWhere('docode', 'like', '%' . $keyword . '%');
-                }
-            })
+            foreach ($keywords as $keyword) {
+                $query->where(function ($q) use ($keyword) {
+                    $q->orWhere('description', 'like', '%'.$keyword.'%');
+                    $q->orWhere('fiche_no', 'like', '%'.$keyword.'%');
+                });
+                // $query->orWhere('docode', 'like', '%' . $keyword . '%');
+            }
+        })
             ->orderBy($this->sortField, $this->sortDirection)->paginate(10);
 
         return view('bank.fiches', compact('bankFiches'));

@@ -5,7 +5,6 @@ namespace App\Livewire\Vault;
 use App\Models\Lunaris\Card;
 use App\Models\Lunaris\CardActivity;
 use App\Models\Lunaris\VaultFiche;
-use App\Models\Lunaris\Vault;
 use Livewire\Component;
 
 class Edit extends Component

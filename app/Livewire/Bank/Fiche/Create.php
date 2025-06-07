@@ -2,11 +2,10 @@
 
 namespace App\Livewire\Bank\Fiche;
 
+use App\Models\Lunaris\Bank;
+use App\Models\Lunaris\BankFiche;
 use App\Models\Lunaris\Card;
 use App\Models\Lunaris\CardActivity;
-use App\Models\Lunaris\BankFiche;
-use App\Models\Lunaris\Bank;
-use App\Models\Lunaris\Item;
 use Livewire\Component;
 
 class Create extends Component

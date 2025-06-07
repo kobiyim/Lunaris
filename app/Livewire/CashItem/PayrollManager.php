@@ -16,5 +16,4 @@ class PayrollManager extends Component
             'payrolls' => Payroll::paginate(10),
         ]);
     }
-
 }

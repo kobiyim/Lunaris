@@ -19,7 +19,7 @@ class Invoice extends Model
         'type',
         'sign',
         'total',
-        'docode'
+        'docode',
     ];
 
     public function details()
